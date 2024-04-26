@@ -1,0 +1,69 @@
+info: (1760) Reddit Service: Listening on port 4002 {"timestamp":"2024-04-15T03:54:32.731Z"}
+http: (1760) Reddit Service: Received POST request to /posts {"timestamp":"2024-04-15T03:54:46.260Z"}
+info: (1760) Reddit Service: Started fetching and sending saved posts from Reddit API {"timestamp":"2024-04-15T03:54:46.260Z"}
+info: (1760) Reddit Service: Fetching batch of posts after= from Reddit API {"timestamp":"2024-04-15T03:54:46.260Z"}
+info: (1760) Reddit Service: Successful fetch with status code 200 {"timestamp":"2024-04-15T03:54:47.611Z"}
+error: (1760) Reddit Service: fs is not defined {"timestamp":"2024-04-15T03:54:47.638Z"}
+info: (1981) Reddit Service: Listening on port 4002 {"timestamp":"2024-04-15T03:55:12.138Z"}
+http: (1981) Reddit Service: Received POST request to /posts {"timestamp":"2024-04-15T03:55:14.941Z"}
+info: (1981) Reddit Service: Started fetching and sending saved posts from Reddit API {"timestamp":"2024-04-15T03:55:14.941Z"}
+info: (1981) Reddit Service: Fetching batch of posts after= from Reddit API {"timestamp":"2024-04-15T03:55:14.942Z"}
+info: (1981) Reddit Service: Successful fetch with status code 200 {"timestamp":"2024-04-15T03:55:16.443Z"}
+error: (1981) Reddit Service: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of Object {"timestamp":"2024-04-15T03:55:16.467Z"}
+info: (2111) Reddit Service: Listening on port 4002 {"timestamp":"2024-04-15T03:55:31.587Z"}
+http: (2111) Reddit Service: Received POST request to /posts {"timestamp":"2024-04-15T03:55:34.190Z"}
+info: (2111) Reddit Service: Started fetching and sending saved posts from Reddit API {"timestamp":"2024-04-15T03:55:34.190Z"}
+info: (2111) Reddit Service: Fetching batch of posts after= from Reddit API {"timestamp":"2024-04-15T03:55:34.191Z"}
+info: (2111) Reddit Service: Successful fetch with status code 200 {"timestamp":"2024-04-15T03:55:35.654Z"}
+info: (2111) Reddit Service: Fetching batch of posts after= from Reddit API {"timestamp":"2024-04-15T03:55:35.683Z"}
+info: (2111) Reddit Service: Successful fetch with status code 200 {"timestamp":"2024-04-15T03:55:36.671Z"}
+info: (2111) Reddit Service: Fetching batch of posts after= from Reddit API {"timestamp":"2024-04-15T03:55:36.693Z"}
+info: (2111) Reddit Service: Successful fetch with status code 200 {"timestamp":"2024-04-15T03:55:37.981Z"}
+info: (2111) Reddit Service: Fetching batch of posts after= from Reddit API {"timestamp":"2024-04-15T03:55:38.003Z"}
+info: (2111) Reddit Service: Successful fetch with status code 200 {"timestamp":"2024-04-15T03:55:39.278Z"}
+info: (2111) Reddit Service: Fetching batch of posts after= from Reddit API {"timestamp":"2024-04-15T03:55:39.298Z"}
+info: (2111) Reddit Service: Successful fetch with status code 200 {"timestamp":"2024-04-15T03:55:40.804Z"}
+info: (2111) Reddit Service: Fetching batch of posts after= from Reddit API {"timestamp":"2024-04-15T03:55:40.834Z"}
+info: (2111) Reddit Service: Successful fetch with status code 200 {"timestamp":"2024-04-15T03:55:42.300Z"}
+info: (2111) Reddit Service: Fetching batch of posts after= from Reddit API {"timestamp":"2024-04-15T03:55:42.320Z"}
+info: (2111) Reddit Service: Successful fetch with status code 200 {"timestamp":"2024-04-15T03:55:44.109Z"}
+info: (2111) Reddit Service: Fetching batch of posts after= from Reddit API {"timestamp":"2024-04-15T03:55:44.130Z"}
+info: (2111) Reddit Service: Successful fetch with status code 200 {"timestamp":"2024-04-15T03:55:45.438Z"}
+info: (2111) Reddit Service: Fetching batch of posts after= from Reddit API {"timestamp":"2024-04-15T03:55:45.458Z"}
+info: (2111) Reddit Service: Successful fetch with status code 200 {"timestamp":"2024-04-15T03:55:46.771Z"}
+info: (2111) Reddit Service: Fetching batch of posts after= from Reddit API {"timestamp":"2024-04-15T03:55:46.830Z"}
+info: (2111) Reddit Service: Successful fetch with status code 200 {"timestamp":"2024-04-15T03:55:48.382Z"}
+info: (2111) Reddit Service: Fetching batch of posts after= from Reddit API {"timestamp":"2024-04-15T03:55:48.399Z"}
+info: (2111) Reddit Service: Successful fetch with status code 200 {"timestamp":"2024-04-15T03:55:49.741Z"}
+info: (2111) Reddit Service: Fetching batch of posts after= from Reddit API {"timestamp":"2024-04-15T03:55:49.778Z"}
+info: (2111) Reddit Service: Successful fetch with status code 200 {"timestamp":"2024-04-15T03:55:51.031Z"}
+info: (2111) Reddit Service: Fetching batch of posts after= from Reddit API {"timestamp":"2024-04-15T03:55:51.057Z"}
+info: (2111) Reddit Service: Successful fetch with status code 200 {"timestamp":"2024-04-15T03:55:52.372Z"}
+info: (2111) Reddit Service: Fetching batch of posts after= from Reddit API {"timestamp":"2024-04-15T03:55:52.395Z"}
+info: (2111) Reddit Service: Successful fetch with status code 200 {"timestamp":"2024-04-15T03:55:53.342Z"}
+info: (2111) Reddit Service: Fetching batch of posts after= from Reddit API {"timestamp":"2024-04-15T03:55:53.364Z"}
+info: (17010) Reddit Service: Listening on port 4002 {"timestamp":"2024-04-16T01:46:46.300Z"}
+http: (17010) Reddit Service: Received POST request to /posts {"timestamp":"2024-04-16T01:46:53.037Z"}
+info: (17010) Reddit Service: Started fetching and sending saved posts from Reddit API {"timestamp":"2024-04-16T01:46:53.037Z"}
+info: (17010) Reddit Service: Fetching batch of posts after= from Reddit API {"timestamp":"2024-04-16T01:46:53.038Z"}
+info: (17010) Reddit Service: Successful fetch with status code 200 {"timestamp":"2024-04-16T01:46:54.586Z"}
+info: (17010) Reddit Service: Fetching batch of posts after=t3_1c0qj14 from Reddit API {"timestamp":"2024-04-16T01:46:54.648Z"}
+info: (17010) Reddit Service: Successful fetch with status code 200 {"timestamp":"2024-04-16T01:46:56.252Z"}
+info: (17010) Reddit Service: Fetching batch of posts after=t3_1bwy7cx from Reddit API {"timestamp":"2024-04-16T01:46:56.274Z"}
+info: (17010) Reddit Service: Successful fetch with status code 200 {"timestamp":"2024-04-16T01:46:57.902Z"}
+info: (17010) Reddit Service: Fetching batch of posts after=t3_1bt2jvg from Reddit API {"timestamp":"2024-04-16T01:46:57.922Z"}
+info: (17010) Reddit Service: Successful fetch with status code 200 {"timestamp":"2024-04-16T01:46:59.492Z"}
+info: (17010) Reddit Service: Fetching batch of posts after=t3_1bq4htr from Reddit API {"timestamp":"2024-04-16T01:46:59.518Z"}
+info: (17010) Reddit Service: Successful fetch with status code 200 {"timestamp":"2024-04-16T01:47:01.652Z"}
+info: (17010) Reddit Service: Fetching batch of posts after=t3_1blxu4l from Reddit API {"timestamp":"2024-04-16T01:47:01.674Z"}
+info: (17010) Reddit Service: Successful fetch with status code 200 {"timestamp":"2024-04-16T01:47:03.254Z"}
+info: (17010) Reddit Service: Fetching batch of posts after=t3_1bjqw8g from Reddit API {"timestamp":"2024-04-16T01:47:03.283Z"}
+info: (17010) Reddit Service: Successful fetch with status code 200 {"timestamp":"2024-04-16T01:47:05.081Z"}
+info: (17010) Reddit Service: Fetching batch of posts after=t3_1bh1s2w from Reddit API {"timestamp":"2024-04-16T01:47:05.099Z"}
+info: (17010) Reddit Service: Successful fetch with status code 200 {"timestamp":"2024-04-16T01:47:06.593Z"}
+info: (17010) Reddit Service: Fetching batch of posts after=t3_1be8zfr from Reddit API {"timestamp":"2024-04-16T01:47:06.610Z"}
+info: (17010) Reddit Service: Successful fetch with status code 200 {"timestamp":"2024-04-16T01:47:08.197Z"}
+info: (17010) Reddit Service: Fetching batch of posts after=t3_1bbsauw from Reddit API {"timestamp":"2024-04-16T01:47:08.221Z"}
+info: (17010) Reddit Service: Successful fetch with status code 200 {"timestamp":"2024-04-16T01:47:08.976Z"}
+info: (17010) Reddit Service: Finished fetching and sending saved posts from Reddit API {"timestamp":"2024-04-16T01:47:08.985Z"}
+info: (17010) Reddit Service: Successful completion with status code 201 {"timestamp":"2024-04-16T01:47:08.986Z"}

@@ -1,0 +1,19 @@
+@CLIENT_ID = 7RjOp92rHTjjgXK5fNJ46A
+@CLIENT_SECRET = 22G7pGtn87B69pXW8H6U3X2o6GTBZw
+@CALLBACK = http://localhost:5173/callback
+@CODE = uxWRQNeyNu5GY3crh6ftoT3db1bzSw
+
+# go to URL to get authorization code
+https://www.reddit.com/api/v1/authorize?client_id={{CLIENT_ID}}&response_type=code&state=12345&redirect_uri={{CALLBACK}}&duration=permanent&scope=*
+https://www.reddit.com/api/v1/authorize?client_id=7RjOp92rHTjjgXK5fNJ46A&response_type=code&state=12345&redirect_uri=http://localhost:5173/callback&duration=permanent&scope=*
+###
+POST https://www.reddit.com/api/v1/access_token HTTP/1.1
+Authorization: Basic {{CLIENT_ID}}:{{CLIENT_SECRET}}
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=authorization_code&code={{CODE}}&redirect_uri={{CALLBACK}}
+###
+@JWT = eyJhbGciOiJSUzI1NiIsImtpZCI6IlNIQTI1NjpzS3dsMnlsV0VtMjVmcXhwTU40cWY4MXE2OWFFdWFyMnpLMUdhVGxjdWNZIiwidHlwIjoiSldUIn0.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNzEzNzU3Nzc3LjE3NzMzOSwiaWF0IjoxNzEzNjcxMzc3LjE3NzMzOSwianRpIjoiSGs0TUFjQmtNYmVpV3RvRTlFV2xvRTBnUGtRVVNRIiwiY2lkIjoiN1JqT3A5MnJIVGpqZ1hLNWZOSjQ2QSIsImxpZCI6InQyXzcwNWc4aTBpIiwiYWlkIjoidDJfNzA1ZzhpMGkiLCJsY2EiOjE1OTI3Nzc1NTU3NDMsInNjcCI6ImVKeUtWdEpTaWdVRUFBRF9fd056QVNjIiwicmNpZCI6IkFQTThNMWg3ZXdDVHhpRGdpcldYYWgzQ05yeUdiX05BOVJMc2RKSFp0WEUiLCJmbG8iOjh9.TOhRPikF16W4VMyUG84A8G9qzBDrSR6ttRqvm4wvLRoxw49tGxlpapJ4bY4F5Y-grLVx2txBZpQc2cQq5qoA3ivm7AUh3sM5DHTVnYmZ-9giRJU_X3Xar7rau4l0w8tMORsV6ygd9eclSyDwndkW9ga2-om0T82vttEQc1B4iRWqDF9rRFQ-DWhAdw0g5s8mzkNNwOwfJodMKLsfeKfIheWQSeS5_dMgJ-xGn8zZpjNxERYpz0WqMxgj9xP0BwCRunBdAP0IFOAEJGGA5PxUYq3UhANbZuEik4J9ZPwwng3AWYSVSEZQAvXzPUkWGA9J9giv-HQlqAUb8_E8FAdWXg
+###
+GET https://oauth.reddit.com/user/1234353/saved?limit=100&raw_json=1 HTTP/1.1
+Authorization: bearer {{JWT}}

@@ -1,0 +1,76 @@
+version: "3.9"
+
+networks:
+  app-net:
+    name: reddit-application
+
+services:
+  query:
+    image: query:latest
+    build: ./test
+    networks:
+      - app-net
+    ports:
+      - 4001:4001
+  
+  reddit:
+    image: reddit:latest
+    build: ./reddit
+    networks:
+      - app-net
+    ports:
+      - 4002:4002
+
+# volumes:
+#   mongodb:
+
+# version: "3.9"
+
+# networks:
+#   app-net:
+#     name: reddit-application
+
+# services:
+#   client:
+#     image: client:latest
+#     build: ./client
+#     ports:
+#       - 3000:3000
+#     networks:
+#       - app-net
+  
+#   api:
+#     image: api:latest
+#     build: ./api
+#     ports:
+#       - 4000:4000
+#     networks:
+#       - app-net
+
+#   query:
+#     image: query
+#     build: ./query
+#     networks:
+#       - app-net
+  
+#   reddit:
+#     image: reddit:latest
+#     build: ./reddit
+#     networks:
+#       - app-net
+      
+#   mongo:
+#     image: mongo
+#     restart: always
+#     environment:
+#       MONGO_INITDB_ROOT_USERNAME: root
+#       MONGO_INITDB_ROOT_PASSWORD: password
+#     networks:
+#       - app-net
+#     ports:
+#       - 27017:27017
+# #     volumes:
+# #       - ./mongodb:/data/db
+
+# # volumes:
+# #   mongodb:
