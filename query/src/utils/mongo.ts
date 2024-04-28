@@ -49,7 +49,7 @@ export async function getUsersPosts(logger: ILogger, user: string) {
         }
     ]).toArray();
     const postIds = result[0].post_ids;
-    logger.info(`Found ${postIds.length} total saved posts for user ${user}`);
+    logger.info(`Found ${postIds.length} total saved posts for user ${user} from users collection`);
     return postIds;
 }
 
@@ -114,7 +114,7 @@ export async function getPosts(logger: ILogger, posts: string[], query: QueryReq
         total_count: result[0].count[0].count,
         posts: result[0].posts
     };
-    logger.info(`Found ${output.total_count} saved posts matching query, retrieved ${output.count}`);
+    logger.info(`Found ${output.total_count} saved posts matching query, retrieved ${output.count} from posts collection`);
     return output;
 }
 
@@ -145,6 +145,7 @@ export async function getSubreddits(logger: ILogger, posts: string[]) {
             }
         }
     ]).toArray();
+    logger.info(`Found ${result.length} unique subreddits from posts collection`);
     return result;
 }
 
@@ -181,6 +182,7 @@ export async function insertToUser(logger: ILogger, user: string, timestamp: num
         },
     })));
     await usersCollection.bulkWrite(bulkUserOps, { ordered: false });
+    logger.info(`Upserted ${posts.length} posts for user ${user} in users collection`);
 }
 
 export async function insertToPosts(logger: ILogger, posts: RedditPost[]) {
@@ -192,6 +194,7 @@ export async function insertToPosts(logger: ILogger, posts: RedditPost[]) {
         },
     }));
     await postsCollection.bulkWrite(bulkPostOps, { ordered: false });
+    logger.info(`Upserted ${posts.length} posts in posts collection`);
 }
 
 export async function favoriteToUser(logger: ILogger, user: string, favoriteRequest: FavoriteRequest) {

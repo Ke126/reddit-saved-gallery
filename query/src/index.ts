@@ -1,7 +1,7 @@
 import { app } from './app.js';
 import makeLogger from './shared/logger.js'
 import 'dotenv/config'
-import { initializeDatabase } from './utils/crud.js';
+import { initializeDatabase } from './utils/mongo.js';
 
 const logger = makeLogger("Query Service");
 const PORT = process.env.PORT;

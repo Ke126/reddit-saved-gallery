@@ -10,7 +10,7 @@ const REDDIT_URL = process.env.REDDIT_URL!;
 
 export const controller = {
     // QUERY
-    get(logger: ILogger, dbDependency: (jwt: string, query: qs.ParsedQs) => Promise<RedditPostDoc[]>) {
+    get(logger: ILogger, dbDependency: (jwt: string, query: qs.ParsedQs) => Promise<{count: number, total_count: number, posts: RedditPostDoc[]}>) {
         return async (req: ExpressRequest, res: ExpressResponse, next: NextFunction) => {
             try {
                 const posts = await dbDependency(req.headers.authorization!, req.query);
@@ -23,10 +23,10 @@ export const controller = {
         }
     },
     // REDDIT -> QUERY
-    post(logger: ILogger, dbDependency: (jwt: string, posts: RedditPost[]) => Promise<void>) {
+    post(logger: ILogger, dbDependency: (jwt: string, timestamp: number, posts: RedditPost[]) => Promise<void>) {
         return async (req: ExpressRequest, res: ExpressResponse, next: NextFunction) => {
             try {
-                await dbDependency(req.headers.authorization!, req.body)
+                await dbDependency(req.headers.authorization!, req.body.timestamp, req.body.posts)
                 logger.info(`Successful completion with status code 201`);
                 res.status(201).json({ status: 201 });
             }

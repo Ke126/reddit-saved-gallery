@@ -1,12 +1,12 @@
 import type { Request as ExpressRequest, Response as ExpressResponse, NextFunction } from "express"
-import type { ILogger } from "../shared/models/mw-models.js"
+import type { ILogger } from '../shared/logger.models.js';
 import 'dotenv/config';
 
 const QUERY_URL = process.env.QUERY_URL!;
 
 export const controller = {
     // QUERY
-    get(logger: ILogger, dbDependency: (jwt: string, query: qs.ParsedQs) => Promise<RedditPostDoc[]>) {
+    get(logger: ILogger, dbDependency: (jwt: string, query: qs.ParsedQs) => Promise<{ subreddit: string, count: number }[]>) {
         return async (req: ExpressRequest, res: ExpressResponse, next: NextFunction) => {
             try {
                 const posts = await dbDependency(req.headers.authorization!, req.query);

@@ -1,64 +1,27 @@
-import express, { Request, Response, NextFunction } from 'express';
-import * as crud from '../modules/crud.js'
-import errorMiddleware from '../shared/error-mw.js';
-import * as models from '../shared/models/models.js'
-import logger from '../shared/logger.js';
+import express from 'express';
+import { logIncomingRequest, checkAuthorization, sendError, validateBody } from '../shared/middleware.js';
+import { controller } from '../controllers/posts.controller.js';
+import makeLogger from '../shared/logger.js';
+import { tryThriceWrapper } from '../shared/tryThrice.js';
+import { getUsersPosts, getPosts, insertToUser, insertToPosts } from '../utils/mongo.js';
+import { readPosts, insertPosts } from '../utils/crud.js';
 
 export const postsRouter = express.Router();
 
-router.get('/posts', async (req: Request, res: Response, next: NextFunction) => {
-    logger.http(`(${process.pid}) Query Service received GET request to /posts`);
-    // read data from database using query if exists
-    try {
-        const data = await crud.readPosts(req.query as models.GetQuery);
-        res.status(200).json(data);
-    }
-    catch (err) {
-        logger.error(`(${process.pid}) Query Service error: ${(err as Error).message}`);
-        next(err);
-    }
-});
+const logger = makeLogger("Query Service");
+const logMiddleware = logIncomingRequest(logger);
+const authorizationMiddleware = checkAuthorization(logger);
+const errorMiddleware = sendError(logger);
+const validateBodyMiddleware = validateBody(logger, { username: 'string' });
 
-router.get('/subreddits', async (req: Request, res: Response, next: NextFunction) => {
-    logger.http(`(${process.pid}) Query Service received GET request to /subreddits`);
-    // read data from database
-    try {
-        const data = await crud.countSubreddits();
-        res.status(200).json(data);
-    }
-    catch (err) {
-        logger.error(`(${process.pid}) Query Service error: ${(err as Error).message}`);
-        next(err);
-    }
-});
+const getUsersThrice = tryThriceWrapper(logger, getUsersPosts);
+const readThrice = tryThriceWrapper(logger, getPosts);
+const insertToUsersThrice = tryThriceWrapper(logger, insertToUser);
+const insertToPostsThrice = tryThriceWrapper(logger, insertToPosts);
 
-router.put('/posts', async (req: Request, res: Response, next: NextFunction) => {
-    logger.http(`(${process.pid}) Query Service received PUT request to /posts`);
-    // add batch of new posts
-    const posts = req.body;
-    try {
-        await crud.insertPosts(posts);
-        res.status(200).json({ status: 'OK' });
-    }
-    catch (err) {
-        logger.error(`(${process.pid}) Query Service error: ${(err as Error).message}`);
-        next(err);
-    }
-});
+const readPostsInjected = readPosts(logger, getUsersThrice, readThrice);
+const insertPostsInjected = insertPosts(logger, insertToUsersThrice, insertToPostsThrice);
 
-router.put('/posts/:id', async (req: Request, res: Response, next: NextFunction) => {
-    logger.http(`(${process.pid}) Query Service received PUT request to /posts/:id`);
-    // update post favorite
-    const id = req.params.id;
-    const favorite = req.body.favorite;
-    try {
-        await crud.favoritePost(id, favorite);
-        res.status(200).json({ status: 'OK' });
-    }
-    catch (err) {
-        logger.error(`(${process.pid}) Query Service error: ${(err as Error).message}`);
-        next(err);
-    }
-});
+postsRouter.get('/posts', logMiddleware, authorizationMiddleware, controller.get(logger, readPostsInjected), errorMiddleware);
 
-router.use(errorMiddleware);
+postsRouter.post('/posts', logMiddleware, authorizationMiddleware, validateBodyMiddleware, controller.post(logger, insertPostsInjected), errorMiddleware);
