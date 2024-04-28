@@ -1,16 +1,17 @@
-FROM node:alpine
+# syntax=docker/dockerfile:1
 
-RUN npm install -g pm2
-
+FROM node:18-alpine AS builder
 WORKDIR /usr/src/app
-
-COPY ./package.json ./
+COPY package*.json .
 RUN npm install
-
-COPY ./ ./
-
+COPY . .
 RUN npm run build
 
+FROM node:18-alpine
+WORKDIR /usr/src/app
+COPY package*.json .
+COPY .env .
+RUN npm install --production
+COPY --from=builder /usr/src/app/dist/ /usr/src/app/dist/
 EXPOSE 3000
-
-CMD ["npm", "run", "docker-start"]
+CMD ["npm", "run", "start"]
