@@ -7,5 +7,5 @@ export interface QueryRequest {
 
 export interface FavoriteRequest {
     _id: string,
-    favorite: boolean
+    favorited: boolean
 }

@@ -3,6 +3,7 @@ import type { ILogger } from '../shared/logger.models.js'
 import 'dotenv/config';
 import qs from "qs";
 import { RedditPostDoc } from "../models/mongo.models.js";
+import { RedditPost } from "../shared/reddit.models.js";
 
 const QUERY_URL = process.env.QUERY_URL!;
 const REDDIT_URL = process.env.REDDIT_URL!;
@@ -22,19 +23,12 @@ export const controller = {
         }
     },
     // REDDIT -> QUERY
-    post(logger: ILogger, dbDependency: (jwt: string, posts: ) => Promise<Response>) {
+    post(logger: ILogger, dbDependency: (jwt: string, posts: RedditPost[]) => Promise<void>) {
         return async (req: ExpressRequest, res: ExpressResponse, next: NextFunction) => {
             try {
-                const response = await fetchDependency(new Request(REDDIT_URL + '/posts', {
-                    method: 'POST',
-                    body: JSON.stringify(req.body),
-                    headers: {
-                        authorization: req.headers.authorization || ""
-                    }
-                }));
-                const json = await response.json();
-                logger.info(`Successful completion with status code ${response.status}`);
-                res.status(response.status).json(json);
+                await dbDependency(req.headers.authorization!, req.body)
+                logger.info(`Successful completion with status code 201`);
+                res.status(201).json({ status: 201 });
             }
             catch (err) {
                 next(err);
@@ -43,25 +37,25 @@ export const controller = {
     },
     // QUERY
     // REDDIT -> QUERY
-    put(logger: ILogger, fetchDependency: (arg: Request) => Promise<Response>) {
-        return async (req: ExpressRequest, res: ExpressResponse, next: NextFunction) => {
-            try {
-                const response = await fetchDependency(new Request(QUERY_URL + '/posts/' + req.params.id, {
-                    method: "PUT",
-                    body: JSON.stringify(req.body),
-                    headers: {
-                        authorization: req.headers.authorization || ""
-                    }
-                }));
-                const json = await response.json();
-                logger.info(`Successful completion with status code ${response.status}`);
-                res.status(response.status).json(json);
-            }
-            catch (err) {
-                next(err);
-            }
-        }
-    },
-    // REDDIT -> QUERY
-    delete() {}
+    // put(logger: ILogger, fetchDependency: (arg: Request) => Promise<Response>) {
+    //     return async (req: ExpressRequest, res: ExpressResponse, next: NextFunction) => {
+    //         try {
+    //             const response = await fetchDependency(new Request(QUERY_URL + '/posts/' + req.params.id, {
+    //                 method: "PUT",
+    //                 body: JSON.stringify(req.body),
+    //                 headers: {
+    //                     authorization: req.headers.authorization || ""
+    //                 }
+    //             }));
+    //             const json = await response.json();
+    //             logger.info(`Successful completion with status code ${response.status}`);
+    //             res.status(response.status).json(json);
+    //         }
+    //         catch (err) {
+    //             next(err);
+    //         }
+    //     }
+    // },
+    // // REDDIT -> QUERY
+    // delete() { }
 }

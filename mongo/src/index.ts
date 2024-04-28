@@ -23,6 +23,14 @@ interface RedditPostDoc {
     },
 }
 
+interface RedditPost {
+    kind: string,
+    data: {
+        name: string,
+        text: string
+    },
+}
+
 const client = new MongoClient(MONGO_URL);
 await client.connect();
 const db = client.db(DB_NAME);

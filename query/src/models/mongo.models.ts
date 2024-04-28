@@ -1,8 +1,7 @@
 import { RedditPost } from "../shared/reddit.models.js"
 
-export interface RedditPostDoc {
+export interface RedditPostDoc extends RedditPost {
     _id: string,
-    data: RedditPost
 }
 
 export interface UserDoc {
