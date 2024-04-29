@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import type { ILogger } from '../shared/logger.models.js';
 import type { FavoriteRequest, QueryRequest } from '../models/query.models.js';
-import type { RedditPostDoc, UserDoc } from '../models/mongo.models.js';
+import type { JoinedDoc, RedditPostDoc, UserDoc } from '../models/mongo.models.js';
 import { parseJWT, parseQuery } from './parse.js';
 import { RedditPost } from '../shared/reddit.models.js';
 
@@ -15,6 +15,16 @@ export function readPosts(logger: ILogger, getUsersPosts: (user: string) => Prom
             return { count: 0, total_count: 0, posts: [] };
         }
         const postDocs = await getPosts(posts, queryObj);
+        logger.info(`Read ${postDocs.count} posts for user ${userStr}`);
+        return postDocs;
+    }
+}
+
+export function readPosts2(logger: ILogger, getUsersPosts: (user: string, query: QueryRequest) => Promise<{ count: number, total_count: number, posts: JoinedDoc[] }>) {
+    return async (jwt: string, query: qs.ParsedQs) => {
+        const userStr = parseJWT(jwt);
+        const queryObj = parseQuery(query);
+        const postDocs = await getUsersPosts(userStr, queryObj);
         logger.info(`Read ${postDocs.count} posts for user ${userStr}`);
         return postDocs;
     }

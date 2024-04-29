@@ -1,5 +1,5 @@
 import { AnyBulkWriteOperation, Collection, MongoClient } from "mongodb";
-import { RedditPostDoc, UserDoc } from "../models/mongo.models.js";
+import { JoinedDoc, RedditPostDoc, UserDoc } from "../models/mongo.models.js";
 import { FavoriteRequest, QueryRequest } from "../models/query.models.js";
 import { ILogger } from "../shared/logger.models.js";
 import { RedditPost } from "../shared/reddit.models.js";
@@ -21,6 +21,100 @@ export function initializeDatabase(logger: ILogger) {
         usersCollection = db.collection<UserDoc>(USERS_COLLECTION_NAME);
         logger.info('Connected to MongoDB');
     }
+}
+
+export async function getUsersPosts2(logger: ILogger, user: string, query: QueryRequest) {
+    const limit = 100;
+    const skip = (query.page - 1) * limit;
+    const searchRegex = new RegExp(query.q, 'i');
+    const result = await usersCollection.aggregate<{ posts: JoinedDoc[], total_count: { count: number }[] }>([
+        {
+            $match: {
+                _id: user
+            }
+        },
+        {
+            $unwind: "$posts"
+        },
+        {
+            $replaceWith: "$posts"
+        },
+        {
+            $set: {
+                _id: "$post_id",
+                post_id: "$$REMOVE"
+            }
+        },
+        {
+            $lookup: {
+                from: "posts",
+                localField: "_id",
+                foreignField: "_id",
+                as: "post"
+            }
+        },
+        {
+            $replaceRoot: {
+                newRoot: {
+                    $mergeObjects: [
+                        {
+                            $arrayElemAt: [
+                                "$post",
+                                0
+                            ]
+                        },
+                        "$$ROOT"
+                    ]
+                }
+            }
+        },
+        {
+            $project: {
+                post: 0
+            }
+        },
+        {
+            $match: {
+                $or: [
+                    { 'data.subreddit': { $regex: searchRegex } },
+                    { 'data.title': { $regex: searchRegex } },
+                    { 'data.selftext': { $regex: searchRegex } }
+                ], // posts matching search
+                ...(query.in ? { 'data.subreddit': { $in: query.in } } : {}), // conditional include
+                ...(query.nin ? { 'data.subreddit': { $nin: query.nin } } : {}), // conditional exclude
+            }
+        },
+        {
+            $facet: {
+                posts: [
+                    {
+                        $sort: {
+                            favorited: -1,
+                            saved_at: -1
+                        }
+                    },
+                    {
+                        $skip: skip
+                    },
+                    {
+                        $limit: limit
+                    },
+                ],
+                total_count: [
+                    {
+                        $count: "count"
+                    }
+                ]
+            }
+        }
+    ]).toArray();
+    const output = {
+        total_count: result[0].total_count[0] ? result[0].total_count[0].count : 0,
+        count: result[0].posts.length,
+        posts: result[0].posts
+    };
+    logger.info(`Found ${output.total_count} saved posts matching query for user ${user}, retrieved ${output.count} from posts collection`);
+    return output;
 }
 
 export async function getUsersPosts(logger: ILogger, user: string) {
