@@ -68,6 +68,7 @@ describe('validateBody', () => {
         const req: Partial<Request> = {
             body: {
                 a: 'hello',
+                b: undefined,
                 c: 0
             }
         };
@@ -87,6 +88,19 @@ describe('validateBody', () => {
         expect(mockLogger.warn).toHaveBeenCalledWith('Bad request body');
         expect(mockRes.status).toHaveBeenCalledWith(400);
         expect(mockRes.json).toHaveBeenCalledWith({ error: 'Bad request body' });
+    });
+    const mw3 = validateBody(mockLogger, { 'a': 'string', 'b': 'number', 'c': 'boolean', 'd': 'object' });
+    test('should succeed with request matching schema with falsey values', () => {
+        const req: Partial<Request> = {
+            body: {
+                a: '',
+                b: 0,
+                c: false,
+                d: {}
+            }
+        };
+        mw3(req as Request, mockRes as Response, mockNext);
+        expect(mockNext).toHaveBeenCalled();
     });
 });
 

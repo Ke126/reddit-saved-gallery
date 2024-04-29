@@ -33,6 +33,7 @@ export function favoritePost(logger: ILogger, favoriteToUser: (user: string, fav
     return async (jwt: string, favorite: FavoriteRequest) => {
         const userStr = parseJWT(jwt);
         await favoriteToUser(userStr, favorite);
+        logger.info(`Set post ${favorite._id} favorited=${favorite.favorited} for user ${userStr}`);
     }
 }
 

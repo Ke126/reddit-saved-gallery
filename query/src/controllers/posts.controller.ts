@@ -4,13 +4,14 @@ import 'dotenv/config';
 import qs from "qs";
 import { RedditPostDoc } from "../models/mongo.models.js";
 import { RedditPost } from "../shared/reddit.models.js";
+import { FavoriteRequest } from "../models/query.models.js";
 
 const QUERY_URL = process.env.QUERY_URL!;
 const REDDIT_URL = process.env.REDDIT_URL!;
 
 export const controller = {
     // QUERY
-    get(logger: ILogger, dbDependency: (jwt: string, query: qs.ParsedQs) => Promise<{count: number, total_count: number, posts: RedditPostDoc[]}>) {
+    get(logger: ILogger, dbDependency: (jwt: string, query: qs.ParsedQs) => Promise<{ count: number, total_count: number, posts: RedditPostDoc[] }>) {
         return async (req: ExpressRequest, res: ExpressResponse, next: NextFunction) => {
             try {
                 const posts = await dbDependency(req.headers.authorization!, req.query);
@@ -37,25 +38,18 @@ export const controller = {
     },
     // QUERY
     // REDDIT -> QUERY
-    // put(logger: ILogger, fetchDependency: (arg: Request) => Promise<Response>) {
-    //     return async (req: ExpressRequest, res: ExpressResponse, next: NextFunction) => {
-    //         try {
-    //             const response = await fetchDependency(new Request(QUERY_URL + '/posts/' + req.params.id, {
-    //                 method: "PUT",
-    //                 body: JSON.stringify(req.body),
-    //                 headers: {
-    //                     authorization: req.headers.authorization || ""
-    //                 }
-    //             }));
-    //             const json = await response.json();
-    //             logger.info(`Successful completion with status code ${response.status}`);
-    //             res.status(response.status).json(json);
-    //         }
-    //         catch (err) {
-    //             next(err);
-    //         }
-    //     }
-    // },
+    patch(logger: ILogger, dbDependency: (jwt: string, favorite: FavoriteRequest) => Promise<void>) {
+        return async (req: ExpressRequest, res: ExpressResponse, next: NextFunction) => {
+            try {
+                await dbDependency(req.headers.authorization!, { _id: req.params.id, favorited: req.body.favorited });
+                logger.info(`Successful completion with status code 200`);
+                res.status(200).json({ status: 200 });
+            }
+            catch (err) {
+                next(err);
+            }
+        }
+    },
     // // REDDIT -> QUERY
     // delete() { }
 }

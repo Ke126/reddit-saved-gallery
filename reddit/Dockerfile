@@ -14,4 +14,4 @@ COPY .env .
 RUN npm ci --production
 COPY --from=builder /usr/src/app/dist/ /usr/src/app/dist/
 EXPOSE 4002
-CMD ["npm", "run", "start"]
+CMD ["node", "dist"]

@@ -25,7 +25,7 @@ export function validateBody(logger: ILogger, schema: { [k: string]: "string" | 
             res.status(400).json({ error: 'Bad request body' });
         }
         // check body for minimum criteria
-        if (Object.keys(schema).some(key => !req.body[key] || (typeof (req.body[key]) !== schema[key]))) badResponse();
+        if (Object.keys(schema).some(key => !req.body.hasOwnProperty(key) || (typeof (req.body[key]) !== schema[key]))) badResponse();
         else next()
     }
 }

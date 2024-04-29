@@ -204,5 +204,10 @@ export async function insertToPosts(logger: ILogger, posts: RedditPost[]) {
 }
 
 export async function favoriteToUser(logger: ILogger, user: string, favoriteRequest: FavoriteRequest) {
-
+    await usersCollection.updateOne({ _id: user }, {
+        $set: {
+            'posts.$[post].favorited': favoriteRequest.favorited
+        }
+    }, { arrayFilters: [{ 'post.post_id': favoriteRequest._id }] });
+    logger.info(`Set post ${favoriteRequest._id} favorited=${favoriteRequest.favorited} for user ${user}`);
 }

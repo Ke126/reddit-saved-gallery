@@ -26,7 +26,7 @@
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf dist",
-    "start": "node dist/index.js"
+    "start": "node dist"
   },
   "devDependencies": {
     "@tsconfig/node18": "^18.2.4",

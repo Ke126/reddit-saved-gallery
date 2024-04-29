@@ -49,11 +49,11 @@ export const controller = {
     },
     // QUERY
     // REDDIT -> QUERY
-    put(logger: ILogger, fetchDependency: (arg: Request) => Promise<Response>) {
+    patch(logger: ILogger, fetchDependency: (arg: Request) => Promise<Response>) {
         return async (req: ExpressRequest, res: ExpressResponse, next: NextFunction) => {
             try {
                 const response = await fetchDependency(new Request(QUERY_URL + '/posts/' + req.params.id, {
-                    method: "PUT",
+                    method: "PATCH",
                     body: JSON.stringify(req.body),
                     headers: {
                         authorization: req.headers.authorization || "",

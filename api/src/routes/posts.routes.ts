@@ -18,4 +18,4 @@ postsRouter.get('/posts', logMiddleware, authorizationMiddleware, controller.get
 
 postsRouter.post('/posts', logMiddleware, authorizationMiddleware, validateBody(logger, { 'username': 'string' }), controller.post(logger, fetchThrice), errorMiddleware);
 
-postsRouter.put('/posts/:id', logMiddleware, authorizationMiddleware, validateBody(logger, { 'favorite': 'boolean' }), controller.put(logger, fetchThrice), errorMiddleware);
+postsRouter.patch('/posts/:id', logMiddleware, authorizationMiddleware, validateBody(logger, { 'favorited': 'boolean' }), controller.patch(logger, fetchThrice), errorMiddleware);
