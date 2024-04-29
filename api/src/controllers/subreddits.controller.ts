@@ -11,7 +11,8 @@ export const controller = {
             try {
                 const response = await fetchDependency(new Request(QUERY_URL + '/subreddits', {
                     headers: {
-                        authorization: req.headers.authorization || ""
+                        authorization: req.headers.authorization || "",
+                        'Content-Type': 'application/json'
                     },
                 }));
                 const json = await response.json();

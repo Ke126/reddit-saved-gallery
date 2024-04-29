@@ -4,7 +4,7 @@ import { FavoriteRequest, QueryRequest } from "../models/query.models.js";
 import { ILogger } from "../shared/logger.models.js";
 import { RedditPost } from "../shared/reddit.models.js";
 
-const MONGO_URL = process.env.MONGO_URL!;
+const MONGO_STRING = process.env.MONGO_STRING!;
 const DB_NAME = process.env.DB_NAME!;
 const POSTS_COLLECTION_NAME = process.env.POSTS_COLLECTION_NAME!;
 const USERS_COLLECTION_NAME = process.env.USERS_COLLECTION_NAME!;
@@ -14,7 +14,7 @@ let usersCollection: Collection<UserDoc>;
 
 export function initializeDatabase(logger: ILogger) {
     return async () => {
-        const client = new MongoClient(MONGO_URL);
+        const client = new MongoClient(MONGO_STRING);
         await client.connect();
         const db = client.db(DB_NAME);
         postsCollection = db.collection<RedditPostDoc>(POSTS_COLLECTION_NAME);
@@ -48,6 +48,10 @@ export async function getUsersPosts(logger: ILogger, user: string) {
             }
         }
     ]).toArray();
+    if (result.length === 0) {
+        logger.info(`Found 0 total saved posts for user ${user} from users collection`);
+        return []
+    }
     const postIds = result[0].post_ids;
     logger.info(`Found ${postIds.length} total saved posts for user ${user} from users collection`);
     return postIds;
@@ -57,7 +61,7 @@ export async function getPosts(logger: ILogger, posts: string[], query: QueryReq
     const limit = 100;
     const skip = (query.page - 1) * limit;
     const searchRegex = new RegExp(query.q, 'i');
-    const result = await postsCollection.aggregate<{ count: { count: number }[], posts: RedditPostDoc[] }>([
+    const result = await postsCollection.aggregate<{ posts: RedditPostDoc[], total_count: { count: number }[] }>([
         {
             $match: {
                 _id: { $in: posts }, // posts saved by user
@@ -66,8 +70,8 @@ export async function getPosts(logger: ILogger, posts: string[], query: QueryReq
                     { 'data.title': { $regex: searchRegex } },
                     { 'data.selftext': { $regex: searchRegex } }
                 ], // posts matching search
-                ...(query.include ? { 'data.subreddit': { $in: query.include } } : {}), // conditional include
-                ...(query.exclude ? { 'data.subreddit': { $nin: query.exclude } } : {}), // conditional exclude
+                ...(query.in ? { 'data.subreddit': { $in: query.in } } : {}), // conditional include
+                ...(query.nin ? { 'data.subreddit': { $nin: query.nin } } : {}), // conditional exclude
 
             }
         },
@@ -79,7 +83,7 @@ export async function getPosts(logger: ILogger, posts: string[], query: QueryReq
                             __order: {
                                 $indexOfArray: [
                                     posts,
-                                    "$key"
+                                    "$_id"
                                 ]
                             }
                         }
@@ -101,7 +105,7 @@ export async function getPosts(logger: ILogger, posts: string[], query: QueryReq
                         }
                     }
                 ],
-                count: [
+                total_count: [
                     {
                         $count: "count"
                     }
@@ -110,8 +114,8 @@ export async function getPosts(logger: ILogger, posts: string[], query: QueryReq
         }
     ]).toArray();
     const output = {
+        total_count: result[0].total_count[0] ? result[0].total_count[0].count : 0,
         count: result[0].posts.length,
-        total_count: result[0].count[0].count,
         posts: result[0].posts
     };
     logger.info(`Found ${output.total_count} saved posts matching query, retrieved ${output.count} from posts collection`);
@@ -126,6 +130,8 @@ export async function getSubreddits(logger: ILogger, posts: string[]) {
                     $in: posts
                 }
             },
+        },
+        {
             $group: {
                 _id: '$data.subreddit',
                 count: { $sum: 1 }
@@ -169,7 +175,7 @@ export async function insertToUser(logger: ILogger, user: string, timestamp: num
                                 else: {
                                     "$concatArrays": [
                                         [
-                                            { post_id: post.data.name, timestamp: timestamp-- } // dec. so lower posts are less recent
+                                            { post_id: post.data.name, saved_at: timestamp--, favorited: false } // dec. timestamp so lower posts are less recent
                                         ],
                                         "$posts"
                                     ]

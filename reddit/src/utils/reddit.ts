@@ -8,12 +8,14 @@ const REDDIT_SAVED_URL = (username: string) => `https://oauth.reddit.com/user/${
 export function mkFetchAndSend(logger: ILogger, fetchDependency: (arg: Request) => Promise<Response>) {
     return async (jwt: string, username: string) => {
         logger.info(`Started fetching and sending saved posts from Reddit API`);
+        let timestamp = Date.now();
         let after = '';
         while (after !== null) {
             logger.info(`Fetching batch of posts after=${after} from Reddit API`);
             const response = await fetchDependency(new Request(REDDIT_SAVED_URL(username) + `&after=${after}`, {
                 headers: {
-                    'Authorization': jwt
+                    'Authorization': jwt,
+                    'Content-Type': 'application/json'
                 }
             }));
             const json = await response.json() as RedditResponse;
@@ -22,10 +24,12 @@ export function mkFetchAndSend(logger: ILogger, fetchDependency: (arg: Request) 
             await fetchDependency(new Request(`${QUERY_URL}/posts`, {
                 method: 'POST',
                 headers: {
-                    'Authorization': jwt
+                    'Authorization': jwt,
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(posts)
+                body: JSON.stringify({ timestamp: timestamp, posts: posts })
             }));
+            timestamp -= json.data.dist;
             after = json.data.after;
         }
         logger.info(`Finished fetching and sending saved posts from Reddit API`);

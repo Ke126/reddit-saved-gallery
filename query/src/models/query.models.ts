@@ -1,7 +1,7 @@
 export interface QueryRequest {
     q: string,
-    include?: string[],
-    exclude?: string[],
+    in?: string[],
+    nin?: string[],
     page: number
 }
 

@@ -12,7 +12,6 @@ const logger = makeLogger("Query Service");
 const logMiddleware = logIncomingRequest(logger);
 const authorizationMiddleware = checkAuthorization(logger);
 const errorMiddleware = sendError(logger);
-const validateBodyMiddleware = validateBody(logger, { username: 'string' });
 
 const getUsersThrice = tryThriceWrapper(logger, getUsersPosts);
 const readThrice = tryThriceWrapper(logger, getPosts);
@@ -24,4 +23,4 @@ const insertPostsInjected = insertPosts(logger, insertToUsersThrice, insertToPos
 
 postsRouter.get('/posts', logMiddleware, authorizationMiddleware, controller.get(logger, readPostsInjected), errorMiddleware);
 
-postsRouter.post('/posts', logMiddleware, authorizationMiddleware, validateBodyMiddleware, controller.post(logger, insertPostsInjected), errorMiddleware);
+postsRouter.post('/posts', logMiddleware, authorizationMiddleware, validateBody(logger, { 'timestamp': 'number', 'posts': 'object' }), controller.post(logger, insertPostsInjected), errorMiddleware);

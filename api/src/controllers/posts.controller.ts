@@ -13,7 +13,8 @@ export const controller = {
             try {
                 const response = await fetchDependency(new Request(QUERY_URL + '/posts?' + qs.stringify(req.query), {
                     headers: {
-                        authorization: req.headers.authorization || ""
+                        authorization: req.headers.authorization || "",
+                        'Content-Type': 'application/json'
                     },
                 }));
                 const json = await response.json();
@@ -33,7 +34,8 @@ export const controller = {
                     method: 'POST',
                     body: JSON.stringify(req.body),
                     headers: {
-                        authorization: req.headers.authorization || ""
+                        authorization: req.headers.authorization || "",
+                        'Content-Type': 'application/json'
                     }
                 }));
                 const json = await response.json();
@@ -54,7 +56,8 @@ export const controller = {
                     method: "PUT",
                     body: JSON.stringify(req.body),
                     headers: {
-                        authorization: req.headers.authorization || ""
+                        authorization: req.headers.authorization || "",
+                        'Content-Type': 'application/json'
                     }
                 }));
                 const json = await response.json();

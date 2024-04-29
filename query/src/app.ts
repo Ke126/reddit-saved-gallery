@@ -6,7 +6,7 @@ import { subredditsRouter } from './routes/subreddits.routes.js';
 export const app = express();
 
 app.use(morgan('dev'));
-app.use(express.json());
+app.use(express.json({limit: '2mb'}));
 
 app.use('/', postsRouter);
 app.use('/', subredditsRouter);

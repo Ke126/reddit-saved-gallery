@@ -7,11 +7,10 @@ export function parseJWT(jwt: string): string {
 }
 
 export function parseQuery(query: qs.ParsedQs): QueryRequest {
-    const q = typeof query.q === "string" ? query.q : "";
-    const include = typeof query.include === "string" ? query.include.split(',') : undefined;
-    const exclude = typeof query.exclude === "string" ? query.exclude.split(',') : undefined;
-    const page = typeof query.page === "string" && Number.parseInt(query.page) ? Math.max(1, Number.parseInt(query.page)) : 1;
-
-    // if (include && exclude) return { q, page };
-    return { q, page, include, exclude }
+    return {
+        q: typeof query.q === "string" ? query.q : "",
+        in: typeof query.in === "string" ? query.in.split(',') : undefined,
+        nin: typeof query.nin === "string" ? query.nin.split(',') : undefined,
+        page: typeof query.page === "string" && Number.parseInt(query.page) ? Math.max(1, Number.parseInt(query.page)) : 1,
+    }
 }

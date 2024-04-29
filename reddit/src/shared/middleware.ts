@@ -21,7 +21,7 @@ export function checkAuthorization(logger: ILogger) {
 export function validateBody(logger: ILogger, schema: { [k: string]: "string" | "number" | "boolean" | "object" }) {
     return (req: Request, res: Response, next: NextFunction) => {
         const badResponse = () => {
-            logger.warn('Bad request body')
+            logger.warn('Bad request body');
             res.status(400).json({ error: 'Bad request body' });
         }
         // check body for minimum criteria
