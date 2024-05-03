@@ -11,7 +11,7 @@ export const controller = {
             try {
                 const posts = await dbDependency(req.headers.authorization!, req.query);
                 logger.info(`Successful completion with status code 200`);
-                res.status(200).json(posts);
+                res.status(200).json({subreddits: posts});
             }
             catch (err) {
                 next(err);

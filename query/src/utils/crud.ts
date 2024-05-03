@@ -5,7 +5,7 @@ import type { JoinedDoc, RedditPostDoc, UserDoc } from '../models/mongo.models.j
 import { parseJWT, parseQuery } from './parse.js';
 import { RedditPost } from '../shared/reddit.models.js';
 
-export function readPosts(logger: ILogger, getUsersPosts: (user: string) => Promise<string[]>, getPosts: (posts: string[], query: QueryRequest) => Promise<{ count: number, total_count: number, posts: RedditPostDoc[] }>) {
+export function readPosts(logger: ILogger, getUsersPosts: (user: string) => Promise<string[]>, getPosts: (posts: string[], query: QueryRequest) => Promise<{ count: number, total_count: number, page: number, posts: RedditPostDoc[] }>) {
     return async (jwt: string, query: qs.ParsedQs) => {
         const userStr = parseJWT(jwt);
         const queryObj = parseQuery(query);
@@ -20,12 +20,12 @@ export function readPosts(logger: ILogger, getUsersPosts: (user: string) => Prom
     }
 }
 
-export function readPosts2(logger: ILogger, getUsersPosts: (user: string, query: QueryRequest) => Promise<{ count: number, total_count: number, posts: JoinedDoc[] }>) {
+export function readPosts2(logger: ILogger, getUsersPosts: (user: string, query: QueryRequest) => Promise<{ count: number, total_count: number, page: number, posts: JoinedDoc[] }>) {
     return async (jwt: string, query: qs.ParsedQs) => {
         const userStr = parseJWT(jwt);
         const queryObj = parseQuery(query);
         const postDocs = await getUsersPosts(userStr, queryObj);
-        logger.info(`Read ${postDocs.count} posts for user ${userStr}`);
+        logger.info(`Read page=${postDocs.page} containing ${postDocs.count} posts for user ${userStr}`);
         return postDocs;
     }
 }

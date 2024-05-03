@@ -111,6 +111,7 @@ export async function getUsersPosts2(logger: ILogger, user: string, query: Query
     const output = {
         total_count: result[0].total_count[0] ? result[0].total_count[0].count : 0,
         count: result[0].posts.length,
+        page: query.page,
         posts: result[0].posts
     };
     logger.info(`Found ${output.total_count} saved posts matching query for user ${user}, retrieved ${output.count} from posts collection`);
@@ -210,6 +211,7 @@ export async function getPosts(logger: ILogger, posts: string[], query: QueryReq
     const output = {
         total_count: result[0].total_count[0] ? result[0].total_count[0].count : 0,
         count: result[0].posts.length,
+        page: query.page,
         posts: result[0].posts
     };
     logger.info(`Found ${output.total_count} saved posts matching query, retrieved ${output.count} from posts collection`);
