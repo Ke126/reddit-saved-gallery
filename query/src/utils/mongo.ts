@@ -26,7 +26,7 @@ export function initializeDatabase(logger: ILogger) {
 export async function getUsersPosts2(logger: ILogger, user: string, query: QueryRequest) {
     const limit = 100;
     const skip = (query.page - 1) * limit;
-    const searchRegex = new RegExp(query.q, 'i');
+    const searchRegex = new RegExp(query.q.replace(/([()[{*+.$^\\|?])/g, '\\$1'), 'i');
     const result = await usersCollection.aggregate<{ posts: JoinedDoc[], total_count: { count: number }[] }>([
         {
             $match: {
@@ -75,11 +75,14 @@ export async function getUsersPosts2(logger: ILogger, user: string, query: Query
         },
         {
             $match: {
-                $or: [
-                    { 'data.subreddit': { $regex: searchRegex } },
-                    { 'data.title': { $regex: searchRegex } },
-                    { 'data.selftext': { $regex: searchRegex } }
-                ], // posts matching search
+                ...(query.q.length > 0 ? {
+                    $or: [
+                        { 'data.subreddit': { $regex: searchRegex } },
+                        { 'data.title': { $regex: searchRegex } },
+                        { 'data.selftext': { $regex: searchRegex } },
+                        { 'data.author': { $regex: searchRegex } }
+                    ],
+                } : {}), // search
                 ...(query.in ? { 'data.subreddit': { $in: query.in } } : {}), // conditional include
                 ...(query.nin ? { 'data.subreddit': { $nin: query.nin } } : {}), // conditional exclude
             }
