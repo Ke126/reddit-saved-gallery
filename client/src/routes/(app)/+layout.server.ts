@@ -1,24 +1,24 @@
 import { redirect } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
+import type { GetSubredditsResponseBody } from '$lib';
 
-let subreddits: { subreddit: string, count: number, checked: boolean }[] = [];
-let next = 0;
-
-export const load: LayoutServerLoad = ({ locals }) => {
-    console.log("/ layout load");
-    if (!locals.user) {
-        console.log("Not authenticated");
-        redirect(301, '/login');
-    };
-    ++next;
-    const subreddit = {
-        subreddit: `sub${next}`,
-        count: next,
-        checked: true
-    }
-    subreddits.push(subreddit);
-    return {
-        subreddits: subreddits
-    }
-    // fetch subreddits
-}
+export const load: LayoutServerLoad = async ({ locals }) => {
+	console.log('LOAD / (layout)');
+	if (!locals.user) {
+		console.log('Not authenticated');
+		redirect(301, '/login');
+	}
+	const response = await fetch('http://localhost:4000/subreddits', {
+		headers: {
+			authorization: `bearer ${locals.user.access_token}`
+		}
+	});
+	const json = (await response.json()) as GetSubredditsResponseBody;
+	return {
+		subreddits: json.subreddits.map((elem) => ({ checked: true, ...elem })),
+		user: {
+			username: locals.user.username,
+			icon_img: locals.user.icon_img,
+		}
+	};
+};

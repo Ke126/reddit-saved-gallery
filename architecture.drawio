@@ -1,41 +1,128 @@
 <mxfile host="65bd71144e">
     <diagram id="gEANifbv4oHSxGjnwL-O" name="Page-1">
-        <mxGraphModel dx="1134" dy="558" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="1134" dy="502" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="7" value="(1)" style="edgeStyle=none;html=1;" edge="1" parent="1" source="2" target="3">
+                <mxCell id="7" value="(1)" style="edgeStyle=none;html=1;" parent="1" source="2" target="3" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="2" value="Frontend (web)&lt;br&gt;e.g. Rest Client&lt;br&gt;- Post posts" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="2" value="Frontend (web)&lt;br&gt;e.g. Rest Client&lt;br&gt;- Post posts" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="40" y="120" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="8" value="(2) POST" style="edgeStyle=none;html=1;" edge="1" parent="1">
+                <mxCell id="8" value="(2) POST" style="edgeStyle=none;html=1;" parent="1" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <mxPoint x="402" y="150" as="sourcePoint"/>
                         <mxPoint x="522" y="150" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="3" value="API" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="3" value="API" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="280" y="120" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="10" value="Get 100" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;" edge="1" parent="1" source="4" target="6">
+                <mxCell id="10" value="Get 100" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;" parent="1" source="4" target="6" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="12" value="Post: Update 100" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="4" target="5">
+                <mxCell id="12" value="Post: Update 100" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="4" target="5" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="4" value="Reddit Microservice" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="4" value="Reddit Microservice" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="520" y="120" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="5" value="Query Microservice" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="5" value="Query Microservice" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="520" y="260" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="11" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="1" source="6" target="4">
+                <mxCell id="11" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="6" target="4" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="6" value="Reddit" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="6" value="Reddit" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="800" y="120" width="120" height="60" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram id="8nVED77fOn_kued3k-Fv" name="Page-2">
+        <mxGraphModel dx="1534" dy="902" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="wq-FPEXB363OUOLzKDDp-1" value="(1)" style="edgeStyle=none;html=1;" parent="1" source="wq-FPEXB363OUOLzKDDp-2" target="wq-FPEXB363OUOLzKDDp-4" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="wq-FPEXB363OUOLzKDDp-11" value="/authorize" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="wq-FPEXB363OUOLzKDDp-2" target="wq-FPEXB363OUOLzKDDp-10" edge="1">
+                    <mxGeometry x="0.2911" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="wq-FPEXB363OUOLzKDDp-21" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="wq-FPEXB363OUOLzKDDp-2" target="wq-FPEXB363OUOLzKDDp-16" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="wq-FPEXB363OUOLzKDDp-2" value="Frontend (web)&lt;br&gt;&lt;br&gt;share-secret" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="120" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="wq-FPEXB363OUOLzKDDp-3" value="(2) POST" style="edgeStyle=none;html=1;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="402" y="150" as="sourcePoint"/>
+                        <mxPoint x="522" y="150" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="wq-FPEXB363OUOLzKDDp-4" value="API&lt;br&gt;&lt;br&gt;share-secret" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="280" y="120" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="wq-FPEXB363OUOLzKDDp-6" value="Post: Update 100" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="wq-FPEXB363OUOLzKDDp-7" target="wq-FPEXB363OUOLzKDDp-8" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="wq-FPEXB363OUOLzKDDp-7" value="Reddit Microservice&lt;br&gt;&lt;br&gt;share-secret" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="520" y="120" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="wq-FPEXB363OUOLzKDDp-24" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="wq-FPEXB363OUOLzKDDp-8" target="wq-FPEXB363OUOLzKDDp-23" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="wq-FPEXB363OUOLzKDDp-8" value="Query Microservice&lt;br&gt;&lt;br&gt;share-secret" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="520" y="270" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="wq-FPEXB363OUOLzKDDp-12" value="tokens (rt + at)" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" parent="1" source="wq-FPEXB363OUOLzKDDp-10" target="wq-FPEXB363OUOLzKDDp-2" edge="1">
+                    <mxGeometry x="0.3443" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="wq-FPEXB363OUOLzKDDp-22" value="Data" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="wq-FPEXB363OUOLzKDDp-10" target="wq-FPEXB363OUOLzKDDp-7" edge="1">
+                    <mxGeometry x="0.2571" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="wq-FPEXB363OUOLzKDDp-10" value="Reddit" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="280" y="-80" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="wq-FPEXB363OUOLzKDDp-20" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="wq-FPEXB363OUOLzKDDp-16" target="wq-FPEXB363OUOLzKDDp-2" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="wq-FPEXB363OUOLzKDDp-16" value="Browser" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="-200" y="120" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="wq-FPEXB363OUOLzKDDp-17" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.145;entryY=0;entryDx=0;entryDy=4.35;entryPerimeter=0;" parent="1" target="wq-FPEXB363OUOLzKDDp-19" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="-170" y="180" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="wq-FPEXB363OUOLzKDDp-18" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" parent="1" source="wq-FPEXB363OUOLzKDDp-19" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="-110" y="180" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="wq-FPEXB363OUOLzKDDp-19" value="Cookie Jar&lt;br&gt;- auth (encrypted with the share-secret)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" parent="1" vertex="1">
+                    <mxGeometry x="-200" y="240" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="wq-FPEXB363OUOLzKDDp-23" value="MongoDB" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" parent="1" vertex="1">
+                    <mxGeometry x="730" y="260" width="60" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="wq-FPEXB363OUOLzKDDp-25" value="Cookie content:&lt;br&gt;- username/id&lt;br&gt;- access token&lt;br&gt;- refresh token&lt;br&gt;- exp time" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="-70" y="240" width="110" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="wq-FPEXB363OUOLzKDDp-26" value="Auth header content:&lt;br&gt;- encrypted access token&lt;br&gt;&lt;br&gt;* Use authenticated encryption&lt;br&gt;- encrypted data&lt;br&gt;- encrypted hash value of the data" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="170" y="190" width="200" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="wq-FPEXB363OUOLzKDDp-28" value="Actor" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
+                    <mxGeometry x="-260" y="120" width="30" height="60" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>

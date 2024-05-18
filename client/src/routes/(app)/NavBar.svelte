@@ -3,31 +3,31 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { afterNavigate } from '$app/navigation';
-	// export let data;
 
 	let isLoading = false;
-	// let query = '';
-	
-	$: subreddits = $page.data.subreddits;
-	let query = $page.url.searchParams.get("q") || '';
+
+	let subreddits = $page.data.subreddits || [];
+	let query = $page.url.searchParams.get('q') || '';
+
 
 	afterNavigate(() => {
-		query = $page.url.searchParams.get("q") || '';
-		const include = $page.url.searchParams.get("include");
-		const exclude = $page.url.searchParams.get("exclude");
-		if (include || include === "") {
+		query = $page.url.searchParams.get('q') || '';
+		const include = $page.url.searchParams.get('in');
+		const exclude = $page.url.searchParams.get('nin');
+		if (include || include === '') {
 			const subs = include.split(',');
-			subreddits = subreddits.map(subreddit => {
-				subreddit.checked = (subs.includes(subreddit.subreddit));
+			subreddits = subreddits.map((subreddit) => {
+				subreddit.checked = subs.includes(subreddit.subreddit);
 				return subreddit;
 			});
-		}
-		else if (exclude || exclude === "") {
+		} else if (exclude || exclude === '') {
 			const subs = exclude.split(',');
-			subreddits = subreddits.map(subreddit => {
-				subreddit.checked = !(subs.includes(subreddit.subreddit));
+			subreddits = subreddits.map((subreddit) => {
+				subreddit.checked = !subs.includes(subreddit.subreddit);
 				return subreddit;
 			});
+		} else {
+			setChecks(true);
 		}
 	});
 
@@ -39,100 +39,154 @@
 	}
 
 	function makeQuery() {
-		const inclusiveQuery = subreddits
-			.filter((subreddit) => subreddit.checked)
+		const q = query;
+		const numChecked = subreddits.filter((subreddit) => subreddit.checked).length;
+		const isInSearchBool = numChecked < subreddits.length - numChecked;
+		const type = isInSearchBool ? 'in' : 'nin';
+		const subredditsList = subreddits
+			.filter((subreddit) => (isInSearchBool ? subreddit.checked : !subreddit.checked))
 			.map((subreddit) => subreddit.subreddit)
 			.join(',');
-		const exclusiveQuery = subreddits
-			.filter((subreddit) => !subreddit.checked)
-			.map((subreddit) => subreddit.subreddit)
-			.join(',');
-		// always query for the shorter option
-		const type = inclusiveQuery.length > exclusiveQuery.length ? 'exclude' : 'include';
-		const subredditQuery =
-			inclusiveQuery.length > exclusiveQuery.length ? exclusiveQuery : inclusiveQuery;
-		const queryString = `/?q=${query}&${type}=${subredditQuery}`;
-		return queryString;
+		const url = new URLSearchParams();
+		if (q.length !== 0) url.append('q', q);
+		if (!(type === 'nin' && subredditsList.length === 0)) url.append(type, subredditsList);
+		return '/?' + url.toString();
 	}
 </script>
 
-<nav class="navbar navbar-expand-lg bg-secondary">
-	<div class="container-fluid">
-		<div class="navbar-brand">Reddit Saved Gallery</div>
-		<form class="d-flex">
-			<input bind:value={query} class="form-control me-2" type="search" placeholder="Search" />
-			<button
-				class="btn btn-primary"
-				type="button"
-				data-bs-toggle="collapse"
-				data-bs-target="#filterPanel"
-				aria-expanded="false"
-				aria-controls="filterPanel"
-			>
-				Filters
-			</button>
-			<button
-				on:click|preventDefault={() => goto(makeQuery())}
-				class="btn btn-success"
-				type="submit">Search</button
-			>
-		</form>
-		<div class="navbar-nav ms-auto mb-2 mb-lg-0">
-			<form
-				method="POST"
-				action="?/refresh"
-				use:enhance={() => {
-					isLoading = true;
-					return async ({ update }) => {
-						await update();
-						isLoading = false;
-					};
-				}}
-			>
-				<button class="btn btn-warning" type="submit" disabled={isLoading}>
-					{#if isLoading}
-						<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-						Loading...
-					{:else}
-						Refresh from Reddit
-					{/if}
-				</button>
-			</form>
-			<form
-				method="POST"
-				action="?/logout"
-			>
-				<button class="btn btn-warning" type="submit">
-					Logout
-				</button>
-			</form>
+<nav class="navbar navbar-expand-lg border-bottom">
+	<div class="container">
+		<a class="navbar-brand display-1" href="/">Reddit Saved Gallery</a>
+		<button
+			class="navbar-toggler"
+			type="button"
+			data-bs-toggle="collapse"
+			data-bs-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent"
+			aria-expanded="false"
+			aria-label="Toggle navigation"
+		>
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				<li class="nav-item me-2">
+					<form>
+						<div class="input-group">
+							<input
+								bind:value={query}
+								type="search"
+								class="form-control border-light"
+								name="q"
+								placeholder="Search"
+							/>
+							<button
+								on:click|preventDefault={() => goto(makeQuery())}
+								class="btn btn-outline-success"
+								type="submit"><i class="bi bi-search"></i></button
+							>
+						</div>
+					</form>
+				</li>
+				<li class="nav-item">
+					<button
+						class="btn btn-outline-light"
+						type="button"
+						data-bs-toggle="collapse"
+						data-bs-target="#filterPanel"
+						aria-expanded="false"
+						aria-controls="filterPanel"
+					>
+						Filters <i class="bi bi-funnel"></i>
+					</button>
+				</li>
+			</ul>
 		</div>
+		<form
+			class="me-2"
+			method="POST"
+			action="?/pull"
+			use:enhance={() => {
+				isLoading = true;
+				return async ({ update }) => {
+					await update();
+					isLoading = false;
+				};
+			}}
+		>
+			<button class="btn btn-outline-light" type="submit" disabled={isLoading}>
+				{#if isLoading}
+					<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+					Loading...
+				{:else}
+					Pull posts from <i class="bi bi-reddit" style="color: #FF5700;"></i>
+				{/if}
+			</button>
+		</form>
+		<form method="POST" action="?/logout" class="me-2">
+			<button class="btn btn-outline-danger" type="submit">Logout</button>
+		</form>
+		<a href="#" data-bs-toggle="dropdown" aria-expanded="false">
+			<span
+				class="badge d-flex align-items-center p-1 pe-2 text-dark-emphasis bg-dark-subtle border border-dark-subtle rounded-pill"
+			>
+				<img
+					class="rounded-circle me-1"
+					width="24"
+					height="24"
+					src={$page.data.user?.icon_img}
+					alt=""
+				/>u/{$page.data.user?.username}
+			</span>
+		</a>
+		<ul class="dropdown-menu dropdown-menu-end text-small" style="">
+			<li><a class="dropdown-item" href="#">New project...</a></li>
+			<li><a class="dropdown-item" href="#">Settings</a></li>
+			<li><a class="dropdown-item" href="#">Profile</a></li>
+			<li><hr class="dropdown-divider" /></li>
+			<li><a class="dropdown-item" href="#">Sign out</a></li>
+		</ul>
 	</div>
 </nav>
 
-<div class="collapse" id="filterPanel">
-	<div class="card card-body">
-		<form>
-			<button on:click|preventDefault={() => setChecks(true)} class="btn btn-primary" type="submit"
-				>Check all
-			</button>
-			<button on:click|preventDefault={() => setChecks(false)} class="btn btn-primary" type="submit"
-				>Uncheck all
-			</button>
-			{#each subreddits as subreddit (subreddit.subreddit)}
-				<div class="form-check">
-					<input
-						type="checkbox"
-						bind:checked={subreddit.checked}
-						class="form-check-input"
-						id={subreddit.subreddit}
-					/>
-					<label class="form-check-label" for={subreddit.subreddit}>
-						{subreddit.subreddit}
-					</label>
-					<span class="badge bg-primary rounded-pill">{subreddit.count}</span>
-				</div>
-			{/each}
+<div class="collapse border-bottom" id="filterPanel">
+	<div class="container">
+		<form class="mt-2">
+			<div class="mb-2">
+				<button
+					on:click|preventDefault={() => setChecks(true)}
+					class="btn btn-outline-primary"
+					type="button"
+					>Check all
+				</button>
+				<button
+					on:click|preventDefault={() => setChecks(false)}
+					class="btn btn-outline-danger"
+					type="button"
+					>Uncheck all
+				</button>
+			</div>
+			<h5>Subreddits ({subreddits.length})</h5>
+			<div class="row row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1">
+				{#each subreddits as subreddit (subreddit.subreddit)}
+				<div class="col">
+					<div class="form-check" title="r/{subreddit.subreddit} ({subreddit.count})">
+						<input
+							type="checkbox"
+							bind:checked={subreddit.checked}
+							class="form-check-input"
+							id={subreddit.subreddit}
+						/>
+						<label class="form-check-label" for={subreddit.subreddit}>
+							r/{subreddit.subreddit}
+						</label>
+						<span class="badge bg-dark-subtle border border-dark-subtle rounded-pill">
+							{subreddit.count}
+						</span>
+					</div>
+					</div>
+				{/each}
+			</div>
 		</form>
 	</div>
 </div>

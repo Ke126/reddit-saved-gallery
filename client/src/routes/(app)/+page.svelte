@@ -5,7 +5,5 @@
 </script>
 
 <NavBar></NavBar>
-<br />
 <PostList></PostList>
-<br />
 <Pagination></Pagination>
