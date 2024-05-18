@@ -11,72 +11,72 @@ export interface GetSubredditsResponseBody {
 }
 
 interface BaseData {
-	created: number,
-	author: string,
-	score: number,
-	subreddit: string,
+	created: number;
+	author: string;
+	score: number;
+	subreddit: string;
 }
 
 interface Comment extends BaseData {
-	body: string,
-	link_author: string,
-	link_title: string,
+	body: string;
+	link_author: string;
+	link_title: string;
 
 	// optional
 	media_metadata?: {
 		[media_id: string]: {
 			s: {
-				u: string
-			}
-		}
-	},
+				u: string;
+			};
+		};
+	};
 }
 
 interface Link extends BaseData {
-	domain: string,
-	num_comments: number,
-	permalink: string,
-	selftext: string,
-	thumbnail: string,
-	title: string,
-	url: string,
+	domain: string;
+	num_comments: number;
+	permalink: string;
+	selftext: string;
+	thumbnail: string;
+	title: string;
+	url: string;
 
 	// optional
 	preview?: {
 		images: {
 			source: {
-				url: string
-			}
-		}[]
-	},
+				url: string;
+			};
+		}[];
+	};
 	media_metadata?: {
 		[media_id: string]: {
 			s: {
-				u: string
-			}
-		}
-	},
+				u: string;
+			};
+		};
+	};
 	gallery_data?: {
 		items: {
-			media_id: string
-		}[]
-	}
+			media_id: string;
+		}[];
+	};
 }
 
 interface BaseThing {
-	kind: 't1' | 't3',
-	_id: string,
-	favorited: boolean,
+	kind: 't1' | 't3';
+	_id: string;
+	favorited: boolean;
 }
 
 interface CommentThing extends BaseThing {
-	kind: 't1',
-	data: Comment
+	kind: 't1';
+	data: Comment;
 }
 
 interface LinkThing extends BaseThing {
-	kind: 't3',
-	data: Link
+	kind: 't3';
+	data: Link;
 }
 
 export type RedditThing = CommentThing | LinkThing;
@@ -95,7 +95,6 @@ export interface RedditPost {
 	score: number;
 	created: number;
 }
-
 
 export interface SubredditIn {
 	subreddit: string;

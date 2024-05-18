@@ -18,7 +18,7 @@ export const load: LayoutServerLoad = async ({ locals }) => {
 		subreddits: json.subreddits.map((elem) => ({ checked: true, ...elem })),
 		user: {
 			username: locals.user.username,
-			icon_img: locals.user.icon_img,
+			icon_img: locals.user.icon_img
 		}
 	};
 };

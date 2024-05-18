@@ -72,7 +72,7 @@
 						method="POST"
 						action="?/favorite"
 						use:enhance={() => {
-							return () => {};
+							return ({ update }) => update({ reset: false, invalidateAll: false });
 						}}
 					>
 						<input type="hidden" name="_id" value={post._id} />
@@ -83,9 +83,13 @@
 							on:click={() => (post.favorited = !post.favorited)}
 						>
 							{#if post.favorited}
-								<i class="bi bi-pin-angle-fill" style="color: lime; font-size: 1.5rem"></i>
+								<i
+									class="bi bi-pin-angle-fill"
+									style="color: lime; font-size: 1.25rem"
+									title="Unpin"
+								></i>
 							{:else}
-								<i class="bi bi-pin-angle" style="font-size: 1.5rem"></i>
+								<i class="bi bi-pin-angle" style="font-size: 1.25rem" title="Pin"></i>
 							{/if}
 						</button>
 					</form>

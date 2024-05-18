@@ -15,16 +15,16 @@ declare global {
 				total_count: number;
 				count: number;
 				page: number;
-				posts: RedditPost[]
+				posts: RedditPost[];
 			};
 			user?: {
 				username: string;
-				icon_img: string
-			}
+				icon_img: string;
+			};
 		}
 		// interface PageState {}
 		// interface Platform {}
 	}
 }
 
-export { };
+export {};

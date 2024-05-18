@@ -31,9 +31,9 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 	};
 };
 
-const FORMATS = ['png', 'jpg', 'jpeg', 'gif'].map(format => new RegExp(`\\.${format}`, 'i'));
+const FORMATS = ['png', 'jpg', 'jpeg', 'gif'].map((format) => new RegExp(`\\.${format}`, 'i'));
 function isImageLink(input: string): boolean {
-	return FORMATS.some(format => format.test(input));
+	return FORMATS.some((format) => format.test(input));
 }
 
 function formatter(post: RedditThing): RedditPost {
@@ -69,7 +69,7 @@ function formatter(post: RedditThing): RedditPost {
 		score: post.data.score,
 		created: post.data.created
 	};
-	// links only 
+	// links only
 	// url is already an image
 	if (post.data.domain === 'i.redd.it' || isImageLink(post.data.url)) {
 		obj.media_url = post.data.url;
@@ -85,8 +85,7 @@ function formatter(post: RedditThing): RedditPost {
 		if (post.data.gallery_data && post.data.gallery_data.items.length > 0) {
 			const firstPage = post.data.gallery_data.items[0].media_id;
 			obj.media_url = post.data.media_metadata[firstPage].s.u;
-		}
-		else {
+		} else {
 			const firstPage = Object.keys(post.data.media_metadata)[0];
 			obj.media_url = post.data.media_metadata[firstPage].s.u;
 		}
@@ -102,7 +101,11 @@ function formatter(post: RedditThing): RedditPost {
 
 export const actions = {
 	pull: async ({ locals }) => {
-		console.log('Form submit');
+		console.log('Pull action');
+		if (!locals.user) {
+			console.log('Not authenticated');
+			redirect(301, '/login');
+		}
 		const response = await fetch('http://localhost:4000/posts', {
 			method: 'POST',
 			body: JSON.stringify({
@@ -118,6 +121,11 @@ export const actions = {
 		redirect(301, '/');
 	},
 	favorite: async ({ locals, request }) => {
+		console.log('Favorite action');
+		if (!locals.user) {
+			console.log('Not authenticated');
+			redirect(301, '/login');
+		}
 		const form = await request.formData();
 		await fetch(`http://localhost:4000/posts/${form.get('_id')}`, {
 			method: 'PATCH',
@@ -129,9 +137,9 @@ export const actions = {
 				favorited: form.get('favorited') === 'on'
 			})
 		});
-		console.log('favorited');
 	},
 	logout: async ({ locals, cookies }) => {
+		console.log('Logout action');
 		const response = await fetch('https://www.reddit.com/api/v1/revoke_token', {
 			method: 'POST',
 			body: `token=${locals.user?.refresh_token}&token_type_hint=refresh_token`,

@@ -36,7 +36,7 @@
 						}}
 					>
 						<input type="hidden" name="_id" value="12345" />
-						<input hidden type="checkbox" name="favorited" bind:checked={checked} />
+						<input hidden type="checkbox" name="favorited" bind:checked />
 						<button
 							class="p-0 btn btn-primary border-0"
 							type="submit"
@@ -74,7 +74,6 @@
 
 <style>
 	.icon {
-		
 	}
 	.star-checkbox {
 		visibility: hidden;

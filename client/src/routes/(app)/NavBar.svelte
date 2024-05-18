@@ -9,7 +9,6 @@
 	let subreddits = $page.data.subreddits || [];
 	let query = $page.url.searchParams.get('q') || '';
 
-
 	afterNavigate(() => {
 		query = $page.url.searchParams.get('q') || '';
 		const include = $page.url.searchParams.get('in');
@@ -169,21 +168,21 @@
 			<h5>Subreddits ({subreddits.length})</h5>
 			<div class="row row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1">
 				{#each subreddits as subreddit (subreddit.subreddit)}
-				<div class="col">
-					<div class="form-check" title="r/{subreddit.subreddit} ({subreddit.count})">
-						<input
-							type="checkbox"
-							bind:checked={subreddit.checked}
-							class="form-check-input"
-							id={subreddit.subreddit}
-						/>
-						<label class="form-check-label" for={subreddit.subreddit}>
-							r/{subreddit.subreddit}
-						</label>
-						<span class="badge bg-dark-subtle border border-dark-subtle rounded-pill">
-							{subreddit.count}
-						</span>
-					</div>
+					<div class="col">
+						<div class="form-check" title="r/{subreddit.subreddit} ({subreddit.count})">
+							<input
+								type="checkbox"
+								bind:checked={subreddit.checked}
+								class="form-check-input"
+								id={subreddit.subreddit}
+							/>
+							<label class="form-check-label" for={subreddit.subreddit}>
+								r/{subreddit.subreddit}
+							</label>
+							<span class="badge bg-dark-subtle border border-dark-subtle rounded-pill">
+								{subreddit.count}
+							</span>
+						</div>
 					</div>
 				{/each}
 			</div>
