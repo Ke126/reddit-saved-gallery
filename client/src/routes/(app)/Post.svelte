@@ -70,19 +70,19 @@
 				<div class="col-auto d-flex align-items-center">
 					<form
 						method="POST"
-						action="?/favorite"
+						action="?/pin"
 						use:enhance={() => {
 							return ({ update }) => update({ reset: false, invalidateAll: false });
 						}}
 					>
 						<input type="hidden" name="_id" value={post._id} />
-						<input hidden type="checkbox" name="favorited" bind:checked={post.favorited} />
+						<input hidden type="checkbox" name="pinned" bind:checked={post.pinned} />
 						<button
 							class="p-0 btn border-0"
 							type="submit"
-							on:click={() => (post.favorited = !post.favorited)}
+							on:click={() => (post.pinned = !post.pinned)}
 						>
-							{#if post.favorited}
+							{#if post.pinned}
 								<i
 									class="bi bi-pin-angle-fill"
 									style="color: lime; font-size: 1.25rem"

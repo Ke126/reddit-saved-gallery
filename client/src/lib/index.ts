@@ -66,7 +66,7 @@ interface Link extends BaseData {
 interface BaseThing {
 	kind: 't1' | 't3';
 	_id: string;
-	favorited: boolean;
+	pinned: boolean;
 }
 
 interface CommentThing extends BaseThing {
@@ -83,7 +83,7 @@ export type RedditThing = CommentThing | LinkThing;
 
 export interface RedditPost {
 	_id: string;
-	favorited: boolean;
+	pinned: boolean;
 	subreddit: string;
 	media_url: string | undefined;
 	title: string;

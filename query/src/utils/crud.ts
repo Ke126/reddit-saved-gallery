@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import type { ILogger } from '../shared/logger.models.js';
-import type { FavoriteRequest, QueryRequest } from '../models/query.models.js';
+import type { PinRequest, QueryRequest } from '../models/query.models.js';
 import type { JoinedDoc, RedditPostDoc, UserDoc } from '../models/mongo.models.js';
 import { parseJWT, parseQuery } from './parse.js';
 import { RedditPost } from '../shared/reddit.models.js';
@@ -39,11 +39,11 @@ export function insertPosts(logger: ILogger, insertToUser: (user: string, timest
     }
 }
 
-export function favoritePost(logger: ILogger, favoriteToUser: (user: string, favorite: FavoriteRequest) => Promise<void>) {
-    return async (jwt: string, favorite: FavoriteRequest) => {
+export function pinPost(logger: ILogger, pinToUser: (user: string, pin: PinRequest) => Promise<void>) {
+    return async (jwt: string, pin: PinRequest) => {
         const userStr = parseJWT(jwt);
-        await favoriteToUser(userStr, favorite);
-        logger.info(`Set post ${favorite._id} favorited=${favorite.favorited} for user ${userStr}`);
+        await pinToUser(userStr, pin);
+        logger.info(`Set post ${pin._id} pinned=${pin.pinned} for user ${userStr}`);
     }
 }
 

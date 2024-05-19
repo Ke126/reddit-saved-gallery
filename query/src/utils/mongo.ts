@@ -1,6 +1,6 @@
 import { AnyBulkWriteOperation, Collection, MongoClient } from "mongodb";
 import { JoinedDoc, RedditPostDoc, UserDoc } from "../models/mongo.models.js";
-import { FavoriteRequest, QueryRequest } from "../models/query.models.js";
+import { PinRequest, QueryRequest } from "../models/query.models.js";
 import { ILogger } from "../shared/logger.models.js";
 import { RedditPost } from "../shared/reddit.models.js";
 
@@ -92,7 +92,7 @@ export async function getUsersPosts2(logger: ILogger, user: string, query: Query
                 posts: [
                     {
                         $sort: {
-                            favorited: -1,
+                            pinned: -1,
                             saved_at: -1
                         }
                     },
@@ -133,7 +133,7 @@ export async function getUsersPosts(logger: ILogger, user: string) {
         },
         {
             $sort: {
-                "posts.favorited": -1,
+                "posts.pinned": -1,
                 "posts.saved_at": -1
             }
         },
@@ -274,7 +274,7 @@ export async function insertToUser(logger: ILogger, user: string, timestamp: num
                                 else: {
                                     "$concatArrays": [
                                         [
-                                            { post_id: post.data.name, saved_at: timestamp--, favorited: false } // dec. timestamp so lower posts are less recent
+                                            { post_id: post.data.name, saved_at: timestamp--, pinned: false } // dec. timestamp so lower posts are less recent
                                         ],
                                         "$posts"
                                     ]
@@ -302,11 +302,11 @@ export async function insertToPosts(logger: ILogger, posts: RedditPost[]) {
     logger.info(`Upserted ${posts.length} posts in posts collection`);
 }
 
-export async function favoriteToUser(logger: ILogger, user: string, favoriteRequest: FavoriteRequest) {
+export async function pinToUser(logger: ILogger, user: string, pinRequest: PinRequest) {
     await usersCollection.updateOne({ _id: user }, {
         $set: {
-            'posts.$[post].favorited': favoriteRequest.favorited
+            'posts.$[post].pinned': pinRequest.pinned
         }
-    }, { arrayFilters: [{ 'post.post_id': favoriteRequest._id }] });
-    logger.info(`Set post ${favoriteRequest._id} favorited=${favoriteRequest.favorited} for user ${user}`);
+    }, { arrayFilters: [{ 'post.post_id': pinRequest._id }] });
+    logger.info(`Set post ${pinRequest._id} pinned=${pinRequest.pinned} for user ${user}`);
 }

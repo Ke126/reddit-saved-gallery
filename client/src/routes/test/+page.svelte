@@ -30,13 +30,13 @@
 				<div class="col-auto d-flex align-items-center">
 					<form
 						method="POST"
-						action="?/favorite"
+						action="?/pin"
 						use:enhance={() => {
 							return () => {};
 						}}
 					>
 						<input type="hidden" name="_id" value="12345" />
-						<input hidden type="checkbox" name="favorited" bind:checked />
+						<input hidden type="checkbox" name="pinned" bind:checked />
 						<button
 							class="p-0 btn btn-primary border-0"
 							type="submit"

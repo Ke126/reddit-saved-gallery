@@ -41,7 +41,7 @@ function formatter(post: RedditThing): RedditPost {
 	if (post.kind === 't1') {
 		const obj: RedditPost = {
 			_id: post._id,
-			favorited: post.favorited,
+			pinned: post.pinned,
 			subreddit: post.data.subreddit,
 			title: post.data.link_title,
 			selftext: post.data.body,
@@ -57,7 +57,7 @@ function formatter(post: RedditThing): RedditPost {
 	}
 	const obj: RedditPost = {
 		_id: post._id,
-		favorited: post.favorited,
+		pinned: post.pinned,
 		subreddit: post.data.subreddit,
 		title: post.data.title,
 		selftext: post.data.selftext,
@@ -120,8 +120,8 @@ export const actions = {
 		console.log('Form done');
 		redirect(301, '/');
 	},
-	favorite: async ({ locals, request }) => {
-		console.log('Favorite action');
+	pin: async ({ locals, request }) => {
+		console.log('Pin action');
 		if (!locals.user) {
 			console.log('Not authenticated');
 			redirect(301, '/login');
@@ -134,7 +134,7 @@ export const actions = {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				favorited: form.get('favorited') === 'on'
+				pinned: form.get('pinned') === 'on'
 			})
 		});
 	},

@@ -5,7 +5,7 @@ export interface QueryRequest {
     page: number
 }
 
-export interface FavoriteRequest {
+export interface PinRequest {
     _id: string,
-    favorited: boolean
+    pinned: boolean
 }

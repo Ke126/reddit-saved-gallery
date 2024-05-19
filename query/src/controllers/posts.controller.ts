@@ -4,7 +4,7 @@ import 'dotenv/config';
 import qs from "qs";
 import { RedditPostDoc } from "../models/mongo.models.js";
 import { RedditPost } from "../shared/reddit.models.js";
-import { FavoriteRequest } from "../models/query.models.js";
+import { PinRequest } from "../models/query.models.js";
 
 const QUERY_URL = process.env.QUERY_URL!;
 const REDDIT_URL = process.env.REDDIT_URL!;
@@ -38,10 +38,10 @@ export const controller = {
     },
     // QUERY
     // REDDIT -> QUERY
-    patch(logger: ILogger, dbDependency: (jwt: string, favorite: FavoriteRequest) => Promise<void>) {
+    patch(logger: ILogger, dbDependency: (jwt: string, pin: PinRequest) => Promise<void>) {
         return async (req: ExpressRequest, res: ExpressResponse, next: NextFunction) => {
             try {
-                await dbDependency(req.headers.authorization!, { _id: req.params.id, favorited: req.body.favorited });
+                await dbDependency(req.headers.authorization!, { _id: req.params.id, pinned: req.body.pinned });
                 logger.info(`Successful completion with status code 200`);
                 res.status(200).json({ status: 200 });
             }

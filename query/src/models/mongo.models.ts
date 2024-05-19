@@ -7,7 +7,7 @@ export interface RedditPostDoc extends RedditPost {
 interface NestedRedditPostDoc {
     post_id: string,
     saved_at: number,
-    favorited: boolean
+    pinned: boolean
 }
 
 export interface UserDoc {
@@ -16,6 +16,6 @@ export interface UserDoc {
 }
 
 export interface JoinedDoc extends RedditPostDoc {
-    favorited: boolean,
+    pinned: boolean,
     saved_at: number,
 }
