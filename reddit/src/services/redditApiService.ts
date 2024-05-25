@@ -10,7 +10,7 @@ const REDDIT_UNSAVE_URL = 'https://oauth.reddit.com/api/unsave?';
 
 export function makeRedditApiService(logger: ILogger, fetch: (req: Request) => Promise<Response>): IRedditApiService {
     return {
-        pullSavedPosts: async (jwt: string, username: string) => {
+        async pullSavedPosts(jwt: string, username: string) {
             logger.info(`Started pulling saved posts from Reddit`);
             let timestamp = Date.now();
             let after: string | null = '';
@@ -40,7 +40,7 @@ export function makeRedditApiService(logger: ILogger, fetch: (req: Request) => P
             }
             logger.info(`Finished pulling ${total} saved posts from Reddit`);
         },
-        savePost: async (jwt: string, id: string) => {
+        async savePost(jwt: string, id: string) {
             await fetch(new Request(REDDIT_SAVE_URL + `id=${id}`, {
                 method: 'POST',
                 headers: {
@@ -50,7 +50,7 @@ export function makeRedditApiService(logger: ILogger, fetch: (req: Request) => P
             }));
             logger.info(`Saved ${id}`);
         },
-        unsavePost: async (jwt: string, id: string) => {
+        async unsavePost(jwt: string, id: string) {
             await fetch(new Request(REDDIT_UNSAVE_URL + `id=${id}`, {
                 method: 'POST',
                 headers: {
