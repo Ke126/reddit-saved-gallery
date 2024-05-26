@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import type { ILogger } from './logger.models.js';
+import type { ILogger } from './loggerModel.js';
 import type { Request as ExpressRequest, Response as ExpressResponse, NextFunction } from 'express';
 
 export const mockLogger: ILogger = {

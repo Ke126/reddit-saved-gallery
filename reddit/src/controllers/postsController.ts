@@ -1,5 +1,5 @@
 import type { Request as ExpressRequest, Response as ExpressResponse, NextFunction } from "express"
-import type { ILogger } from "../shared/logger.models.js"
+import type { ILogger } from "../shared/loggerModel.js"
 import { IRedditApiService } from "../services/redditApiServiceModel.js";
 
 export function makePostsController(logger: ILogger, redditApiService: IRedditApiService) {

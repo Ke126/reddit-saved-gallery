@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import type { ILogger } from './logger.models.js';
+import type { ILogger } from './loggerModel.js';
 
 export function makeMiddleware(logger: ILogger) {
     return {

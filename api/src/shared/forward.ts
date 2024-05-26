@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
-import type { ILogger } from './logger.models.js';
+import type { ILogger } from './loggerModel.js';
 
 export default function forward(logger: ILogger, baseURL: string, routeFunction: (route: string) => string = (_) => _) {
     return async (req: Request, res: Response, next: NextFunction) => {

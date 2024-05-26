@@ -1,7 +1,7 @@
 import { describe, expect, test, vi, afterEach } from 'vitest';
 import { tryThriceWrapper } from '../shared/tryThrice.js';
 import { mockLogger } from '../shared/mocks.js';
-import type { ILogger } from '../shared/logger.models.js';
+import type { ILogger } from '../shared/loggerModel.js';
 
 afterEach(() => {
     vi.restoreAllMocks();
