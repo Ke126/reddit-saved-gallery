@@ -1,20 +1,12 @@
-import { app } from './app.js';
-import makeLogger from './shared/logger.js'
+import { bootstrap } from './app.js';
 import 'dotenv/config'
-import { initializeDatabase } from './utils/mongo.js';
 
-const logger = makeLogger("Query Service");
-const PORT = process.env.PORT;
+const PORT = Number.parseInt(process.env.PORT || '');
 
-await initializeDatabase(logger)();
-
-const server = app.listen(PORT, () => {
-    logger.info(`Listening on port ${PORT}`);
-});
-
-process.on('SIGTERM', () => {
-    server.close(() => {
-        logger.info('Closing server gracefully');
-        process.exit(0);
+bootstrap(PORT).then(server => {
+    process.on('SIGTERM', () => {
+        server.close(() => {
+            process.exit(0);
+        });
     });
 });

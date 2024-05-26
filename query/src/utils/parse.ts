@@ -1,12 +1,12 @@
-import { QueryRequest } from "../models/query.models.js";
+import { QueryParams } from "../models/queryModel.js";
 
-export function parseJWT(jwt: string): string {
+export function parseJwt(jwt: string): string {
     const payload = jwt.split('.')[1];
     const json = JSON.parse(atob(payload));
     return json.aid;
 }
 
-export function parseQuery(query: qs.ParsedQs): QueryRequest {
+export function parseQuery(query: qs.ParsedQs): QueryParams {
     return {
         q: typeof query.q === "string" ? query.q : "",
         in: typeof query.in === "string" ? query.in.split(',') : undefined,

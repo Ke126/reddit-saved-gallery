@@ -1,5 +1,5 @@
 import winston from 'winston';
-import type { ILogger } from './logger.models.js';
+import type { ILogger } from './loggerModel.js';
 
 export function makeLoggerService(serviceName: string): ILogger {
     const pid = process.pid;
