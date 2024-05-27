@@ -31,6 +31,8 @@ export async function bootstrap(port: number) {
     app.get('/posts', postsController.getHandler());
     app.post('/posts', middleware.validateBody({ 'username': 'string' }), postsController.postHandler());
     app.patch('/posts/:id', middleware.validateBody({ 'pinned': 'boolean' }), postsController.patchHandler());
+    app.put('/posts/:id', postsController.putHandler());
+    app.delete('/posts/:id', postsController.deleteHandler());
 
     app.get('/subreddits', subredditsController.getHandler());
 

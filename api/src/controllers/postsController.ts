@@ -66,8 +66,58 @@ export function makePostsController(logger: ILogger, fetch: (arg: Request) => Pr
                 }
             }
         },
-        // REDDIT -> QUERY
-        deleteHandler() { }
+        // REDDIT + QUERY
+        putHandler() {
+            return async (req: ExpressRequest, res: ExpressResponse, next: NextFunction) => {
+                try {
+                    await fetch(new Request(REDDIT_URL + '/posts/' + req.params.id, {
+                        method: "PUT",
+                        headers: {
+                            authorization: req.get('authorization')!,
+                            'Content-Type': 'application/json'
+                        }
+                    }));
+                    const response = await fetch(new Request(QUERY_URL + '/posts/' + req.params.id, {
+                        method: "PUT",
+                        headers: {
+                            authorization: req.get('authorization')!,
+                            'Content-Type': 'application/json'
+                        }
+                    }));
+                    const json = await response.json();
+                    res.status(response.status).json(json);
+                }
+                catch (err) {
+                    next(err);
+                }
+            }
+        },
+        // REDDIT + QUERY
+        deleteHandler() {
+            return async (req: ExpressRequest, res: ExpressResponse, next: NextFunction) => {
+                try {
+                    await fetch(new Request(REDDIT_URL + '/posts/' + req.params.id, {
+                        method: "DELETE",
+                        headers: {
+                            authorization: req.get('authorization')!,
+                            'Content-Type': 'application/json'
+                        }
+                    }));
+                    const response = await fetch(new Request(QUERY_URL + '/posts/' + req.params.id, {
+                        method: "DELETE",
+                        headers: {
+                            authorization: req.get('authorization')!,
+                            'Content-Type': 'application/json'
+                        }
+                    }));
+                    const json = await response.json();
+                    res.status(response.status).json(json);
+                }
+                catch (err) {
+                    next(err);
+                }
+            }
+        }
     }
     // return [
     //     {
@@ -91,7 +141,7 @@ export function makePostsController(logger: ILogger, fetch: (arg: Request) => Pr
     //         }
     //     },
     //     {
-            
+
     //     }
     // ]
 }

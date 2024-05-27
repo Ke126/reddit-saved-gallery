@@ -173,6 +173,14 @@ export function makeMongoDbService(logger: ILogger): IMongoDbService {
             logger.info(`Pinned post ${id} for user ${user}`);
         },
         async unpinPost(user: string, id: string): Promise<void> {
+            await usersCollection.updateOne({ _id: user }, {
+                $set: {
+                    'posts.$[post].pinned': false
+                }
+            }, { arrayFilters: [{ 'post.post_id': id }] });
+            logger.info(`Unpinned post ${id} for user ${user}`);
+        },
+        async savePost(user: string, id: string): Promise<void> {
             await usersCollection.updateOne({ _id: user }, [{
                 $set: {
                     posts: {
@@ -195,17 +203,7 @@ export function makeMongoDbService(logger: ILogger): IMongoDbService {
                         }
                     }
                 },
-            }], { arrayFilters: [{ 'post.post_id': id }] });
-            logger.info(`Unpinned post ${id} for user ${user}`);
-        },
-        async savePost(user: string, id: string): Promise<void> {
-            await usersCollection.updateOne({ _id: user }, {
-                $set: {
-                    $cond: {
-
-                    }
-                }
-            });
+            }]);
             logger.info(`Saved post ${id} for user ${user}`);
         },
         async unsavePost(user: string, id: string): Promise<void> {
