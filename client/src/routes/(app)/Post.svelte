@@ -113,7 +113,7 @@
 							class="py-0 px-1 btn btn-lg btn-outline-secondary border-0"
 							type="submit"
 							title={saved ? "Unsave" : "Save"}
-							on:click={() => (saved = !saved)}
+							on:click={() => (saved = !saved, post.pinned = false)}
 						>
 							{#if saved}
 								<i
