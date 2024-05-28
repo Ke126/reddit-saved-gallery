@@ -42,3 +42,9 @@
 		{/if}
 	</ul>
 </nav>
+
+<style>
+	:global(html) {
+		scroll-behavior: auto !important;
+	}
+</style>

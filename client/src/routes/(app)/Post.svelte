@@ -97,7 +97,7 @@
 			</div>
 		</div>
 		{#if post.media_url}
-			<img src={post.media_url} class="card-img-top" alt="..." />
+			<img loading="lazy" src={post.media_url} class="card-img-top" alt="..." />
 		{/if}
 		<div class="card-body">
 			<h5 class="card-title">{post.title}</h5>

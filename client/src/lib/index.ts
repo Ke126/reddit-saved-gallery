@@ -103,7 +103,6 @@ export interface SubredditIn {
 
 export interface Subreddit {
 	subreddit: string;
-	checked: boolean;
 	count: number;
 }
 

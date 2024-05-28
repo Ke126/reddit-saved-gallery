@@ -138,6 +138,24 @@ export const actions = {
 			})
 		});
 	},
+	save: async ({ locals, request }) => {
+		console.log('Save action');
+		if (!locals.user) {
+			console.log('Not authenticated');
+			redirect(301, '/login');
+		}
+		const form = await request.formData();
+		await fetch(`http://localhost:4000/posts/${form.get('_id')}`, {
+			method: 'PATCH',
+			headers: {
+				authorization: `bearer ${locals.user?.access_token}`,
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				pinned: form.get('pinned') === 'on'
+			})
+		});
+	},
 	logout: async ({ locals, cookies }) => {
 		console.log('Logout action');
 		const response = await fetch('https://www.reddit.com/api/v1/revoke_token', {

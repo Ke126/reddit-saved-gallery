@@ -1,16 +1,43 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { afterNavigate } from '$app/navigation';
 
 	let isLoading = false;
 
-	let subreddits = $page.data.subreddits || [];
-	let query = $page.url.searchParams.get('q') || '';
+	let subreddits = ($page.data.subreddits || []).map((subreddit) => ({
+		checked: true,
+		...subreddit
+	}));
+	let queryName = '';
+	let queryValue = '';
+	let filterName = '';
+	let filterValue = '';
 
-	afterNavigate(() => {
-		query = $page.url.searchParams.get('q') || '';
+	$: {
+		$page.url.searchParams;
+		console.log('reactive ran');
+		fillForm();
+	}
+
+	$: {
+		queryName = queryValue.length === 0 ? '' : 'q';
+		console.log('query ran');
+	}
+
+	$: {
+		const numChecked = subreddits.filter((subreddit) => subreddit.checked).length;
+		const isInSearchBool = numChecked < subreddits.length - numChecked;
+		filterName = isInSearchBool ? 'in' : 'nin';
+		filterValue = subreddits
+			.filter((subreddit) => (isInSearchBool ? subreddit.checked : !subreddit.checked))
+			.map((subreddit) => subreddit.subreddit)
+			.toString();
+		if (numChecked === subreddits.length) filterName = '';
+		console.log('filters ran');
+	}
+
+	function fillForm() {
+		queryValue = $page.url.searchParams.get('q') || '';
 		const include = $page.url.searchParams.get('in');
 		const exclude = $page.url.searchParams.get('nin');
 		if (include || include === '') {
@@ -25,31 +52,14 @@
 				subreddit.checked = !subs.includes(subreddit.subreddit);
 				return subreddit;
 			});
-		} else {
-			setChecks(true);
 		}
-	});
+	}
 
 	function setChecks(value: boolean) {
 		subreddits = subreddits.map((subreddit) => {
 			subreddit.checked = value;
 			return subreddit;
 		});
-	}
-
-	function makeQuery() {
-		const q = query;
-		const numChecked = subreddits.filter((subreddit) => subreddit.checked).length;
-		const isInSearchBool = numChecked < subreddits.length - numChecked;
-		const type = isInSearchBool ? 'in' : 'nin';
-		const subredditsList = subreddits
-			.filter((subreddit) => (isInSearchBool ? subreddit.checked : !subreddit.checked))
-			.map((subreddit) => subreddit.subreddit)
-			.join(',');
-		const url = new URLSearchParams();
-		if (q.length !== 0) url.append('q', q);
-		if (!(type === 'nin' && subredditsList.length === 0)) url.append(type, subredditsList);
-		return '/?' + url.toString();
 	}
 </script>
 
@@ -73,14 +83,14 @@
 					<form>
 						<div class="input-group">
 							<input
-								bind:value={query}
+								bind:value={queryValue}
 								type="search"
 								class="form-control border-light"
-								name="q"
+								name={queryName}
 								placeholder="Search"
 							/>
+							<input type="hidden" name={filterName} value={filterValue} />
 							<button
-								on:click|preventDefault={() => goto(makeQuery())}
 								class="btn btn-outline-success"
 								type="submit"><i class="bi bi-search"></i></button
 							>
@@ -153,13 +163,13 @@
 		<form class="mt-2">
 			<div class="mb-2">
 				<button
-					on:click|preventDefault={() => setChecks(true)}
+					on:click={() => setChecks(true)}
 					class="btn btn-outline-primary"
 					type="button"
 					>Check all
 				</button>
 				<button
-					on:click|preventDefault={() => setChecks(false)}
+					on:click={() => setChecks(false)}
 					class="btn btn-outline-danger"
 					type="button"
 					>Uncheck all
