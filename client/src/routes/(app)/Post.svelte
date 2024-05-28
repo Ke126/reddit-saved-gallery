@@ -31,7 +31,12 @@
 		return Math.floor(elapsed) + ' yr. ago';
 	}
 	function dateString(timestamp: number): string {
-		return new Date(timestamp * 1000).toLocaleString();
+		// Monday, May 27, 2024 at 6:09:51 PM EDT
+		// can cache an Intl.DateTimeFormat() object instead
+		return new Date(timestamp * 1000).toLocaleString(undefined, {
+			dateStyle: "full",
+			timeStyle: "long"
+		});
 	}
 </script>
 
