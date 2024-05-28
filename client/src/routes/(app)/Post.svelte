@@ -4,6 +4,7 @@
 	export let post: RedditPost;
 
 	const BASE_URL = 'https://www.reddit.com';
+	let saved = true;
 
 	function timeSince(timestamp: number): string {
 		const now = Date.now() / 1000;
@@ -74,22 +75,48 @@
 						use:enhance={() => {
 							return ({ update }) => update({ reset: false, invalidateAll: false });
 						}}
+						class="me-1"
 					>
 						<input type="hidden" name="_id" value={post._id} />
 						<input hidden type="checkbox" name="pinned" bind:checked={post.pinned} />
 						<button
-							class="p-0 btn border-0"
+							class="py-0 px-1 btn btn-lg btn-outline-secondary border-0"
 							type="submit"
+							title={post.pinned ? "Unpin" : "Pin"}
 							on:click={() => (post.pinned = !post.pinned)}
 						>
 							{#if post.pinned}
 								<i
 									class="bi bi-pin-angle-fill"
-									style="color: lime; font-size: 1.25rem"
-									title="Unpin"
+									style="color: lime"
 								></i>
 							{:else}
-								<i class="bi bi-pin-angle" style="font-size: 1.25rem" title="Pin"></i>
+								<i class="bi bi-pin-angle"></i>
+							{/if}
+						</button>
+					</form>
+					<form
+						method="POST"
+						action="?/save"
+						use:enhance={() => {
+							return ({ update }) => update({ reset: false, invalidateAll: false });
+						}}
+					>
+						<input type="hidden" name="_id" value={post._id} />
+						<input hidden type="checkbox" name="saved" bind:checked={saved} />
+						<button
+							class="py-0 px-1 btn btn-lg btn-outline-secondary border-0"
+							type="submit"
+							title={saved ? "Unsave" : "Save"}
+							on:click={() => (saved = !saved)}
+						>
+							{#if saved}
+								<i
+									class="bi bi-bookmark-fill"
+									style="color: white"
+								></i>
+							{:else}
+								<i class="bi bi-bookmark"></i>
 							{/if}
 						</button>
 					</form>
@@ -131,8 +158,7 @@
 	}
 	.card:hover {
 		scale: 1.05;
-		background-color: hsl(from var(--bs-dark) h s calc(l + 0.05));
-		box-shadow: 0 5px 15px rgba(145, 92, 182, 0.4);
+		background-color: hsl(from var(--bs-dark) h s calc(l + 5));
 		z-index: 1;
 	}
 </style>

@@ -2,7 +2,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { redirect } from '@sveltejs/kit';
 import { CLIENT_ID, REDIRECT_URI } from '$env/static/private';
 
-const scope = 'identity,history';
+const scope = 'identity,history,save';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	console.log('LOAD /login');

@@ -146,14 +146,11 @@ export const actions = {
 		}
 		const form = await request.formData();
 		await fetch(`http://localhost:4000/posts/${form.get('_id')}`, {
-			method: 'PATCH',
+			method: form.get('saved') === 'on' ? 'PUT' : 'DELETE',
 			headers: {
 				authorization: `bearer ${locals.user?.access_token}`,
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({
-				pinned: form.get('pinned') === 'on'
-			})
 		});
 	},
 	logout: async ({ locals, cookies }) => {

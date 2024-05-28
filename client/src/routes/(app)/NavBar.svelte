@@ -52,6 +52,8 @@
 				subreddit.checked = !subs.includes(subreddit.subreddit);
 				return subreddit;
 			});
+		} else {
+			setChecks(true);
 		}
 	}
 
