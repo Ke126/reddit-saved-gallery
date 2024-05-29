@@ -34,8 +34,8 @@
 		// Monday, May 27, 2024 at 6:09:51 PM EDT
 		// can cache an Intl.DateTimeFormat() object instead
 		return new Date(timestamp * 1000).toLocaleString(undefined, {
-			dateStyle: "full",
-			timeStyle: "long"
+			dateStyle: 'full',
+			timeStyle: 'long'
 		});
 	}
 </script>
@@ -80,21 +80,17 @@
 						use:enhance={() => {
 							return ({ update }) => update({ reset: false, invalidateAll: false });
 						}}
-						class="me-1"
 					>
 						<input type="hidden" name="_id" value={post._id} />
 						<input hidden type="checkbox" name="pinned" bind:checked={post.pinned} />
 						<button
 							class="py-0 px-1 btn btn-lg btn-outline-secondary border-0"
 							type="submit"
-							title={post.pinned ? "Unpin" : "Pin"}
+							title={post.pinned ? 'Unpin' : 'Pin'}
 							on:click={() => (post.pinned = !post.pinned)}
 						>
 							{#if post.pinned}
-								<i
-									class="bi bi-pin-angle-fill"
-									style="color: lime"
-								></i>
+								<i class="bi bi-pin-angle-fill" style="color: lime"></i>
 							{:else}
 								<i class="bi bi-pin-angle"></i>
 							{/if}
@@ -112,14 +108,11 @@
 						<button
 							class="py-0 px-1 btn btn-lg btn-outline-secondary border-0"
 							type="submit"
-							title={saved ? "Unsave" : "Save"}
-							on:click={() => (saved = !saved, post.pinned = false)}
+							title={saved ? 'Unsave' : 'Save'}
+							on:click={() => ((saved = !saved), (post.pinned = false))}
 						>
 							{#if saved}
-								<i
-									class="bi bi-bookmark-fill"
-									style="color: white"
-								></i>
+								<i class="bi bi-bookmark-fill" style="color: white"></i>
 							{:else}
 								<i class="bi bi-bookmark"></i>
 							{/if}
@@ -142,17 +135,19 @@
 			</p>
 		</div>
 		<div class="card-footer text-body-secondary">
-			<span class="badge p-2 bg-dark-subtle border border-dark-subtle rounded-pill">
+			<span class="badge p-2 border border-secondary-subtle rounded-pill">
 				<i class="bi bi-arrow-up"></i>
 				{post.score} <i class="bi bi-arrow-down"></i>
 			</span>
 
-			<a href="{BASE_URL}{post.permalink}" target="_blank"
-				><span class="badge p-2 bg-dark-subtle border border-dark-subtle rounded-pill">
+			<a href="{BASE_URL}{post.permalink}" target="_blank">
+				<span
+					class="btn btn-outline-secondary badge p-2 border border-secondary-subtle rounded-pill"
+				>
 					<i class="bi bi-chat-left"></i>
 					{post.num_comments}
-				</span></a
-			>
+				</span>
+			</a>
 		</div>
 	</div>
 </div>

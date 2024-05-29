@@ -150,7 +150,7 @@ export const actions = {
 			headers: {
 				authorization: `bearer ${locals.user?.access_token}`,
 				'Content-Type': 'application/json'
-			},
+			}
 		});
 	},
 	logout: async ({ locals, cookies }) => {

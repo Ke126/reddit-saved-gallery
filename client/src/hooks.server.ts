@@ -17,7 +17,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 					Authorization: `Basic ${btoa(`${CLIENT_ID}:${CLIENT_SECRET}`)}`,
 					'Content-Type': 'application/x-www-form-urlencoded'
 				}
-			});	
+			});
 			const json = await response.json();
 			user.access_token = json.access_token;
 			user.exp = Date.now() + json.expires_in * 1000;

@@ -63,6 +63,13 @@
 			return subreddit;
 		});
 	}
+
+	function shuffleArray() {
+		for (let i = subreddits.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[subreddits[i], subreddits[j]] = [subreddits[j], subreddits[i]];
+		}
+	}
 </script>
 
 <nav class="navbar navbar-expand-lg border-bottom">
@@ -92,9 +99,8 @@
 								placeholder="Search"
 							/>
 							<input type="hidden" name={filterName} value={filterValue} />
-							<button
-								class="btn btn-outline-success"
-								type="submit"><i class="bi bi-search"></i></button
+							<button class="btn btn-outline-success" type="submit"
+								><i class="bi bi-search"></i></button
 							>
 						</div>
 					</form>
@@ -164,16 +170,10 @@
 	<div class="container">
 		<form class="mt-2">
 			<div class="mb-2">
-				<button
-					on:click={() => setChecks(true)}
-					class="btn btn-outline-primary"
-					type="button"
+				<button on:click={() => setChecks(true)} class="btn btn-outline-primary" type="button"
 					>Check all
 				</button>
-				<button
-					on:click={() => setChecks(false)}
-					class="btn btn-outline-danger"
-					type="button"
+				<button on:click={() => setChecks(false)} class="btn btn-outline-danger" type="button"
 					>Uncheck all
 				</button>
 			</div>
