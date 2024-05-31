@@ -2,9 +2,11 @@
 	<h1 class="display-1">Reddit Saved Gallery</h1>
 	<p>An application allowing Reddit users to efficiently parse their account's saved posts.</p>
 	<p>Features:</p>
-	<p>- Query by post title, subreddit, and selftext</p>
+	<p>- Query by title, subreddit, author, or selftext</p>
 	<p>- Display counts of posts grouped by subreddit</p>
 	<p>- Filter posts by subreddit inclusive/exclusive</p>
+	<p>- Locally pin and unpin posts for easier viewing</p>
+	<p>- Save and unsave posts</p>
 	<p>- Pull newly saved posts directly from Reddit's API</p>
 	<br />
 

@@ -1,7 +1,7 @@
 import type { PageServerLoad } from './$types';
 import { REDIRECT_URI, CLIENT_ID, CLIENT_SECRET } from '$env/static/private';
 import { redirect } from '@sveltejs/kit';
-import type { IUser } from '$lib';
+import type { IUser } from '$lib/types/reddit';
 
 export const load: PageServerLoad = async ({ url, cookies }) => {
 	console.log('LOAD /callback');

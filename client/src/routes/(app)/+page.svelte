@@ -1,9 +1,8 @@
 <script lang="ts">
-	import NavBar from './NavBar.svelte';
-	import PostList from './PostList.svelte';
-	import Pagination from './Pagination.svelte';
+	import PostList from '$lib/components/PostList.svelte';
+	import Pagination from '$lib/components/Pagination.svelte';
+	export let data;
 </script>
 
-<NavBar></NavBar>
-<PostList></PostList>
-<Pagination></Pagination>
+<PostList posts={data.posts.posts}></PostList>
+<Pagination totalCount={data.posts.total_count} curPage={data.posts.page}></Pagination>

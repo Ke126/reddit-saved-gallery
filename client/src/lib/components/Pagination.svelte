@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	$: numPages = $page.data.posts ? Math.ceil($page.data.posts.total_count / 100) : 1;
-	$: curPage = $page.data.posts ? $page.data.posts.page : 1;
+	export let curPage: number;
+	export let totalCount: number;
+	$: numPages = Math.ceil(totalCount / 100);
 
 	function makeURL(page: number) {
 		const url = new URL($page.url);
 		url.searchParams.set('page', `${page}`);
 		return url.toString();
 	}
-	console.log('HERE');
 </script>
 
 <nav aria-label="...">

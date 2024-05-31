@@ -1,6 +1,6 @@
 // See https://kit.svelte.dev/docs/types#app
 
-import type { IUser, Subreddit, RedditPost } from '$lib';
+import type { IUser, Subreddit, RedditPost } from '$lib/types/reddit';
 
 // for information about these interfaces
 declare global {

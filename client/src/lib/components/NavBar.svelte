@@ -1,23 +1,19 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
+	import type { Subreddit } from '$lib/types/reddit';
+
+	export let subreddits: Subreddit[];
+	export let user: { username: string; icon_img: string };
 
 	let isLoading = false;
 
-	let subreddits = ($page.data.subreddits || []).map((subreddit) => ({
-		checked: true,
-		...subreddit
-	}));
 	let queryName = '';
 	let queryValue = '';
 	let filterName = '';
 	let filterValue = '';
 
-	$: {
-		$page.url.searchParams;
-		console.log('reactive ran');
-		fillForm();
-	}
+	$: fillSearchAndFilters($page.url.searchParams);
 
 	$: {
 		queryName = queryValue.length === 0 ? '' : 'q';
@@ -36,25 +32,26 @@
 		console.log('filters ran');
 	}
 
-	function fillForm() {
-		queryValue = $page.url.searchParams.get('q') || '';
-		const include = $page.url.searchParams.get('in');
-		const exclude = $page.url.searchParams.get('nin');
-		if (include || include === '') {
-			const subs = include.split(',');
+	function fillSearchAndFilters(searchParams: URLSearchParams) {
+		queryValue = searchParams.get('q') || '';
+		const include = searchParams.get('in');
+		const exclude = searchParams.get('nin');
+		if (include !== null) {
+			const subs = include.split(',').map((elem) => elem.toLowerCase());
 			subreddits = subreddits.map((subreddit) => {
-				subreddit.checked = subs.includes(subreddit.subreddit);
+				subreddit.checked = subs.includes(subreddit.subreddit.toLowerCase());
 				return subreddit;
 			});
-		} else if (exclude || exclude === '') {
-			const subs = exclude.split(',');
+		} else if (exclude !== null) {
+			const subs = exclude.split(',').map((elem) => elem.toLowerCase());
 			subreddits = subreddits.map((subreddit) => {
-				subreddit.checked = !subs.includes(subreddit.subreddit);
+				subreddit.checked = !subs.includes(subreddit.subreddit.toLowerCase());
 				return subreddit;
 			});
 		} else {
 			setChecks(true);
 		}
+		console.log('fill form ran');
 	}
 
 	function setChecks(value: boolean) {
@@ -62,13 +59,6 @@
 			subreddit.checked = value;
 			return subreddit;
 		});
-	}
-
-	function shuffleArray() {
-		for (let i = subreddits.length - 1; i > 0; i--) {
-			const j = Math.floor(Math.random() * (i + 1));
-			[subreddits[i], subreddits[j]] = [subreddits[j], subreddits[i]];
-		}
 	}
 </script>
 
@@ -151,9 +141,9 @@
 					class="rounded-circle me-1"
 					width="24"
 					height="24"
-					src={$page.data.user?.icon_img}
+					src={user.icon_img}
 					alt=""
-				/>u/{$page.data.user?.username}
+				/>u/{user.username}
 			</span>
 		</a>
 		<ul class="dropdown-menu dropdown-menu-end text-small" style="">
@@ -167,8 +157,8 @@
 </nav>
 
 <div class="collapse border-bottom" id="filterPanel">
-	<div class="container">
-		<form class="mt-2">
+	<div class="container py-2">
+		<form>
 			<div class="mb-2">
 				<button on:click={() => setChecks(true)} class="btn btn-outline-primary" type="button"
 					>Check all
@@ -177,10 +167,27 @@
 					>Uncheck all
 				</button>
 			</div>
-			<h5>Subreddits ({subreddits.length})</h5>
-			<div class="row row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1">
+			<h5>Subreddits ({subreddits.filter((subreddit) => subreddit.checked).length})</h5>
+			<div class="row g-2">
 				{#each subreddits as subreddit (subreddit.subreddit)}
-					<div class="col">
+					<div class="col-auto">
+						{#if subreddit.checked}
+							<button
+								class="badge p-2 btn btn-success"
+								on:click={() => (subreddit.checked = !subreddit.checked)}
+							>
+								r/{subreddit.subreddit} ({subreddit.count})
+							</button>
+						{:else}
+							<button
+								class="badge p-2 btn btn-outline-secondary"
+								on:click={() => (subreddit.checked = !subreddit.checked)}
+							>
+								r/{subreddit.subreddit} ({subreddit.count})
+							</button>
+						{/if}
+					</div>
+					<!-- <div class="col">
 						<div class="form-check" title="r/{subreddit.subreddit} ({subreddit.count})">
 							<input
 								type="checkbox"
@@ -195,7 +202,7 @@
 								{subreddit.count}
 							</span>
 						</div>
-					</div>
+					</div> -->
 				{/each}
 			</div>
 		</form>

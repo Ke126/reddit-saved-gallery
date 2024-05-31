@@ -1,5 +1,5 @@
 import { CLIENT_ID, CLIENT_SECRET } from '$env/static/private';
-import type { IUser } from '$lib';
+import type { IUser } from '$lib/types/reddit';
 import type { Handle } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
