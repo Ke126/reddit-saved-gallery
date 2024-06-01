@@ -77,7 +77,7 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+			<ul class="navbar-nav me-auto">
 				<li class="nav-item me-2">
 					<form>
 						<div class="input-group">
@@ -109,33 +109,12 @@
 				</li>
 			</ul>
 		</div>
-		<form
-			class="me-2"
-			method="POST"
-			action="?/pull"
-			use:enhance={() => {
-				isLoading = true;
-				return async ({ update }) => {
-					await update();
-					isLoading = false;
-				};
-			}}
-		>
-			<button class="btn btn-outline-light" type="submit" disabled={isLoading}>
-				{#if isLoading}
-					<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-					Loading...
-				{:else}
-					Pull posts from <i class="bi bi-reddit" style="color: #FF5700;"></i>
-				{/if}
-			</button>
-		</form>
-		<form method="POST" action="?/logout" class="me-2">
-			<button class="btn btn-outline-danger" type="submit">Logout</button>
-		</form>
-		<a href="#" data-bs-toggle="dropdown" aria-expanded="false">
-			<span
-				class="badge d-flex align-items-center p-1 pe-2 text-dark-emphasis bg-dark-subtle border border-dark-subtle rounded-pill"
+		<div class="dropdown">
+			<button
+				type="button"
+				class="badge rounded-pill btn btn-outline-light dropdown-toggle"
+				data-bs-toggle="dropdown"
+				aria-expanded="false"
 			>
 				<img
 					class="rounded-circle me-1"
@@ -144,15 +123,38 @@
 					src={user.icon_img}
 					alt=""
 				/>u/{user.username}
-			</span>
-		</a>
-		<ul class="dropdown-menu dropdown-menu-end text-small" style="">
-			<li><a class="dropdown-item" href="#">New project...</a></li>
-			<li><a class="dropdown-item" href="#">Settings</a></li>
-			<li><a class="dropdown-item" href="#">Profile</a></li>
-			<li><hr class="dropdown-divider" /></li>
-			<li><a class="dropdown-item" href="#">Sign out</a></li>
-		</ul>
+			</button>
+			<ul class="dropdown-menu dropdown-menu-end">
+				<li>
+					<form
+						method="POST"
+						action="?/pull"
+						use:enhance={() => {
+							isLoading = true;
+							return async ({ update }) => {
+								await update();
+								isLoading = false;
+							};
+						}}
+					>
+						<button class="dropdown-item" type="submit" disabled={isLoading}>
+							{#if isLoading}
+								<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
+								></span>
+								Loading...
+							{:else}
+								Pull posts from <i class="bi bi-reddit" style="color: #FF5700;"></i>
+							{/if}
+						</button>
+					</form>
+				</li>
+				<li>
+					<form method="POST" action="?/logout">
+						<button class="dropdown-item text-danger" type="submit">Logout</button>
+					</form>
+				</li>
+			</ul>
+		</div>
 	</div>
 </nav>
 

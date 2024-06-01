@@ -12,7 +12,7 @@
 	<div class="card">
 		<div class="card-header">
 			<div class="row justify-content-between">
-				<div class="col-auto">
+				<div class="col-auto small">
 					<div>
 						<a
 							href="{BASE_URL}/r/{post.subreddit}"
@@ -102,7 +102,7 @@
 				{/if}
 			</p>
 		</div>
-		<div class="card-footer text-body-secondary">
+		<div class="card-footer">
 			<span class="badge fw-normal p-2 border border-secondary-subtle rounded-pill">
 				<i class="bi bi-arrow-up"></i>
 				{post.score} <i class="bi bi-arrow-down"></i>
