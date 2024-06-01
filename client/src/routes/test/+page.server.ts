@@ -1,12 +1,13 @@
+import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 
 export const actions = {
-	pin: async ({ locals, request }) => {
-		const form = await request.formData();
-		console.log(form.get('_id'));
-		console.log(form.get('pinned'));
-		if (form.get('pinned')) {
-			console.log('was true');
-		}
+	default: async ({ locals, request }) => {
+		console.log("action");
+		redirect(300, '/test');
 	}
 } satisfies Actions;
+
+export const load: PageServerLoad = async ({ locals }) => {
+	console.log('LOAD');
+};

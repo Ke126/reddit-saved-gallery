@@ -22,6 +22,7 @@ export function timeSince(timestamp: number): string {
 	elapsed /= 12;
 	return Math.floor(elapsed) + ' yr. ago';
 }
+
 export function dateString(timestamp: number): string {
 	// Monday, May 27, 2024 at 6:09:51 PM EDT
 	// can cache an Intl.DateTimeFormat() object instead

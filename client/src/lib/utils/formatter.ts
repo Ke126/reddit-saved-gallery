@@ -1,14 +1,14 @@
-import type { RedditPost, RedditThing } from '$lib/types/reddit';
+import type { RedditCard, RedditThing } from '$lib/types/reddit';
 
 const FORMATS = ['png', 'jpg', 'jpeg', 'gif'].map((format) => new RegExp(`\\.${format}`, 'i'));
 function isImageLink(input: string): boolean {
 	return FORMATS.some((format) => format.test(input));
 }
 
-export function formatter(post: RedditThing): RedditPost {
+export function formatter(post: RedditThing): RedditCard {
 	// check based on post kind first
 	if (post.kind === 't1') {
-		const obj: RedditPost = {
+		const obj: RedditCard = {
 			_id: post._id,
 			pinned: post.pinned,
 			subreddit: post.data.subreddit,
@@ -22,9 +22,13 @@ export function formatter(post: RedditThing): RedditPost {
 			score: post.data.score,
 			created: post.data.created
 		};
+		if (post.data.media_metadata) {
+			const firstPage = Object.keys(post.data.media_metadata)[0];
+			obj.media_url = post.data.media_metadata[firstPage].s.u;
+		}
 		return obj;
 	}
-	const obj: RedditPost = {
+	const obj: RedditCard = {
 		_id: post._id,
 		pinned: post.pinned,
 		subreddit: post.data.subreddit,

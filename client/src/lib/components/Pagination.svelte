@@ -21,14 +21,14 @@
 				<a class="page-link" href={makeURL(curPage - 1)}><i class="bi bi-chevron-left"></i></a>
 			</li>
 		{/if}
-		{#each { length: numPages } as _, numPage}
-			{#if numPage + 1 === curPage}
+		{#each { length: numPages } as _, pageNum}
+			{#if pageNum + 1 === curPage}
 				<li class="page-item active">
 					<span class="page-link">{curPage}</span>
 				</li>
 			{:else}
 				<li class="page-item">
-					<a class="page-link" href={makeURL(numPage + 1)}>{numPage + 1}</a>
+					<a class="page-link" href={makeURL(pageNum + 1)}>{pageNum + 1}</a>
 				</li>
 			{/if}
 		{/each}

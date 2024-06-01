@@ -1,15 +1,3 @@
-// place files you want to import through the `$lib` alias in this folder.
-export interface GetPostsResponseBody {
-	count: number;
-	total_count: number;
-	page: number;
-	posts: RedditThing[];
-}
-
-export interface GetSubredditsResponseBody {
-	subreddits: SubredditIn[];
-}
-
 interface BaseData {
 	created: number;
 	author: string;
@@ -21,6 +9,10 @@ interface Comment extends BaseData {
 	body: string;
 	link_author: string;
 	link_title: string;
+
+	// not documented but seem to always exist
+	num_comments: number;
+	permalink: string;
 
 	// optional
 	media_metadata?: {
@@ -81,7 +73,7 @@ interface LinkThing extends BaseThing {
 
 export type RedditThing = CommentThing | LinkThing;
 
-export interface RedditPost {
+export interface RedditCard {
 	_id: string;
 	pinned: boolean;
 	subreddit: string;
@@ -105,12 +97,4 @@ export interface Subreddit extends SubredditIn {
 	subreddit: string;
 	count: number;
 	checked: boolean;
-}
-
-export interface IUser {
-	username: string;
-	icon_img: string;
-	access_token: string;
-	refresh_token: string;
-	exp: number;
 }

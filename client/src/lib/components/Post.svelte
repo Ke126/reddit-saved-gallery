@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import type { RedditPost } from '$lib/types/reddit';
+	import type { RedditCard } from '$lib/types/reddit';
 	import { timeSince, dateString } from '$lib/utils/date';
-	export let post: RedditPost;
+	export let post: RedditCard;
 
 	const BASE_URL = 'https://www.reddit.com';
 	let saved = true;
@@ -103,14 +103,14 @@
 			</p>
 		</div>
 		<div class="card-footer text-body-secondary">
-			<span class="badge p-2 border border-secondary-subtle rounded-pill">
+			<span class="badge fw-normal p-2 border border-secondary-subtle rounded-pill">
 				<i class="bi bi-arrow-up"></i>
 				{post.score} <i class="bi bi-arrow-down"></i>
 			</span>
 
 			<a href="{BASE_URL}{post.permalink}" target="_blank">
 				<span
-					class="btn btn-outline-secondary badge p-2 border border-secondary-subtle rounded-pill"
+					class="btn btn-outline-secondary badge fw-normal p-2 border border-secondary-subtle rounded-pill"
 				>
 					<i class="bi bi-chat-left"></i>
 					{post.num_comments}

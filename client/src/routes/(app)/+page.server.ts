@@ -1,5 +1,5 @@
 import { CLIENT_ID, CLIENT_SECRET } from '$env/static/private';
-import type { GetPostsResponseBody } from '$lib/types/reddit';
+import type { GetPostsResponseBody } from '$lib/types/response';
 import { formatter } from '$lib/utils/formatter';
 import type { PageServerLoad, Actions } from './$types';
 import { redirect } from '@sveltejs/kit';

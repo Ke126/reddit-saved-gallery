@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Post from '$lib/components/Post.svelte';
 	import { flip } from 'svelte/animate';
-	import type { RedditPost } from '$lib/types/reddit';
-	export let posts: RedditPost[];
+	import type { RedditCard } from '$lib/types/reddit';
+	export let posts: RedditCard[];
 </script>
 
 <div class="container-fluid p-2">

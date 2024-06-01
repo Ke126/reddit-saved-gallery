@@ -1,6 +1,6 @@
 import { redirect } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
-import type { GetSubredditsResponseBody } from '$lib/types/reddit';
+import type { GetSubredditsResponseBody } from '$lib/types/response';
 
 export const load: LayoutServerLoad = async ({ locals }) => {
 	console.log('LOAD / (layout)');

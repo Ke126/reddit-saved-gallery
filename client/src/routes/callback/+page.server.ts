@@ -1,7 +1,7 @@
 import type { PageServerLoad } from './$types';
 import { REDIRECT_URI, CLIENT_ID, CLIENT_SECRET } from '$env/static/private';
 import { redirect } from '@sveltejs/kit';
-import type { IUser } from '$lib/types/reddit';
+import type { UserCookie } from '$lib/types/user';
 
 export const load: PageServerLoad = async ({ url, cookies }) => {
 	console.log('LOAD /callback');
@@ -28,12 +28,12 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 			if (response2.ok) {
 				const json2 = await response2.json();
 				// console.log(json2);
-				const cookie: IUser = {
+				const cookie: UserCookie = {
 					username: json2.name,
 					icon_img: json2.icon_img,
 					access_token: json.access_token,
 					refresh_token: json.refresh_token,
-					exp: Date.now() + json.expires_in * 1000
+					exp_at: Date.now() + json.expires_in * 1000
 				};
 				cookies.set('jwt', JSON.stringify(cookie), { path: '/' });
 			}
