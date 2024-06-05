@@ -112,7 +112,7 @@
 		<div class="dropdown">
 			<button
 				type="button"
-				class="badge rounded-pill btn btn-outline-light dropdown-toggle"
+				class="badge rounded-pill btn btn-outline-light d-flex align-items-center dropdown-toggle"
 				data-bs-toggle="dropdown"
 				aria-expanded="false"
 			>
