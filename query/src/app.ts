@@ -1,15 +1,15 @@
 import express from 'express';
 import morgan from 'morgan';
-import { makeLoggerService } from './shared/logger.js';
-import { makeMongoDbService } from './services/mongoDbService.js';
+import { Logger } from './shared/logger.js';
+import { MongoDbService } from './services/mongoDbService.js';
 import { makePostsController } from './controllers/postsController.js'
 import { makeSubredditsController } from './controllers/subredditsController.js'
 import { makeMiddleware } from './shared/middleware.js';
 
 export async function bootstrap(port: number) {
     // construct services
-    const loggerService = makeLoggerService("Query Service");
-    const mongoDbService = makeMongoDbService(loggerService);
+    const loggerService = new Logger("Query Service");
+    const mongoDbService = new MongoDbService(loggerService);
 
     // construct middleware and controllers
     const middleware = makeMiddleware(loggerService);

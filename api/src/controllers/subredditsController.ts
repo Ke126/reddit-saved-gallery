@@ -2,14 +2,14 @@ import type { Request as ExpressRequest, Response as ExpressResponse, NextFuncti
 import type { ILogger } from "../shared/loggerModel.js"
 import 'dotenv/config';
 
-export function makeSubredditsController(logger: ILogger, fetch: (arg: Request) => Promise<Response>) {
+export function makeSubredditsController(logger: ILogger, fetchFunc: typeof fetch) {
     const QUERY_URL = process.env.QUERY_URL!;
     return {
         // QUERY
         getHandler() {
             return async (req: ExpressRequest, res: ExpressResponse, next: NextFunction) => {
                 try {
-                    const response = await fetch(new Request(QUERY_URL + '/subreddits', {
+                    const response = await fetchFunc(new Request(QUERY_URL + '/subreddits', {
                         headers: {
                             authorization: req.get('authorization')!,
                             'Content-Type': 'application/json'

@@ -1,16 +1,16 @@
 import express from 'express';
 import morgan from 'morgan';
-import { makeLoggerService } from './shared/logger.js';
+import { Logger } from './shared/logger.js';
 import { makeHttpService } from './shared/fetch.js';
-import { makeRedditApiService } from './services/redditApiService.js';
+import { RedditApiService } from './services/redditApiService.js';
 import { makePostsController } from './controllers/postsController.js'
 import { makeMiddleware } from './shared/middleware.js';
 
 export async function bootstrap(port: number) {
     // construct services
-    const loggerService = makeLoggerService("Reddit Service");
+    const loggerService = new Logger("Reddit Service");
     const httpService = makeHttpService(loggerService);
-    const redditApiService = makeRedditApiService(loggerService, httpService.fetch);
+    const redditApiService = new RedditApiService(loggerService, httpService.fetch);
 
     // construct middleware and controllers
     const middleware = makeMiddleware(loggerService);

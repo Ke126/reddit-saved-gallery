@@ -2,7 +2,7 @@ import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import helmet from 'helmet';
-import { makeLoggerService } from './shared/logger.js';
+import { Logger } from './shared/logger.js';
 import { makeHttpService } from './shared/fetch.js';
 import { makePostsController } from './controllers/postsController.js'
 import { makeSubredditsController } from './controllers/subredditsController.js'
@@ -10,7 +10,7 @@ import { makeMiddleware } from './shared/middleware.js';
 
 export async function bootstrap(port: number) {
     // construct services
-    const loggerService = makeLoggerService("API Service");
+    const loggerService = new Logger("API Service");
     const httpService = makeHttpService(loggerService);
 
     // construct middleware and controllers

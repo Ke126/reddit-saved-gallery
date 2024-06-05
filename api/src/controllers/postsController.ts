@@ -3,7 +3,7 @@ import type { ILogger } from "../shared/loggerModel.js"
 import 'dotenv/config';
 import qs from "qs";
 
-export function makePostsController(logger: ILogger, fetch: (arg: Request) => Promise<Response>) {
+export function makePostsController(logger: ILogger, fetchFunc: typeof fetch) {
     const QUERY_URL = process.env.QUERY_URL!;
     const REDDIT_URL = process.env.REDDIT_URL!;
     return {
@@ -11,7 +11,7 @@ export function makePostsController(logger: ILogger, fetch: (arg: Request) => Pr
         getHandler() {
             return async (req: ExpressRequest, res: ExpressResponse, next: NextFunction) => {
                 try {
-                    const response = await fetch(new Request(QUERY_URL + '/posts?' + qs.stringify(req.query), {
+                    const response = await fetchFunc(new Request(QUERY_URL + '/posts?' + qs.stringify(req.query), {
                         headers: {
                             authorization: req.get('authorization')!,
                             'Content-Type': 'application/json'
@@ -29,7 +29,7 @@ export function makePostsController(logger: ILogger, fetch: (arg: Request) => Pr
         postHandler() {
             return async (req: ExpressRequest, res: ExpressResponse, next: NextFunction) => {
                 try {
-                    const response = await fetch(new Request(REDDIT_URL + '/posts', {
+                    const response = await fetchFunc(new Request(REDDIT_URL + '/posts', {
                         method: 'POST',
                         body: JSON.stringify(req.body),
                         headers: {
@@ -50,7 +50,7 @@ export function makePostsController(logger: ILogger, fetch: (arg: Request) => Pr
         patchHandler() {
             return async (req: ExpressRequest, res: ExpressResponse, next: NextFunction) => {
                 try {
-                    const response = await fetch(new Request(QUERY_URL + '/posts/' + req.params.id, {
+                    const response = await fetchFunc(new Request(QUERY_URL + '/posts/' + req.params.id, {
                         method: "PATCH",
                         body: JSON.stringify(req.body),
                         headers: {
@@ -70,14 +70,14 @@ export function makePostsController(logger: ILogger, fetch: (arg: Request) => Pr
         putHandler() {
             return async (req: ExpressRequest, res: ExpressResponse, next: NextFunction) => {
                 try {
-                    await fetch(new Request(REDDIT_URL + '/posts/' + req.params.id, {
+                    await fetchFunc(new Request(REDDIT_URL + '/posts/' + req.params.id, {
                         method: "PUT",
                         headers: {
                             authorization: req.get('authorization')!,
                             'Content-Type': 'application/json'
                         }
                     }));
-                    const response = await fetch(new Request(QUERY_URL + '/posts/' + req.params.id, {
+                    const response = await fetchFunc(new Request(QUERY_URL + '/posts/' + req.params.id, {
                         method: "PUT",
                         headers: {
                             authorization: req.get('authorization')!,
@@ -96,14 +96,14 @@ export function makePostsController(logger: ILogger, fetch: (arg: Request) => Pr
         deleteHandler() {
             return async (req: ExpressRequest, res: ExpressResponse, next: NextFunction) => {
                 try {
-                    await fetch(new Request(REDDIT_URL + '/posts/' + req.params.id, {
+                    await fetchFunc(new Request(REDDIT_URL + '/posts/' + req.params.id, {
                         method: "DELETE",
                         headers: {
                             authorization: req.get('authorization')!,
                             'Content-Type': 'application/json'
                         }
                     }));
-                    const response = await fetch(new Request(QUERY_URL + '/posts/' + req.params.id, {
+                    const response = await fetchFunc(new Request(QUERY_URL + '/posts/' + req.params.id, {
                         method: "DELETE",
                         headers: {
                             authorization: req.get('authorization')!,
