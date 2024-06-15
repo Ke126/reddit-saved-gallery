@@ -127,6 +127,6 @@
 	.card:hover {
 		scale: 1.05;
 		background-color: hsl(from var(--bs-dark) h s calc(l + 5));
-		z-index: 1;
+		z-index: 10;
 	}
 </style>

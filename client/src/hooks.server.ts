@@ -1,4 +1,4 @@
-import { CLIENT_ID, CLIENT_SECRET } from '$env/static/private';
+import { refreshAccessToken } from '$lib/server/auth';
 import type { UserCookie } from '$lib/types/user';
 import type { Handle } from '@sveltejs/kit';
 
@@ -8,17 +8,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 	if (jwt) {
 		const user: UserCookie = JSON.parse(jwt);
 		const FIVE_MIN_IN_MS = 5 * 60 * 1000;
-		// check if expired
+		// check if expired (within 5 min)
 		if (Date.now() + FIVE_MIN_IN_MS >= user.exp_at) {
-			const response = await fetch('https://www.reddit.com/api/v1/access_token', {
-				method: 'POST',
-				body: `grant_type=refresh_token&refresh_token=${user.refresh_token}`,
-				headers: {
-					Authorization: `Basic ${btoa(`${CLIENT_ID}:${CLIENT_SECRET}`)}`,
-					'Content-Type': 'application/x-www-form-urlencoded'
-				}
-			});
-			const json = await response.json();
+			const json = await refreshAccessToken(user.refresh_token);
 			user.access_token = json.access_token;
 			user.exp_at = Date.now() + json.expires_in * 1000;
 			event.cookies.set('jwt', JSON.stringify(user), { path: '/' });

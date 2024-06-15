@@ -1,6 +1,7 @@
 import type { RedditCard, RedditThing } from '$lib/types/reddit';
 
 const FORMATS = ['png', 'jpg', 'jpeg', 'gif'].map((format) => new RegExp(`\\.${format}`, 'i'));
+
 function isImageLink(input: string): boolean {
 	return FORMATS.some((format) => format.test(input));
 }

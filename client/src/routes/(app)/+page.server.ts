@@ -1,8 +1,8 @@
-import { CLIENT_ID, CLIENT_SECRET } from '$env/static/private';
 import type { GetPostsResponseBody } from '$lib/types/response';
-import { formatter } from '$lib/utils/formatter';
+import { formatter } from '$lib/server/formatter';
 import type { PageServerLoad, Actions } from './$types';
 import { redirect } from '@sveltejs/kit';
+import { revokeTokens } from '$lib/server/auth';
 
 export const load: PageServerLoad = async ({ locals, url }) => {
 	console.log('LOAD / (page)');
@@ -42,11 +42,11 @@ export const actions = {
 		const response = await fetch('http://localhost:4000/posts', {
 			method: 'POST',
 			body: JSON.stringify({
-				username: locals.user?.username
+				username: locals.user.username
 			}),
 			headers: {
 				'Content-Type': 'application/json',
-				authorization: `bearer ${locals.user?.access_token}`
+				authorization: `bearer ${locals.user.access_token}`
 			}
 		});
 		console.log(response.status);
@@ -63,7 +63,7 @@ export const actions = {
 		await fetch(`http://localhost:4000/posts/${form.get('_id')}`, {
 			method: 'PATCH',
 			headers: {
-				authorization: `bearer ${locals.user?.access_token}`,
+				authorization: `bearer ${locals.user.access_token}`,
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
@@ -81,23 +81,14 @@ export const actions = {
 		await fetch(`http://localhost:4000/posts/${form.get('_id')}`, {
 			method: form.get('saved') === 'on' ? 'PUT' : 'DELETE',
 			headers: {
-				authorization: `bearer ${locals.user?.access_token}`,
+				authorization: `bearer ${locals.user.access_token}`,
 				'Content-Type': 'application/json'
 			}
 		});
 	},
 	logout: async ({ locals, cookies }) => {
 		console.log('Logout action');
-		const response = await fetch('https://www.reddit.com/api/v1/revoke_token', {
-			method: 'POST',
-			body: `token=${locals.user?.refresh_token}&token_type_hint=refresh_token`,
-			headers: {
-				Authorization: `Basic ${btoa(`${CLIENT_ID}:${CLIENT_SECRET}`)}`,
-				'Content-Type': 'application/x-www-form-urlencoded'
-			}
-		});
-		// const json = await response.json();
-		console.log(response.status);
+		await revokeTokens(locals.user!.refresh_token);
 		cookies.delete('jwt', { path: '/' });
 		redirect(301, '/login');
 	}

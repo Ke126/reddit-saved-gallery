@@ -4,10 +4,10 @@
 	export let totalCount: number;
 	$: numPages = Math.ceil(totalCount / 100);
 
-	function makeURL(page: number) {
-		const url = new URL($page.url);
-		url.searchParams.set('page', `${page}`);
-		return url.toString();
+	function makeURL(url: URL, page: number) {
+		const newUrl = new URL(url);
+		newUrl.searchParams.set('page', `${page}`);
+		return newUrl.toString();
 	}
 </script>
 
@@ -15,10 +15,14 @@
 	<ul class="pagination justify-content-center">
 		{#if curPage > 1}
 			<li class="page-item">
-				<a class="page-link" href={makeURL(1)}><i class="bi bi-chevron-double-left"></i></a>
+				<a class="page-link" href={makeURL($page.url, 1)}
+					><i class="bi bi-chevron-double-left"></i></a
+				>
 			</li>
 			<li class="page-item">
-				<a class="page-link" href={makeURL(curPage - 1)}><i class="bi bi-chevron-left"></i></a>
+				<a class="page-link" href={makeURL($page.url, curPage - 1)}
+					><i class="bi bi-chevron-left"></i></a
+				>
 			</li>
 		{/if}
 		{#each { length: numPages } as _, pageNum}
@@ -28,16 +32,20 @@
 				</li>
 			{:else}
 				<li class="page-item">
-					<a class="page-link" href={makeURL(pageNum + 1)}>{pageNum + 1}</a>
+					<a class="page-link" href={makeURL($page.url, pageNum + 1)}>{pageNum + 1}</a>
 				</li>
 			{/if}
 		{/each}
 		{#if curPage < numPages}
 			<li class="page-item">
-				<a class="page-link" href={makeURL(curPage + 1)}><i class="bi bi-chevron-right"></i></a>
+				<a class="page-link" href={makeURL($page.url, curPage + 1)}
+					><i class="bi bi-chevron-right"></i></a
+				>
 			</li>
 			<li class="page-item">
-				<a class="page-link" href={makeURL(numPages)}><i class="bi bi-chevron-double-right"></i></a>
+				<a class="page-link" href={makeURL($page.url, numPages)}
+					><i class="bi bi-chevron-double-right"></i></a
+				>
 			</li>
 		{/if}
 	</ul>
