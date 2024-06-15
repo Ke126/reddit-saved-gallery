@@ -3,7 +3,7 @@ import 'dotenv/config';
 import type { RedditListing } from '../models/redditModel.js';
 import type { IRedditApiService } from './redditApiServiceModel.js';
 
-const QUERY_URL = process.env.QUERY_URL!;
+const QUERY_URL = `http://query:${process.env.QUERY_PORT}`;
 const REDDIT_SAVED_URL = (username: string) => `https://oauth.reddit.com/user/${username}/saved?limit=100&raw_json=1`;
 const REDDIT_SAVE_URL = 'https://oauth.reddit.com/api/save?';
 const REDDIT_UNSAVE_URL = 'https://oauth.reddit.com/api/unsave?';

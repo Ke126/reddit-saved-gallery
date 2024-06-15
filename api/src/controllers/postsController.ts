@@ -4,8 +4,8 @@ import 'dotenv/config';
 import qs from "qs";
 
 export function makePostsController(logger: ILogger, fetchFunc: typeof fetch) {
-    const QUERY_URL = process.env.QUERY_URL!;
-    const REDDIT_URL = process.env.REDDIT_URL!;
+    const QUERY_URL = `http://query:${process.env.QUERY_PORT}`;
+    const REDDIT_URL = `http://reddit:${process.env.REDDIT_PORT}`;
     return {
         // QUERY
         getHandler() {

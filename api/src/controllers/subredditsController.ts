@@ -3,7 +3,7 @@ import type { ILogger } from "../shared/loggerModel.js"
 import 'dotenv/config';
 
 export function makeSubredditsController(logger: ILogger, fetchFunc: typeof fetch) {
-    const QUERY_URL = process.env.QUERY_URL!;
+    const QUERY_URL = `http://query:${process.env.QUERY_PORT}`;
     return {
         // QUERY
         getHandler() {

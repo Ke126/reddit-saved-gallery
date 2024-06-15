@@ -4,16 +4,19 @@ import type { RedditThing, RedditThingDoc, Subreddit, UserDoc, JoinedDoc, ReadRe
 import type { IMongoDbService } from './mongoDbServiceModel.js';
 import { AnyBulkWriteOperation, Collection, MongoClient } from 'mongodb';
 import type { QueryParams } from '../models/queryModel.js';
+import { getMongoPassword, getMongoUsername } from '../utils/secrets.js';
 
 export class MongoDbService implements IMongoDbService {
     private logger: ILogger;
     private postsCollection!: Collection<RedditThingDoc>;
     private usersCollection!: Collection<UserDoc>;
+
     constructor(logger: ILogger) {
         this.logger = logger;
     }
     async connect() {
-        const client = new MongoClient(process.env.MONGO_STRING!);
+        const connectionString = `mongodb://${await getMongoUsername()}:${await getMongoPassword()}@mongo:${process.env.MONGO_PORT}`
+        const client = new MongoClient(connectionString);
         await client.connect();
         const db = client.db(process.env.DB_NAME!);
         this.postsCollection = db.collection(process.env.POSTS_COLLECTION_NAME!);
