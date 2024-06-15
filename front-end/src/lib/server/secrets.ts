@@ -1,25 +1,25 @@
 import { env } from '$env/dynamic/private';
 import fs from 'node:fs/promises';
 
-let CLIENT_ID: string;
-let CLIENT_SECRET: string;
+let OAUTH2_CLIENT_ID: string;
+let OAUTH2_CLIENT_SECRET: string;
 
 export async function getOAuth2ClientId(): Promise<string> {
-	if (CLIENT_ID) return CLIENT_ID;
+	if (OAUTH2_CLIENT_ID) return OAUTH2_CLIENT_ID;
 	if (env.NODE_ENV === 'production') {
-		CLIENT_ID = await fs.readFile(env.CLIENT_ID_FILE!, 'utf-8');
+		OAUTH2_CLIENT_ID = await fs.readFile(env.OAUTH2_CLIENT_ID_FILE!, 'utf-8');
 	} else {
-		CLIENT_ID = env.CLIENT_ID!;
+		OAUTH2_CLIENT_ID = env.OAUTH2_CLIENT_ID!;
 	}
-	return CLIENT_ID;
+	return OAUTH2_CLIENT_ID;
 }
 
 export async function getOAuth2ClientSecret() {
-	if (CLIENT_SECRET) return CLIENT_SECRET;
+	if (OAUTH2_CLIENT_SECRET) return OAUTH2_CLIENT_SECRET;
 	if (env.NODE_ENV === 'production') {
-		CLIENT_SECRET = await fs.readFile(env.CLIENT_SECRET_FILE!, 'utf-8');
+		OAUTH2_CLIENT_SECRET = await fs.readFile(env.OAUTH2_CLIENT_SECRET_FILE!, 'utf-8');
 	} else {
-		CLIENT_SECRET = env.CLIENT_SECRET!;
+		OAUTH2_CLIENT_SECRET = env.OAUTH2_CLIENT_SECRET!;
 	}
-	return CLIENT_SECRET;
+	return OAUTH2_CLIENT_SECRET;
 }
