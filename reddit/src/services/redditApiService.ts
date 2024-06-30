@@ -1,5 +1,4 @@
 import type { ILogger } from '../shared/loggerModel.js';
-import 'dotenv/config';
 import type { RedditListing } from '../models/redditModel.js';
 import type { IRedditApiService } from './redditApiServiceModel.js';
 

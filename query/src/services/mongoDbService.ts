@@ -1,5 +1,4 @@
 import type { ILogger } from '../shared/loggerModel.js';
-import 'dotenv/config';
 import type { RedditThing, RedditThingDoc, Subreddit, UserDoc, JoinedDoc, ReadResult } from '../models/mongoDbModel.js';
 import type { IMongoDbService } from './mongoDbServiceModel.js';
 import { AnyBulkWriteOperation, Collection, MongoClient } from 'mongodb';

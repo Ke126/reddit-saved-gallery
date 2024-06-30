@@ -1,6 +1,5 @@
 import type { Request as ExpressRequest, Response as ExpressResponse, NextFunction } from "express"
 import type { ILogger } from "../shared/loggerModel.js"
-import 'dotenv/config';
 import qs from "qs";
 
 export function makePostsController(logger: ILogger, fetchFunc: typeof fetch) {

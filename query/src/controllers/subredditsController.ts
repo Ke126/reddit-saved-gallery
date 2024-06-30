@@ -1,6 +1,5 @@
 import type { Request, Response, NextFunction } from "express"
 import type { ILogger } from '../shared/loggerModel.js';
-import 'dotenv/config';
 import { IMongoDbService } from "../services/mongoDbServiceModel.js";
 import { parseJwt } from "../utils/parse.js";
 

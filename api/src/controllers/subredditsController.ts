@@ -1,6 +1,5 @@
 import type { Request as ExpressRequest, Response as ExpressResponse, NextFunction } from "express"
 import type { ILogger } from "../shared/loggerModel.js"
-import 'dotenv/config';
 
 export function makeSubredditsController(logger: ILogger, fetchFunc: typeof fetch) {
     const QUERY_URL = `http://query:${process.env.QUERY_PORT}`;
