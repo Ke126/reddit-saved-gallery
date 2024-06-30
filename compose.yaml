@@ -1,0 +1,88 @@
+name: reddit_app
+
+networks:
+  app-net:
+    name: reddit-application
+
+services:
+  # frontend:
+  #   image: frontend:latest
+  #   build: ./frontend
+  #   networks:
+  #     - app-net
+  #   ports:
+  #     - 3000:3000
+
+  api:
+    image: api:latest
+    build: ./api
+    networks:
+      - app-net
+    ports:
+      - ${API_PORT}:${API_PORT}
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      API_PORT: ${API_PORT}
+      QUERY_PORT: ${QUERY_PORT}
+      REDDIT_PORT: ${REDDIT_PORT}
+
+  query:
+    image: query:latest
+    build: ./query
+    networks:
+      - app-net
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      API_PORT: ${API_PORT}
+      QUERY_PORT: ${QUERY_PORT}
+      REDDIT_PORT: ${REDDIT_PORT}
+      MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/mongo_username
+      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo_password
+      MONGO_PORT: ${MONGO_PORT}
+      DB_NAME: ${DB_NAME}
+      POSTS_COLLECTION_NAME: ${POSTS_COLLECTION_NAME}
+      USERS_COLLECTION_NAME: ${USERS_COLLECTION_NAME}
+    secrets:
+      - mongo_username
+      - mongo_password
+    depends_on:
+      - mongo
+
+  reddit:
+    image: reddit:latest
+    build: ./reddit
+    networks:
+      - app-net
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - API_PORT=${API_PORT}
+      - QUERY_PORT=${QUERY_PORT}
+      - REDDIT_PORT=${REDDIT_PORT}
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/mongo_username
+      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo_password
+    networks:
+      - app-net
+    secrets:
+      - mongo_username
+      - mongo_password
+
+secrets:
+  client_id:
+    environment: CLIENT_ID
+  client_secret:
+    environment: CLIENT_SECRET
+  mongo_username: 
+    environment: MONGO_INITDB_ROOT_USERNAME
+  mongo_password:
+    environment: MONGO_INITDB_ROOT_PASSWORD
+
+#     volumes:
+#       - ./mongodb:/data/db
+
+# # volumes:
+# #   mongodb:
