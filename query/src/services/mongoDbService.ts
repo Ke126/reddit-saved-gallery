@@ -14,12 +14,12 @@ export class MongoDbService implements IMongoDbService {
         this.logger = logger;
     }
     async connect() {
-        const connectionString = `mongodb://${await getMongoUsername()}:${await getMongoPassword()}@mongo:${process.env.MONGO_PORT}`
+        const connectionString = `mongodb://${await getMongoUsername()}:${await getMongoPassword()}@mongo:27017`
         const client = new MongoClient(connectionString);
         await client.connect();
-        const db = client.db(process.env.DB_NAME!);
-        this.postsCollection = db.collection(process.env.POSTS_COLLECTION_NAME!);
-        this.usersCollection = db.collection(process.env.USERS_COLLECTION_NAME!);
+        const db = client.db(process.env.DB_NAME || 'reddit');
+        this.postsCollection = db.collection(process.env.POSTS_COLLECTION_NAME || 'posts');
+        this.usersCollection = db.collection(process.env.USERS_COLLECTION_NAME || 'users');
         this.logger.info('Connected to MongoDB');
     }
     async readPosts(user: string, query: QueryParams): Promise<ReadResult> {

@@ -2,7 +2,7 @@ import type { ILogger } from '../shared/loggerModel.js';
 import type { RedditListing } from '../models/redditModel.js';
 import type { IRedditApiService } from './redditApiServiceModel.js';
 
-const QUERY_URL = `http://query:${process.env.QUERY_PORT}`;
+const QUERY_URL = `http://query:${process.env.QUERY_PORT || 4001}`;
 const REDDIT_SAVED_URL = (username: string) => `https://oauth.reddit.com/user/${username}/saved?limit=100&raw_json=1`;
 const REDDIT_SAVE_URL = 'https://oauth.reddit.com/api/save?';
 const REDDIT_UNSAVE_URL = 'https://oauth.reddit.com/api/unsave?';

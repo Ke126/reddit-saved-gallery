@@ -2,7 +2,7 @@ import type { Request as ExpressRequest, Response as ExpressResponse, NextFuncti
 import type { ILogger } from "../shared/loggerModel.js"
 
 export function makeSubredditsController(logger: ILogger, fetchFunc: typeof fetch) {
-    const QUERY_URL = `http://query:${process.env.QUERY_PORT}`;
+    const QUERY_URL = `http://query:${process.env.QUERY_PORT || 4001}`;
     return {
         // QUERY
         getHandler() {

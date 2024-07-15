@@ -11,7 +11,11 @@ services:
   #   networks:
   #     - app-net
   #   ports:
-  #     - 3000:3000
+  #     - ${FRONTEND_PORT}:${FRONTEND_PORT}
+  #   environment:
+  #     NODE_ENV: ${NODE_ENV}
+  #     FRONTEND_PORT: 
+  #     API_PORT: ${API_PORT}
 
   api:
     image: api:latest
@@ -38,10 +42,6 @@ services:
       REDDIT_PORT: ${REDDIT_PORT}
       MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/mongo_username
       MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo_password
-      MONGO_PORT: ${MONGO_PORT}
-      DB_NAME: ${DB_NAME}
-      POSTS_COLLECTION_NAME: ${POSTS_COLLECTION_NAME}
-      USERS_COLLECTION_NAME: ${USERS_COLLECTION_NAME}
     secrets:
       - mongo_username
       - mongo_password
@@ -65,6 +65,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/mongo_username
       MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo_password
+    ports:
+      - 27017:27017
     networks:
       - app-net
     secrets:

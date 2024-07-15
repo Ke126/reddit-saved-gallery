@@ -3,8 +3,8 @@ import type { ILogger } from "../shared/loggerModel.js"
 import qs from "qs";
 
 export function makePostsController(logger: ILogger, fetchFunc: typeof fetch) {
-    const QUERY_URL = `http://query:${process.env.QUERY_PORT}`;
-    const REDDIT_URL = `http://reddit:${process.env.REDDIT_PORT}`;
+    const QUERY_URL = `http://query:${process.env.QUERY_PORT || 4001}`;
+    const REDDIT_URL = `http://reddit:${process.env.REDDIT_PORT || 4002}`;
     return {
         // QUERY
         getHandler() {
