@@ -5,30 +5,34 @@ networks:
     name: reddit-application
 
 services:
-  # frontend:
-  #   image: frontend:latest
-  #   build: ./frontend
-  #   networks:
-  #     - app-net
-  #   ports:
-  #     - ${FRONTEND_PORT}:${FRONTEND_PORT}
-  #   environment:
-  #     NODE_ENV: ${NODE_ENV}
-  #     FRONTEND_PORT: 
-  #     API_PORT: ${API_PORT}
+  nginx:
+    image: nginx:latest
+    build: ./nginx
+    networks:
+      - app-net
+    ports:
+      - 80:80
+    depends_on:
+      - frontend
+
+  frontend:
+    image: frontend:latest
+    build: ./frontend
+    networks:
+      - app-net
+    environment:
+      OAUTH2_CLIENT_ID_FILE: /run/secrets/client_id
+      OAUTH2_CLIENT_SECRET_FILE: /run/secrets/client_secret
+      ORIGIN: ${ORIGIN}
+    secrets:
+      - client_id
+      - client_secret
 
   api:
     image: api:latest
     build: ./api
     networks:
       - app-net
-    ports:
-      - ${API_PORT}:${API_PORT}
-    environment:
-      NODE_ENV: ${NODE_ENV}
-      API_PORT: ${API_PORT}
-      QUERY_PORT: ${QUERY_PORT}
-      REDDIT_PORT: ${REDDIT_PORT}
 
   query:
     image: query:latest
@@ -36,10 +40,6 @@ services:
     networks:
       - app-net
     environment:
-      NODE_ENV: ${NODE_ENV}
-      API_PORT: ${API_PORT}
-      QUERY_PORT: ${QUERY_PORT}
-      REDDIT_PORT: ${REDDIT_PORT}
       MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/mongo_username
       MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo_password
     secrets:
@@ -53,11 +53,6 @@ services:
     build: ./reddit
     networks:
       - app-net
-    environment:
-      - NODE_ENV=${NODE_ENV}
-      - API_PORT=${API_PORT}
-      - QUERY_PORT=${QUERY_PORT}
-      - REDDIT_PORT=${REDDIT_PORT}
 
   mongo:
     image: mongo
@@ -75,9 +70,9 @@ services:
 
 secrets:
   client_id:
-    environment: CLIENT_ID
+    environment: OAUTH2_CLIENT_ID
   client_secret:
-    environment: CLIENT_SECRET
+    environment: OAUTH2_CLIENT_SECRET
   mongo_username: 
     environment: MONGO_INITDB_ROOT_USERNAME
   mongo_password:

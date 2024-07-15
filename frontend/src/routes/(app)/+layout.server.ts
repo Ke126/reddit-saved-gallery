@@ -8,7 +8,7 @@ export const load: LayoutServerLoad = async ({ locals }) => {
 		console.log('Not authenticated');
 		redirect(301, '/login');
 	}
-	const response = await fetch('http://localhost:4000/subreddits', {
+	const response = await fetch('http://api:4000/subreddits', {
 		headers: {
 			authorization: `bearer ${locals.user.access_token}`
 		}

@@ -4,18 +4,19 @@ import { redirect } from '@sveltejs/kit';
 import { getOAuth2ClientId, getOAuth2ClientSecret } from './secrets';
 
 const scope = 'identity,history,save';
+const REDIRECT_URI = `${env.ORIGIN}/callback`
 
 export async function startOAuth2Flow(state: string) {
 	return redirect(
 		301,
-		`https://www.reddit.com/api/v1/authorize?client_id=${await getOAuth2ClientId()}&response_type=code&state=${state}&redirect_uri=${env.REDIRECT_URI}&duration=permanent&scope=${scope}`
+		`https://www.reddit.com/api/v1/authorize?client_id=${await getOAuth2ClientId()}&response_type=code&state=${state}&redirect_uri=${REDIRECT_URI}&duration=permanent&scope=${scope}`
 	);
 }
 
 export async function getAccessToken(authorizationCode: string) {
 	const response = await fetch('https://www.reddit.com/api/v1/access_token', {
 		method: 'POST',
-		body: `grant_type=authorization_code&code=${authorizationCode}&redirect_uri=${env.REDIRECT_URI}`,
+		body: `grant_type=authorization_code&code=${authorizationCode}&redirect_uri=${REDIRECT_URI}`,
 		headers: {
 			Authorization: `Basic ${btoa(`${await getOAuth2ClientId()}:${await getOAuth2ClientSecret()}`)}`,
 			'Content-Type': 'application/x-www-form-urlencoded'

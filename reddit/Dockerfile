@@ -14,4 +14,5 @@ RUN npm ci --production
 COPY --from=builder /usr/src/app/dist/ /usr/src/app/dist/
 EXPOSE 4002
 USER node
+ENV NODE_ENV=production
 CMD ["node", "dist"]

@@ -10,7 +10,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 		console.log('Not authenticated');
 		redirect(301, '/login');
 	}
-	const fetchurl = new URL('http://localhost:4000/posts');
+	const fetchurl = new URL('http://api:4000/posts');
 	url.searchParams.forEach((value: string, key: string) => {
 		console.log(key, value);
 		fetchurl.searchParams.append(key, value);
@@ -39,7 +39,7 @@ export const actions = {
 			console.log('Not authenticated');
 			redirect(301, '/login');
 		}
-		const response = await fetch('http://localhost:4000/posts', {
+		const response = await fetch('http://api:4000/posts', {
 			method: 'POST',
 			body: JSON.stringify({
 				username: locals.user.username
@@ -60,7 +60,7 @@ export const actions = {
 			redirect(301, '/login');
 		}
 		const form = await request.formData();
-		await fetch(`http://localhost:4000/posts/${form.get('_id')}`, {
+		await fetch(`http://api:4000/posts/${form.get('_id')}`, {
 			method: 'PATCH',
 			headers: {
 				authorization: `bearer ${locals.user.access_token}`,
@@ -78,7 +78,7 @@ export const actions = {
 			redirect(301, '/login');
 		}
 		const form = await request.formData();
-		await fetch(`http://localhost:4000/posts/${form.get('_id')}`, {
+		await fetch(`http://api:4000/posts/${form.get('_id')}`, {
 			method: form.get('saved') === 'on' ? 'PUT' : 'DELETE',
 			headers: {
 				authorization: `bearer ${locals.user.access_token}`,
