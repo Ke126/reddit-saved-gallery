@@ -1,8 +1,9 @@
 import type { GetPostsResponseBody } from '$lib/types/response';
 import { formatter } from '$lib/server/formatter';
 import type { PageServerLoad, Actions } from './$types';
-import { redirect } from '@sveltejs/kit';
+import { redirect, fail } from '@sveltejs/kit';
 import { revokeTokens } from '$lib/server/auth';
+import { getApiServer } from '$lib/server/secrets';
 
 export const load: PageServerLoad = async ({ locals, url }) => {
 	console.log('LOAD / (page)');
@@ -10,7 +11,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 		console.log('Not authenticated');
 		redirect(301, '/login');
 	}
-	const fetchurl = new URL('http://api:4000/posts');
+	const fetchurl = new URL(`${getApiServer()}/posts`);
 	url.searchParams.forEach((value: string, key: string) => {
 		console.log(key, value);
 		fetchurl.searchParams.append(key, value);
@@ -39,19 +40,26 @@ export const actions = {
 			console.log('Not authenticated');
 			redirect(301, '/login');
 		}
-		const response = await fetch('http://api:4000/posts', {
-			method: 'POST',
-			body: JSON.stringify({
-				username: locals.user.username
-			}),
-			headers: {
-				'Content-Type': 'application/json',
-				authorization: `bearer ${locals.user.access_token}`
+		try {
+			const response = await fetch(`${getApiServer()}/posts`, {
+				method: 'POST',
+				body: JSON.stringify({
+					username: locals.user.username
+				}),
+				headers: {
+					'Content-Type': 'application/json',
+					authorization: `bearer ${locals.user.access_token}`
+				}
+			});
+			if (!response.ok) {
+				return fail(response.status);
 			}
-		});
-		console.log(response.status);
-		console.log('Form done');
-		redirect(301, '/');
+			console.log(response.status);
+			console.log('Form done');
+		}
+		catch {
+			return fail(500);
+		}
 	},
 	pin: async ({ locals, request }) => {
 		console.log('Pin action');
@@ -60,16 +68,24 @@ export const actions = {
 			redirect(301, '/login');
 		}
 		const form = await request.formData();
-		await fetch(`http://api:4000/posts/${form.get('_id')}`, {
-			method: 'PATCH',
-			headers: {
-				authorization: `bearer ${locals.user.access_token}`,
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				pinned: form.get('pinned') === 'on'
-			})
-		});
+		try {
+			const response = await fetch(`${getApiServer()}/posts/${form.get('_id')}`, {
+				method: 'PATCH',
+				headers: {
+					authorization: `bearer ${locals.user.access_token}`,
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					pinned: form.get('pinned') === 'on'
+				})
+			});
+			if (!response.ok) {
+				return fail(response.status);
+			}
+		}
+		catch {
+			return fail(500);
+		}
 	},
 	save: async ({ locals, request }) => {
 		console.log('Save action');
@@ -78,13 +94,21 @@ export const actions = {
 			redirect(301, '/login');
 		}
 		const form = await request.formData();
-		await fetch(`http://api:4000/posts/${form.get('_id')}`, {
-			method: form.get('saved') === 'on' ? 'PUT' : 'DELETE',
-			headers: {
-				authorization: `bearer ${locals.user.access_token}`,
-				'Content-Type': 'application/json'
+		try {
+			const response = await fetch(`${getApiServer()}/posts/${form.get('_id')}`, {
+				method: form.get('saved') === 'on' ? 'PUT' : 'DELETE',
+				headers: {
+					authorization: `bearer ${locals.user.access_token}`,
+					'Content-Type': 'application/json'
+				}
+			});
+			if (!response.ok) {
+				return fail(response.status);
 			}
-		});
+		}
+		catch {
+			return fail(500);
+		}
 	},
 	logout: async ({ locals, cookies }) => {
 		console.log('Logout action');

@@ -1,14 +1,31 @@
+<script>
+	import { onMount } from "svelte";
+	const features = [
+		'Pull saved posts directly from your Reddit account',
+		'View post previews in website, with direct links straight to Reddit',
+		'Search and filter by title, subreddit, author, or selftext',
+		'Locally pin and unpin posts for viewing convenience',
+		'Save and unsave posts directly to Reddit'
+	];
+	let activeIdx = -1;
+
+	onMount(() => {
+		setInterval(() => (activeIdx = (activeIdx + 1) % features.length), 5000);
+		activeIdx = 0;
+	});
+</script>
+
 <div class="container text-center position-absolute top-50 start-50 translate-middle">
 	<h1 class="display-1">Reddit Saved Gallery</h1>
-	<p>An application allowing Reddit users to efficiently parse their account's saved posts.</p>
-	<p>Features:</p>
-	<p>- Query by title, subreddit, author, or selftext</p>
-	<p>- Display counts of posts grouped by subreddit</p>
-	<p>- Filter posts by subreddit inclusive/exclusive</p>
-	<p>- Locally pin and unpin posts for easier viewing</p>
-	<p>- Save and unsave posts</p>
-	<p>- Pull newly saved posts directly from Reddit's API</p>
-	<br />
+	<h6 class="display-6 mb-5">
+		View, filter, and manage your Reddit account's saved posts!
+	</h6>
+	<h6>Features:</h6>
+	<ul class="list-group d-inline-block mb-5">
+		{#each features as feature, idx}
+			<li class="list-group-item feature" class:active={activeIdx === idx}>- {feature}</li>
+		{/each}
+	</ul>
 
 	<form method="POST">
 		<button class="btn btn-outline-light" type="submit"
@@ -16,3 +33,12 @@
 		>
 	</form>
 </div>
+
+<style>
+	.feature {
+		transition:
+			background 0.5s ease-in-out,
+			color 0.5s ease-in-out,
+			border-color 0.5s ease-in-out;
+	}
+</style>

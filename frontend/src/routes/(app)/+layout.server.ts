@@ -1,6 +1,7 @@
 import { redirect } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
 import type { GetSubredditsResponseBody } from '$lib/types/response';
+import { getApiServer } from '$lib/server/secrets';
 
 export const load: LayoutServerLoad = async ({ locals }) => {
 	console.log('LOAD / (layout)');
@@ -8,7 +9,7 @@ export const load: LayoutServerLoad = async ({ locals }) => {
 		console.log('Not authenticated');
 		redirect(301, '/login');
 	}
-	const response = await fetch('http://api:4000/subreddits', {
+	const response = await fetch(`${getApiServer()}/subreddits`, {
 		headers: {
 			authorization: `bearer ${locals.user.access_token}`
 		}

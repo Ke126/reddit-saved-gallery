@@ -2,6 +2,7 @@
 	import { enhance } from '$app/forms';
 	import type { RedditCard } from '$lib/types/reddit';
 	import { timeSince, dateString } from '$lib/utils/date';
+	import { toast } from '$lib/toast/toast';
 	export let post: RedditCard;
 
 	const BASE_URL = 'https://www.reddit.com';
@@ -46,7 +47,22 @@
 						method="POST"
 						action="?/pin"
 						use:enhance={() => {
-							return ({ update }) => update({ reset: false, invalidateAll: false });
+							const { promise, resolve, reject } = Promise.withResolvers();
+							toast.promise(promise, {
+								pending: 'Loading...',
+								fulfilled: post.pinned ? 'Pinned!' : 'Unpinned!',
+								rejected: `Failed to ${post.pinned ? 'pin' : 'unpin'} post ${post._id}. Please try again later.`
+							});
+							return async ({ result, update }) => {
+								await update({ reset: true, invalidateAll: false });
+								if (result.type === 'success') {
+									resolve(null);
+								}
+								else {
+									reject(null);
+									post.pinned = !post.pinned;
+								}
+							};
 						}}
 					>
 						<input type="hidden" name="_id" value={post._id} />
@@ -68,7 +84,22 @@
 						method="POST"
 						action="?/save"
 						use:enhance={() => {
-							return ({ update }) => update({ reset: false, invalidateAll: false });
+							const { promise, resolve, reject } = Promise.withResolvers();
+							toast.promise(promise, {
+								pending: 'Loading...',
+								fulfilled: saved ? 'Saved!' : 'Unsaved!',
+								rejected: `Failed to ${saved ? 'save' : 'unsave'} post ${post._id}. Please try again later.`
+							});
+							return async ({ result, update }) => {
+								await update({ reset: true, invalidateAll: false });
+								if (result.type === 'success') {
+									resolve(null);
+								}
+								else {
+									reject(null);
+									saved = !saved;
+								}
+							};
 						}}
 					>
 						<input type="hidden" name="_id" value={post._id} />

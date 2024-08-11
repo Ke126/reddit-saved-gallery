@@ -23,3 +23,12 @@ export async function getOAuth2ClientSecret() {
 	}
 	return OAUTH2_CLIENT_SECRET;
 }
+
+export function getApiServer() {
+	if (env.NODE_ENV === 'production') {
+		return 'http://api:4000';
+	}
+	else {
+		return 'http://localhost:4000';
+	}
+}

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
+	import { toast } from '$lib/toast/toast';
 	import type { Subreddit } from '$lib/types/reddit';
 
 	export let subreddits: Subreddit[];
@@ -131,9 +132,22 @@
 						action="?/pull"
 						use:enhance={() => {
 							isLoading = true;
-							return async ({ update }) => {
-								await update();
+							const { promise, resolve, reject } = Promise.withResolvers();
+							toast.promise(promise, {
+								pending: 'Fetching saved posts from Reddit. This may take a few seconds...',
+								fulfilled: 'Success!',
+								rejected: 'Failed to fetch posts from Reddit. Please try again later.'
+							});
+							return async ({ result, update }) => {
+								await update({ reset: true, invalidateAll: true });
 								isLoading = false;
+								if (result.type === 'success') {
+									resolve(null);
+									console.log("HERE");
+								}
+								else {
+									reject(null);
+								}
 							};
 						}}
 					>
