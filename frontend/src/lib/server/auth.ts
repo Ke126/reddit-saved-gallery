@@ -1,15 +1,15 @@
 import { env } from '$env/dynamic/private';
 import type { AccessTokenResponse, MeResponse } from '$lib/types/response';
 import { redirect } from '@sveltejs/kit';
-import { getOAuth2ClientId, getOAuth2ClientSecret } from './secrets';
+import { secrets } from './secrets';
 
 const scope = 'identity,history,save';
 const REDIRECT_URI = `${env.ORIGIN}/callback`
 
-export async function startOAuth2Flow(state: string) {
+export async function startOAuthFlow(state: string) {
 	return redirect(
 		301,
-		`https://www.reddit.com/api/v1/authorize?client_id=${await getOAuth2ClientId()}&response_type=code&state=${state}&redirect_uri=${REDIRECT_URI}&duration=permanent&scope=${scope}`
+		`https://www.reddit.com/api/v1/authorize?client_id=${secrets.OAUTH_CLIENT_ID}&response_type=code&state=${state}&redirect_uri=${REDIRECT_URI}&duration=permanent&scope=${scope}`
 	);
 }
 
@@ -18,7 +18,7 @@ export async function getAccessToken(authorizationCode: string) {
 		method: 'POST',
 		body: `grant_type=authorization_code&code=${authorizationCode}&redirect_uri=${REDIRECT_URI}`,
 		headers: {
-			Authorization: `Basic ${btoa(`${await getOAuth2ClientId()}:${await getOAuth2ClientSecret()}`)}`,
+			Authorization: `Basic ${btoa(`${secrets.OAUTH_CLIENT_ID}:${secrets.OAUTH_CLIENT_SECRET}`)}`,
 			'Content-Type': 'application/x-www-form-urlencoded'
 		}
 	});
@@ -32,7 +32,7 @@ export async function refreshAccessToken(refreshToken: string) {
 		method: 'POST',
 		body: `grant_type=refresh_token&refresh_token=${refreshToken}`,
 		headers: {
-			Authorization: `Basic ${btoa(`${await getOAuth2ClientId()}:${await getOAuth2ClientSecret()}`)}`,
+			Authorization: `Basic ${btoa(`${secrets.OAUTH_CLIENT_ID}:${secrets.OAUTH_CLIENT_SECRET}`)}`,
 			'Content-Type': 'application/x-www-form-urlencoded'
 		}
 	});
@@ -57,7 +57,7 @@ export async function revokeTokens(refreshToken: string) {
 		method: 'POST',
 		body: `token=${refreshToken}&token_type_hint=refresh_token`,
 		headers: {
-			Authorization: `Basic ${btoa(`${await getOAuth2ClientId()}:${await getOAuth2ClientSecret()}`)}`,
+			Authorization: `Basic ${btoa(`${secrets.OAUTH_CLIENT_ID}:${secrets.OAUTH_CLIENT_SECRET}`)}`,
 			'Content-Type': 'application/x-www-form-urlencoded'
 		}
 	});

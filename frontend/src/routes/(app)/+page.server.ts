@@ -3,7 +3,7 @@ import { formatter } from '$lib/server/formatter';
 import type { PageServerLoad, Actions } from './$types';
 import { redirect, fail } from '@sveltejs/kit';
 import { revokeTokens } from '$lib/server/auth';
-import { getApiServer } from '$lib/server/secrets';
+import { secrets } from '$lib/server/secrets';
 
 export const load: PageServerLoad = async ({ locals, url }) => {
 	console.log('LOAD / (page)');
@@ -11,7 +11,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 		console.log('Not authenticated');
 		redirect(301, '/login');
 	}
-	const fetchurl = new URL(`${getApiServer()}/posts`);
+	const fetchurl = new URL(`${secrets.API_SERVER}/posts`);
 	url.searchParams.forEach((value: string, key: string) => {
 		console.log(key, value);
 		fetchurl.searchParams.append(key, value);
@@ -38,10 +38,11 @@ export const actions = {
 		console.log('Pull action');
 		if (!locals.user) {
 			console.log('Not authenticated');
-			redirect(301, '/login');
+			return fail(401);
+			// redirect(301, '/login');
 		}
 		try {
-			const response = await fetch(`${getApiServer()}/posts`, {
+			const response = await fetch(`${secrets.API_SERVER}/posts`, {
 				method: 'POST',
 				body: JSON.stringify({
 					username: locals.user.username
@@ -65,11 +66,12 @@ export const actions = {
 		console.log('Pin action');
 		if (!locals.user) {
 			console.log('Not authenticated');
-			redirect(301, '/login');
+			return fail(401);
+			// redirect(301, '/login');
 		}
 		const form = await request.formData();
 		try {
-			const response = await fetch(`${getApiServer()}/posts/${form.get('_id')}`, {
+			const response = await fetch(`${secrets.API_SERVER}/posts/${form.get('_id')}`, {
 				method: 'PATCH',
 				headers: {
 					authorization: `bearer ${locals.user.access_token}`,
@@ -91,11 +93,12 @@ export const actions = {
 		console.log('Save action');
 		if (!locals.user) {
 			console.log('Not authenticated');
-			redirect(301, '/login');
+			return fail(401);
+			// redirect(301, '/login');
 		}
 		const form = await request.formData();
 		try {
-			const response = await fetch(`${getApiServer()}/posts/${form.get('_id')}`, {
+			const response = await fetch(`${secrets.API_SERVER}/posts/${form.get('_id')}`, {
 				method: form.get('saved') === 'on' ? 'PUT' : 'DELETE',
 				headers: {
 					authorization: `bearer ${locals.user.access_token}`,
@@ -113,7 +116,7 @@ export const actions = {
 	logout: async ({ locals, cookies }) => {
 		console.log('Logout action');
 		await revokeTokens(locals.user!.refresh_token);
-		cookies.delete('jwt', { path: '/' });
+		cookies.delete('auth', { path: '/' });
 		redirect(301, '/login');
 	}
 } satisfies Actions;

@@ -1,4 +1,5 @@
 import type { PageServerLoad } from './$types';
+import { encrypt } from '$lib/server/cookie';
 import { redirect } from '@sveltejs/kit';
 import type { UserCookie } from '$lib/types/user';
 import { getAccessToken, getUserInfo } from '$lib/server/auth';
@@ -18,7 +19,7 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 			refresh_token: json1.refresh_token,
 			exp_at: Date.now() + json1.expires_in * 1000
 		};
-		cookies.set('jwt', JSON.stringify(cookie), { path: '/' });
+		cookies.set('auth', encrypt(JSON.stringify(cookie)), { path: '/' });
 	}
 	redirect(301, '/');
 };

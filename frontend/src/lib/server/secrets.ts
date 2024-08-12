@@ -1,34 +1,14 @@
 import { env } from '$env/dynamic/private';
-import fs from 'node:fs/promises';
+import fs from 'node:fs';
 
-let OAUTH2_CLIENT_ID: string;
-let OAUTH2_CLIENT_SECRET: string;
-
-export async function getOAuth2ClientId(): Promise<string> {
-	if (OAUTH2_CLIENT_ID) return OAUTH2_CLIENT_ID;
-	if (env.NODE_ENV === 'production') {
-		OAUTH2_CLIENT_ID = await fs.readFile(env.OAUTH2_CLIENT_ID_FILE!, 'utf-8');
-	} else {
-		OAUTH2_CLIENT_ID = env.OAUTH2_CLIENT_ID!;
-	}
-	return OAUTH2_CLIENT_ID;
+function isProdEnv() {
+	return env.NODE_ENV === 'production';
 }
 
-export async function getOAuth2ClientSecret() {
-	if (OAUTH2_CLIENT_SECRET) return OAUTH2_CLIENT_SECRET;
-	if (env.NODE_ENV === 'production') {
-		OAUTH2_CLIENT_SECRET = await fs.readFile(env.OAUTH2_CLIENT_SECRET_FILE!, 'utf-8');
-	} else {
-		OAUTH2_CLIENT_SECRET = env.OAUTH2_CLIENT_SECRET!;
-	}
-	return OAUTH2_CLIENT_SECRET;
-}
-
-export function getApiServer() {
-	if (env.NODE_ENV === 'production') {
-		return 'http://api:4000';
-	}
-	else {
-		return 'http://localhost:4000';
-	}
+export const secrets = {
+	OAUTH_CLIENT_ID: isProdEnv() ? fs.readFileSync(env.OAUTH_CLIENT_ID_FILE!, 'utf8') : env.OAUTH_CLIENT_ID!,
+	OAUTH_CLIENT_SECRET: isProdEnv() ? fs.readFileSync(env.OAUTH_CLIENT_SECRET_FILE!, 'utf8') : env.OAUTH_CLIENT_SECRET!,
+	API_SERVER: isProdEnv() ? 'http://api:4000' : 'http://localhost:4000',
+	AES_KEY: isProdEnv() ? fs.readFileSync(env.AES_KEY_FILE!, 'utf8') : env.AES_KEY!,
+	AES_IV: isProdEnv() ? fs.readFileSync(env.AES_IV_FILE!, 'utf8') : env.AES_IV!,
 }
