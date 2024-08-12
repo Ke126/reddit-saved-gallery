@@ -57,8 +57,7 @@
 								await update({ reset: true, invalidateAll: false });
 								if (result.type === 'success') {
 									resolve(null);
-								}
-								else {
+								} else {
 									reject(null);
 									post.pinned = !post.pinned;
 								}
@@ -94,8 +93,7 @@
 								await update({ reset: true, invalidateAll: false });
 								if (result.type === 'success') {
 									resolve(null);
-								}
-								else {
+								} else {
 									reject(null);
 									saved = !saved;
 								}

@@ -57,8 +57,7 @@ export const actions = {
 			}
 			console.log(response.status);
 			console.log('Form done');
-		}
-		catch {
+		} catch {
 			return fail(500);
 		}
 	},
@@ -84,8 +83,7 @@ export const actions = {
 			if (!response.ok) {
 				return fail(response.status);
 			}
-		}
-		catch {
+		} catch {
 			return fail(500);
 		}
 	},
@@ -108,8 +106,7 @@ export const actions = {
 			if (!response.ok) {
 				return fail(response.status);
 			}
-		}
-		catch {
+		} catch {
 			return fail(500);
 		}
 	},

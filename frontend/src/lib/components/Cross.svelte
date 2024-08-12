@@ -1,6 +1,5 @@
 <!-- Adapted from https://github.com/timolins/react-hot-toast -->
 <script lang="ts">
-
 	export let primary = '#ff4b4b';
 	export let secondary = '#fff';
 </script>

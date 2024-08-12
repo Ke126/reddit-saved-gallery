@@ -143,9 +143,7 @@
 								isLoading = false;
 								if (result.type === 'success') {
 									resolve(null);
-									console.log("HERE");
-								}
-								else {
+								} else {
 									reject(null);
 								}
 							};

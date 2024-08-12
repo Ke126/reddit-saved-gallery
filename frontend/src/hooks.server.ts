@@ -18,8 +18,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 				event.cookies.set('auth', encrypt(JSON.stringify(user)), { path: '/' });
 			}
 			event.locals.user = user;
-		}
-		catch {
+		} catch {
 			event.locals.user = null;
 		}
 	} else {

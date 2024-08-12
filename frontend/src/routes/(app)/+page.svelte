@@ -10,7 +10,10 @@
 <Toaster />
 <h2 class="text-center mt-2 mb-0">
 	{#if data.posts.count !== 0}
-		Showing {(data.posts.page - 1) * PAGE_SIZE + 1} - {Math.min(data.posts.page * PAGE_SIZE, data.posts.total_count)} of {data.posts.total_count} results
+		Showing {(data.posts.page - 1) * PAGE_SIZE + 1} - {Math.min(
+			data.posts.page * PAGE_SIZE,
+			data.posts.total_count
+		)} of {data.posts.total_count} results
 	{:else}
 		No results found
 	{/if}

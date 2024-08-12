@@ -1,5 +1,5 @@
 <script>
-	import { onMount } from "svelte";
+	import { onMount } from 'svelte';
 	const features = [
 		'Pull saved posts directly from your Reddit account',
 		'View post previews in website, with direct links straight to Reddit',
@@ -17,9 +17,7 @@
 
 <div class="container text-center position-absolute top-50 start-50 translate-middle">
 	<h1 class="display-1">Reddit Saved Gallery</h1>
-	<h6 class="display-6 mb-5">
-		View, filter, and manage your Reddit account's saved posts!
-	</h6>
+	<h6 class="display-6 mb-5">View, filter, and manage your Reddit account's saved posts!</h6>
 	<h6>Features:</h6>
 	<ul class="list-group d-inline-block mb-5">
 		{#each features as feature, idx}

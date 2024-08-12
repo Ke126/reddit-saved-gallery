@@ -4,7 +4,7 @@ import { redirect } from '@sveltejs/kit';
 import { secrets } from './secrets';
 
 const scope = 'identity,history,save';
-const REDIRECT_URI = `${env.ORIGIN}/callback`
+const REDIRECT_URI = `${env.ORIGIN}/callback`;
 
 export async function startOAuthFlow(state: string) {
 	return redirect(

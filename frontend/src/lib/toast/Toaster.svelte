@@ -6,9 +6,7 @@
 	import Cross from '$lib/components/Cross.svelte';
 </script>
 
-<div
-	class="toast-container position-fixed top-0 start-50 translate-middle-x p-3 text-center"
->
+<div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3 text-center">
 	{#each $toasts as toast (toast.id)}
 		<div
 			animate:flip={{ duration: 300 }}
@@ -48,6 +46,6 @@
 
 <style>
 	.toast {
-		backdrop-filter: blur(3px)
+		backdrop-filter: blur(3px);
 	}
 </style>
