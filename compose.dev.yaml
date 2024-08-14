@@ -1,41 +1,13 @@
 name: reddit_app
 
 services:
-  nginx:
-    image: nginx:latest
-    build: ./nginx
-    networks:
-      - app-net
-    environment:
-      DOMAIN: ${DOMAIN}
-    ports:
-      - 443:443
-      - 80:80
-    depends_on:
-      - frontend
-
-  frontend:
-    image: frontend:latest
-    build: ./frontend
-    networks:
-      - app-net
-    environment:
-      OAUTH_CLIENT_ID_FILE: /run/secrets/client_id
-      OAUTH_CLIENT_SECRET_FILE: /run/secrets/client_secret
-      AES_KEY_FILE: /run/secrets/aes_key
-      AES_IV_FILE: /run/secrets/aes_iv
-      ORIGIN: http://${DOMAIN}
-    secrets:
-      - client_id
-      - client_secret
-      - aes_key
-      - aes_iv
-
   api:
     image: api:latest
     build: ./api
     networks:
       - app-net
+    ports:
+      - 4000:4000
 
   query:
     image: query:latest
@@ -62,6 +34,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/mongo_username
       MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo_password
+    ports:
+      - 27017:27017
     networks:
       - app-net
     secrets:
@@ -81,13 +55,3 @@ secrets:
     environment: MONGO_INITDB_ROOT_USERNAME
   mongo_password:
     environment: MONGO_INITDB_ROOT_PASSWORD
-  aes_key:
-    environment: AES_KEY
-  aes_iv:
-    environment: AES_IV
-
-#     volumes:
-#       - ./mongodb:/data/db
-
-# # volumes:
-# #   mongodb:
