@@ -11,6 +11,10 @@ server {
     ssl_certificate     /etc/nginx/certs/live/$DOMAIN/fullchain.pem;
     ssl_certificate_key /etc/nginx/certs/live/$DOMAIN/privkey.pem;
 
+    location /.well-known/acme-challenge {
+        root /usr/share/nginx/challenges;
+    }
+
     location / {
         proxy_pass http://frontend:3000;
     }

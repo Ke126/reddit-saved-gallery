@@ -1,2 +1,2 @@
 FROM nginx:latest
-COPY nginx.conf /etc/nginx/templates/default.conf.template
+COPY default.conf.template /etc/nginx/templates/default.conf.template
