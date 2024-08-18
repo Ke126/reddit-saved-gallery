@@ -1,8 +1,8 @@
-name: reddit_app
+name: reddit-app
 
 services:
   api:
-    image: api:latest
+    image: reddit-app/api:latest
     build: ./api
     networks:
       - app-net
@@ -10,7 +10,7 @@ services:
       - 4000:4000
 
   query:
-    image: query:latest
+    image: reddit-app/query:latest
     build: ./query
     networks:
       - app-net
@@ -24,13 +24,13 @@ services:
       - mongo
 
   reddit:
-    image: reddit:latest
+    image: reddit-app/reddit:latest
     build: ./reddit
     networks:
       - app-net
 
   mongo:
-    image: mongo
+    image: mongo:latest
     environment:
       MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/mongo_username
       MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo_password

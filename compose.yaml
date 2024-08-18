@@ -1,8 +1,17 @@
-name: reddit_app
+name: reddit-app
 
 services:
+
+  certbot:
+    image: reddit-app/certbot:latest
+    build: ./certbot
+    networks:
+      - app-net
+    depends_on:
+      - nginx
+
   nginx:
-    image: nginx:latest
+    image: reddit-app/nginx:latest
     build: ./nginx
     networks:
       - app-net
@@ -15,7 +24,7 @@ services:
       - frontend
 
   frontend:
-    image: frontend:latest
+    image: reddit-app/frontend:latest
     build: ./frontend
     networks:
       - app-net
@@ -24,7 +33,7 @@ services:
       OAUTH_CLIENT_SECRET_FILE: /run/secrets/client_secret
       AES_KEY_FILE: /run/secrets/aes_key
       AES_IV_FILE: /run/secrets/aes_iv
-      ORIGIN: http://${DOMAIN}
+      ORIGIN: https://${DOMAIN}
     secrets:
       - client_id
       - client_secret
@@ -32,13 +41,13 @@ services:
       - aes_iv
 
   api:
-    image: api:latest
+    image: reddit-app/api:latest
     build: ./api
     networks:
       - app-net
 
   query:
-    image: query:latest
+    image: reddit-app/query:latest
     build: ./query
     networks:
       - app-net
@@ -52,13 +61,13 @@ services:
       - mongo
 
   reddit:
-    image: reddit:latest
+    image: reddit-app/reddit:latest
     build: ./reddit
     networks:
       - app-net
 
   mongo:
-    image: mongo
+    image: mongo:latest
     environment:
       MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/mongo_username
       MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo_password
