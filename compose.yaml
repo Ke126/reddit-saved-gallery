@@ -5,10 +5,15 @@ services:
   certbot:
     image: reddit-app/certbot:latest
     build: ./certbot
+    environment:
+      DOMAIN: ${DOMAIN}
+    ports:
+      - 80:80
     networks:
       - app-net
-    depends_on:
-      - nginx
+    volumes:
+      - ./letsencrypt:/etc/letsencrypt:rw # certs
+      - /var/run/docker.sock:/var/run/docker.sock:ro # socket
 
   nginx:
     image: reddit-app/nginx:latest
@@ -19,9 +24,13 @@ services:
       DOMAIN: ${DOMAIN}
     ports:
       - 443:443
-      - 80:80
     depends_on:
-      - frontend
+      certbot:
+        condition: service_healthy
+      frontend:
+        condition: service_started
+    volumes:
+      - ./letsencrypt:/etc/nginx/letsencrypt:ro # certs
 
   frontend:
     image: reddit-app/frontend:latest
