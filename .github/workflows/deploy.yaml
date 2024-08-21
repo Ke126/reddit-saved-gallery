@@ -1,0 +1,38 @@
+name: build and deploy
+run-name: ${{ github.actor }} is building and deploying to production
+
+on: 
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      APP_NAME: reddit-app
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Docker build
+        run: docker compose build
+      - name: Set up SSH
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ./key.pem
+          chmod 600 ./key.pem
+          mkdir ~/.ssh
+          echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+      - name: Copy compose.yaml to remote
+        run: |
+          scp -i ./key.pem ./compose.yaml ${{ secrets.USER }}@${{ secrets.HOSTNAME }}:~/$APP_NAME
+      - name: Save names of all docker images to an environment variable
+        run: |
+          TEMP_VAR=$(docker images --format "{{.Repository}}:{{.Tag}}" |
+            grep -E "mongo|$APP_NAME" |
+            tr '\n' ' ')
+          echo "DOCKER_IMAGES=$TEMP_VAR" >> $GITHUB.ENV
+      - name: Pipe docker images tar to remote server and run docker compose up
+        run: |
+          docker save $DOCKER_IMAGES |
+          gzip |
+          ssh ${{ secrets.USER }}@${{ secrets.HOSTNAME }} -i ./key.pem 'sudo docker load && cd ~/$APP_NAME && sudo docker compose down && sudo docker compose up -d'
