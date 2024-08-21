@@ -1,8 +1,9 @@
 import { secrets } from './secrets';
 import crypto, { type CipherKey } from 'node:crypto';
 
-const key: CipherKey = new Uint8Array(Buffer.from(secrets.AES_KEY, 'base64'));
-const iv: Uint8Array = new Uint8Array(Buffer.from(secrets.AES_IV, 'base64'));
+// doing secrets.AES_KEY || '' fixes the same issue mentioned in ./secrets.ts
+const key: CipherKey = new Uint8Array(Buffer.from(secrets.AES_KEY || '', 'base64'));
+const iv: Uint8Array = new Uint8Array(Buffer.from(secrets.AES_IV || '', 'base64'));
 console.log(key.length);
 console.log(iv.length);
 
