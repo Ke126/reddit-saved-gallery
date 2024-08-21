@@ -3,8 +3,13 @@ name: reddit-app
 services:
 
   certbot:
-    image: reddit-app/certbot:latest
-    build: ./certbot
+    image: ${COMPOSE_PROJECT_NAME}/certbot
+    build: 
+      context: ./certbot
+      cache_from:
+        - type=gha,scope=${COMPOSE_PROJECT_NAME}/certbot
+      cache_to:
+        - type=gha,scope=${COMPOSE_PROJECT_NAME}/certbot
     environment:
       DOMAIN: ${DOMAIN}
     ports:
@@ -16,8 +21,13 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro # socket
 
   nginx:
-    image: reddit-app/nginx:latest
-    build: ./nginx
+    image: ${COMPOSE_PROJECT_NAME}/nginx
+    build: 
+      context: ./nginx
+      cache_from:
+        - type=gha,scope=${COMPOSE_PROJECT_NAME}/nginx
+      cache_to:
+        - type=gha,scope=${COMPOSE_PROJECT_NAME}/nginx
     networks:
       - app-net
     environment:
@@ -33,8 +43,13 @@ services:
       - ./letsencrypt:/etc/nginx/letsencrypt:ro # certs
 
   frontend:
-    image: reddit-app/frontend:latest
-    build: ./frontend
+    image: ${COMPOSE_PROJECT_NAME}/frontend
+    build: 
+      context: ./frontend
+      cache_from:
+        - type=gha,scope=${COMPOSE_PROJECT_NAME}/frontend
+      cache_to:
+        - type=gha,scope=${COMPOSE_PROJECT_NAME}/frontend
     networks:
       - app-net
     environment:
@@ -50,14 +65,24 @@ services:
       - aes_iv
 
   api:
-    image: reddit-app/api:latest
-    build: ./api
+    image: ${COMPOSE_PROJECT_NAME}/api
+    build: 
+      context: ./api
+      cache_from:
+        - type=gha,scope=${COMPOSE_PROJECT_NAME}/api
+      cache_to:
+        - type=gha,scope=${COMPOSE_PROJECT_NAME}/api
     networks:
       - app-net
 
   query:
-    image: reddit-app/query:latest
-    build: ./query
+    image: ${COMPOSE_PROJECT_NAME}/query
+    build: 
+      context: ./query
+      cache_from:
+        - type=gha,scope=${COMPOSE_PROJECT_NAME}/query
+      cache_to:
+        - type=gha,scope=${COMPOSE_PROJECT_NAME}/query
     networks:
       - app-net
     environment:
@@ -70,13 +95,18 @@ services:
       - mongo
 
   reddit:
-    image: reddit-app/reddit:latest
-    build: ./reddit
+    image: ${COMPOSE_PROJECT_NAME}/reddit
+    build: 
+      context: ./reddit
+      cache_from:
+        - type=gha,scope=${COMPOSE_PROJECT_NAME}/reddit
+      cache_to:
+        - type=gha,scope=${COMPOSE_PROJECT_NAME}/reddit
     networks:
       - app-net
 
   mongo:
-    image: mongo:latest
+    image: mongo
     environment:
       MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/mongo_username
       MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo_password
