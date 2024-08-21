@@ -28,7 +28,7 @@ jobs:
       - name: Save names of all docker images to an environment variable
         run: |
           TEMP_VAR=$(docker images --format "{{.Repository}}:{{.Tag}}" |
-            grep -E "mongo|$APP_NAME" |
+            grep -E "$APP_NAME" |
             tr '\n' ' ')
           echo "DOCKER_IMAGES=$TEMP_VAR" >> $GITHUB.ENV
       - name: Pipe docker images tar to remote server and run docker compose up
