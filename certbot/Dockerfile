@@ -1,9 +1,9 @@
-FROM ubuntu:latest
+FROM alpine:latest
 
-# Install Certbot and Docker
-RUN apt-get update && apt-get install -y certbot && apt-get install -y docker.io
+# install curl and certbot
+RUN apk add curl && apk add certbot
 
-# # Install nginx plugin
+# install nginx plugin
 # RUN apt-get install python3-certbot-nginx
 
 COPY ./ ./
