@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 # run certbot in standalone mode
 echo "Started requesting new certificate for $DOMAIN"

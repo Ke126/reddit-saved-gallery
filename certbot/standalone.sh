@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 # run certbot in standalone mode
 certbot certonly --standalone --register-unsafely-without-email --agree-tos --domain $DOMAIN

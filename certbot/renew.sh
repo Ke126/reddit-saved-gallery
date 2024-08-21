@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 # attempt renewal every 23 hours
 echo "Started running renewal script"

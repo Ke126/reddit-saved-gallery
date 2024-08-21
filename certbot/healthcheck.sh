@@ -1,9 +1,9 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 DIRECTORY="./etc/letsencrypt/live/$DOMAIN"
 
 # fail healthcheck if no certificate is found
-if [[ ! -d "$DIRECTORY" || -z "$( ls -A $DIRECTORY )" ]]; then
+if [ ! -d "$DIRECTORY" ] || [ -z "$( ls -A $DIRECTORY )" ]; then
     echo "No certificate for $DOMAIN found"
     exit 1
 else
