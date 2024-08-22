@@ -10,6 +10,8 @@ services:
         - type=gha,scope=${COMPOSE_PROJECT_NAME}/certbot
       cache_to:
         - type=gha,scope=${COMPOSE_PROJECT_NAME}/certbot
+      platforms:
+        - "linux/arm64/v8"
     environment:
       DOMAIN: ${DOMAIN}
     ports:
@@ -28,6 +30,8 @@ services:
         - type=gha,scope=${COMPOSE_PROJECT_NAME}/nginx
       cache_to:
         - type=gha,scope=${COMPOSE_PROJECT_NAME}/nginx
+      platforms:
+        - "linux/arm64/v8"
     networks:
       - app-net
     environment:
@@ -50,6 +54,8 @@ services:
         - type=gha,scope=${COMPOSE_PROJECT_NAME}/frontend
       cache_to:
         - type=gha,scope=${COMPOSE_PROJECT_NAME}/frontend
+      platforms:
+        - "linux/arm64/v8"
     networks:
       - app-net
     environment:
@@ -72,6 +78,8 @@ services:
         - type=gha,scope=${COMPOSE_PROJECT_NAME}/api
       cache_to:
         - type=gha,scope=${COMPOSE_PROJECT_NAME}/api
+      platforms:
+        - "linux/arm64/v8"
     networks:
       - app-net
 
@@ -83,6 +91,8 @@ services:
         - type=gha,scope=${COMPOSE_PROJECT_NAME}/query
       cache_to:
         - type=gha,scope=${COMPOSE_PROJECT_NAME}/query
+      platforms:
+        - "linux/arm64/v8"
     networks:
       - app-net
     environment:
@@ -102,6 +112,8 @@ services:
         - type=gha,scope=${COMPOSE_PROJECT_NAME}/reddit
       cache_to:
         - type=gha,scope=${COMPOSE_PROJECT_NAME}/reddit
+      platforms:
+        - "linux/arm64/v8"
     networks:
       - app-net
 
