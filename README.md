@@ -14,15 +14,7 @@ This repository should only exist on the developer machine. The remote host mach
     1. Create new Linux user.
     2. Set up SSH authenticated keys.
     3. Modify `/etc/sudoers.d` to be able to run Docker commands as root without authentication, i.e. `sudo docker compose up`.
-3. Create an `.env` file with at least the following properties:
-    - DOMAIN = the web domain (ex. hipster.one)
-    - MONGO_INITDB_ROOT_USERNAME = mongodb username
-    - MONGO_INITDB_ROOT_PASSWORD = mongodb password
-    - OAUTH_CLIENT_ID = OAuth client id from Reddit
-    - OAUTH_CLIENT_SECRET = OAuth client secret from Reddit
-    - AES_KEY = 256 bit AES key encoded as base64
-    - AES_IV = 128 bit AES iv encoded as base64
-4. Copy the SSH private key and output of `ssh-keyscan -H ${hostname}`.
+3. Copy the SSH private key and output of `ssh-keyscan -H ${hostname}`.
 
 **GitHub**
 1. Create GitHub repository secrets:
@@ -30,6 +22,14 @@ This repository should only exist on the developer machine. The remote host mach
     - SSH_KEYSCAN: output of running `ssh-keyscan -H ${hostname}`
     - USER: SSH username
     - HOSTNAME: SSH ip address
+    - ENV_FILE: environment file containing at least:
+        - DOMAIN = the web domain (ex. hipster.one)
+        - MONGO_INITDB_ROOT_USERNAME = mongodb username
+        - MONGO_INITDB_ROOT_PASSWORD = mongodb password
+        - OAUTH_CLIENT_ID = OAuth client id from Reddit
+        - OAUTH_CLIENT_SECRET = OAuth client secret from Reddit
+        - AES_KEY = 256 bit AES key encoded as base64
+        - AES_IV = 128 bit AES iv encoded as base64
 
 ## How to deploy (from developer computer):
 1. Merge a pull request to remote main branch on Github (or manually invoke action on Github).
