@@ -46,4 +46,4 @@ jobs:
           echo "$DOCKER_IMAGES"
           docker save $DOCKER_IMAGES |
           gzip |
-          ssh ${{ secrets.USER }}@${{ secrets.HOSTNAME }} -i ~/.ssh/key.pem 'sudo docker load && cd ~/$APP_NAME && sudo docker compose down && sudo docker compose up -d'
+          ssh ${{ secrets.USER }}@${{ secrets.HOSTNAME }} -i ~/.ssh/key.pem 'sudo docker load && cd ~/${{ env.APP_NAME }} && sudo docker compose down && sudo docker compose up -d'
