@@ -31,8 +31,18 @@ This repository should only exist on the developer machine. The remote host mach
         - AES_KEY = 256 bit AES key encoded as base64
         - AES_IV = 128 bit AES iv encoded as base64
 
+**Misc**
+1. Ensure Cloudflare DNS A record is proxying the correct remote ip address
+2. Ensure Reddit app is registered with the correct domain callback
+
 ## How to deploy (from developer computer):
 1. Merge a pull request to remote main branch on Github (or manually invoke action on Github).
 
 ## How to deploy (from remote host machine):
 1. Run `sudo docker compose up`.
+
+## TODO
+- [x] Implement GHA Docker image caching
+- [x] Reduce size of certbot image
+- [ ] Add observability with OpenTelemetry logs, metrics, and traces
+- [ ] Improve UI
