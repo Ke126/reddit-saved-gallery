@@ -26,9 +26,15 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/key.pem
           chmod 600 ~/.ssh/key.pem
           echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
-      - name: Copy compose.yaml to remote
+      - name: Set up /${{ env.APP_NAME }} directory
         run: |
-          scp -i ~/.ssh/key.pem ./compose.yaml ${{ secrets.USER }}@${{ secrets.HOSTNAME }}:~/$APP_NAME
+          mkdir ./$APP_NAME
+          cp ./compose.yaml ./$APP_NAME/compose.yaml
+          echo "${{ secrets.ENV_FILE }}" > ./$APP_NAME/.env
+          chmod 600 ./$APP_NAME/.env
+      - name: Copy /${{ env.APP_NAME }} directory to remote server
+        run: |
+          scp -i ~/.ssh/key.pem -r ./$APP_NAME ${{ secrets.USER }}@${{ secrets.HOSTNAME }}:~
       - name: Save names of all docker images to an environment variable
         run: |
           TEMP_VAR=$(docker images --format "{{.Repository}}:{{.Tag}}" |
