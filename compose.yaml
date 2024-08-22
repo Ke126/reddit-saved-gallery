@@ -115,6 +115,8 @@ services:
     secrets:
       - mongo_username
       - mongo_password
+    volumes:
+      - ./mongo:/data/db:rw
 
 networks:
   app-net:
@@ -133,9 +135,3 @@ secrets:
     environment: AES_KEY
   aes_iv:
     environment: AES_IV
-
-#     volumes:
-#       - ./mongodb:/data/db
-
-# # volumes:
-# #   mongodb:
