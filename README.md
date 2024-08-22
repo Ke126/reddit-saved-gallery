@@ -18,8 +18,8 @@ This repository should only exist on the developer machine. The remote host mach
 
 **GitHub**
 1. Create GitHub repository secrets:
-    - SSH_KEY: SSH private key for remote machine
-    - SSH_KEYSCAN: output of running `ssh-keyscan -H ${hostname}`
+    - SSH_PRIVATE_KEY: SSH private key for remote machine
+    - SSH_KNOWN_HOSTS: output of running `ssh-keyscan -H ${hostname}`
     - USER: SSH username
     - HOSTNAME: SSH ip address
     - ENV_FILE: environment file containing at least:
