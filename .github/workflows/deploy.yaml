@@ -40,7 +40,7 @@ jobs:
           TEMP_VAR=$(docker images --format "{{.Repository}}:{{.Tag}}" |
             grep -E "$APP_NAME" |
             tr '\n' ' ')
-          echo "DOCKER_IMAGES=$TEMP_VAR" >> $GITHUB.ENV
+          echo "DOCKER_IMAGES=$TEMP_VAR" >> "$GITHUB_ENV"
       - name: Pipe docker images tar to remote server and run docker compose up
         run: |
           echo "$DOCKER_IMAGES"
