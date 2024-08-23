@@ -45,4 +45,7 @@ This repository should only exist on the developer machine. The remote host mach
 - [x] Implement GHA Docker image caching
 - [x] Reduce size of certbot image
 - [ ] Add observability with OpenTelemetry logs, metrics, and traces
-- [ ] Improve UI
+- [ ] Display subreddit icons on website
+- [ ] Implement CI pipeline for testing
+- [ ] Set up automated linting/formatting
+- [ ] Create favicon/logo
