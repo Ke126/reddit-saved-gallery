@@ -15,13 +15,15 @@
 	<ul class="pagination justify-content-center">
 		{#if curPage > 1}
 			<li class="page-item">
-				<a class="page-link" href={makeURL($page.url, 1)}
+				<a class="page-link" data-sveltekit-preload-data="tap" href={makeURL($page.url, 1)}
 					><i class="bi bi-chevron-double-left"></i></a
 				>
 			</li>
 			<li class="page-item">
-				<a class="page-link" href={makeURL($page.url, curPage - 1)}
-					><i class="bi bi-chevron-left"></i></a
+				<a
+					class="page-link"
+					data-sveltekit-preload-data="tap"
+					href={makeURL($page.url, curPage - 1)}><i class="bi bi-chevron-left"></i></a
 				>
 			</li>
 		{/if}
@@ -32,18 +34,24 @@
 				</li>
 			{:else}
 				<li class="page-item">
-					<a class="page-link" href={makeURL($page.url, pageNum + 1)}>{pageNum + 1}</a>
+					<a
+						class="page-link"
+						data-sveltekit-preload-data="tap"
+						href={makeURL($page.url, pageNum + 1)}>{pageNum + 1}</a
+					>
 				</li>
 			{/if}
 		{/each}
 		{#if curPage < numPages}
 			<li class="page-item">
-				<a class="page-link" href={makeURL($page.url, curPage + 1)}
-					><i class="bi bi-chevron-right"></i></a
+				<a
+					class="page-link"
+					data-sveltekit-preload-data="tap"
+					href={makeURL($page.url, curPage + 1)}><i class="bi bi-chevron-right"></i></a
 				>
 			</li>
 			<li class="page-item">
-				<a class="page-link" href={makeURL($page.url, numPages)}
+				<a class="page-link" data-sveltekit-preload-data="tap" href={makeURL($page.url, numPages)}
 					><i class="bi bi-chevron-double-right"></i></a
 				>
 			</li>
