@@ -19,7 +19,7 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 			refresh_token: json1.refresh_token,
 			exp_at: Date.now() + json1.expires_in * 1000
 		};
-		cookies.set('auth', encrypt(JSON.stringify(cookie)), { path: '/' });
+		cookies.set('auth', encrypt(JSON.stringify(cookie)), { path: '/', maxAge: 86400 });
 	}
 	redirect(301, '/');
 };

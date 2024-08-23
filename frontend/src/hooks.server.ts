@@ -15,7 +15,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 				const json = await refreshAccessToken(user.refresh_token);
 				user.access_token = json.access_token;
 				user.exp_at = Date.now() + json.expires_in * 1000;
-				event.cookies.set('auth', encrypt(JSON.stringify(user)), { path: '/' });
+				event.cookies.set('auth', encrypt(JSON.stringify(user)), { path: '/', maxAge: 86400 });
 			}
 			event.locals.user = user;
 		} catch {
