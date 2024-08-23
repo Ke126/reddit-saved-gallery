@@ -21,7 +21,7 @@
 	<h6>Features:</h6>
 	<ul class="list-group d-inline-block mb-5">
 		{#each features as feature, idx}
-			<li class="list-group-item feature" class:active={activeIdx === idx}>- {feature}</li>
+			<li class="list-group-item feature" class:active={activeIdx === idx}>{feature}</li>
 		{/each}
 	</ul>
 
