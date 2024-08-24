@@ -15,6 +15,14 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Login - Reddit Saved Gallery</title>
+	<meta
+		name="description"
+		content="Log in to Reddit Saved Gallery to view, filter, and manage your Reddit account's saved posts."
+	/>
+</svelte:head>
+
 <div class="container text-center position-absolute top-50 start-50 translate-middle">
 	<h1 class="display-1">Reddit Saved Gallery</h1>
 	<h6 class="display-6 mb-5">View, filter, and manage your Reddit account's saved posts!</h6>
