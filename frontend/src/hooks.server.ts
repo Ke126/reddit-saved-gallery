@@ -1,5 +1,5 @@
 import { getUserInfo, refreshAccessToken } from '$lib/server/auth';
-import { encrypt, decrypt } from '$lib/server/cookie';
+import { encrypt, decrypt } from '$lib/server/crypto';
 import type { UserCookie } from '$lib/types/user';
 import type { Handle } from '@sveltejs/kit';
 

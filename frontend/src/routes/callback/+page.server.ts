@@ -1,5 +1,5 @@
 import type { PageServerLoad } from './$types';
-import { encrypt } from '$lib/server/cookie';
+import { encrypt } from '$lib/server/crypto';
 import { redirect } from '@sveltejs/kit';
 import type { UserCookie } from '$lib/types/user';
 import { getAccessToken, getUserInfo } from '$lib/server/auth';
