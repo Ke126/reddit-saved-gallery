@@ -1,5 +1,5 @@
-import { refreshAccessToken } from '$lib/server/auth';
-import { encrypt, decrypt } from '$lib/server/cookie';
+import { getUserInfo, refreshAccessToken } from '$lib/server/auth';
+import { encrypt, decrypt } from '$lib/server/crypto';
 import type { UserCookie } from '$lib/types/user';
 import type { Handle } from '@sveltejs/kit';
 
@@ -12,10 +12,16 @@ export const handle: Handle = async ({ event, resolve }) => {
 			const FIVE_MIN_IN_MS = 5 * 60 * 1000;
 			// check if expired (within 5 min)
 			if (Date.now() + FIVE_MIN_IN_MS >= user.exp_at) {
-				const json = await refreshAccessToken(user.refresh_token);
-				user.access_token = json.access_token;
-				user.exp_at = Date.now() + json.expires_in * 1000;
-				event.cookies.set('auth', encrypt(JSON.stringify(user)), { path: '/', maxAge: 86400 });
+				const json1 = await refreshAccessToken(user.refresh_token);
+				const json2 = await getUserInfo(json1.access_token);
+				const cookie: UserCookie = {
+					username: json2.name,
+					icon_img: json2.icon_img,
+					access_token: json1.access_token,
+					refresh_token: json1.refresh_token,
+					exp_at: Date.now() + json1.expires_in * 1000
+				};
+				event.cookies.set('auth', encrypt(JSON.stringify(cookie)), { path: '/', maxAge: 86400 });
 			}
 			event.locals.user = user;
 		} catch {
