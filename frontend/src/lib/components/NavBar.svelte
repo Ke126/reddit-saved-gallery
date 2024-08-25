@@ -18,7 +18,7 @@
 
 	$: {
 		queryName = queryValue.length === 0 ? '' : 'q';
-		console.log('query ran');
+		// console.log('query update');
 	}
 
 	$: {
@@ -30,7 +30,7 @@
 			.map((subreddit) => subreddit.subreddit)
 			.toString();
 		if (numChecked === subreddits.length) filterName = '';
-		console.log('filters ran');
+		// console.log('filters update');
 	}
 
 	function fillSearchAndFilters(searchParams: URLSearchParams) {
@@ -52,7 +52,7 @@
 		} else {
 			setChecks(true);
 		}
-		console.log('fill form ran');
+		// console.log('fill form update');
 	}
 
 	function setChecks(value: boolean) {
