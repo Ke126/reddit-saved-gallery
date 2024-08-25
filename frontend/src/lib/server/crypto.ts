@@ -16,8 +16,7 @@ export function encrypt(input: string): string {
 }
 
 export function decrypt(input: string): string {
-	const encrypted = input.split('.')[0];
-	const authTag = input.split('.')[1];
+	const [encrypted, authTag] = input.split('.');
 
 	const decipher = crypto.createDecipheriv('aes-256-gcm', key, iv);
 	decipher.setAuthTag(new Uint8Array(Buffer.from(authTag, 'base64')));
