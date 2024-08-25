@@ -4,8 +4,6 @@ import crypto, { type CipherKey } from 'node:crypto';
 // doing secrets.AES_KEY || '' fixes the same issue mentioned in ./secrets.ts
 const key: CipherKey = new Uint8Array(Buffer.from(secrets.AES_KEY || '', 'base64'));
 const iv: Uint8Array = new Uint8Array(Buffer.from(secrets.AES_IV || '', 'base64'));
-console.log(key.length);
-console.log(iv.length);
 
 export function encrypt(input: string): string {
 	const cipher = crypto.createCipheriv('aes-256-gcm', key, iv);
