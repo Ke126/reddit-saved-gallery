@@ -11,13 +11,12 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 		console.log('Not authenticated');
 		redirect(301, '/login');
 	}
-	const fetchurl = new URL(`${secrets.API_SERVER}/posts`);
+	console.log(`GET ${url}`);
+	const fetchUrl = new URL(`${secrets.API_SERVER}/posts`);
 	url.searchParams.forEach((value: string, key: string) => {
-		console.log(key, value);
-		fetchurl.searchParams.append(key, value);
+		fetchUrl.searchParams.append(key, value);
 	});
-	console.log(fetchurl.toString());
-	const response = await fetch(fetchurl, {
+	const response = await fetch(fetchUrl, {
 		headers: {
 			authorization: `bearer ${locals.user.access_token}`
 		}
@@ -35,7 +34,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 
 export const actions = {
 	pull: async ({ locals }) => {
-		console.log('Pull action');
+		console.log('POST ?/pull');
 		if (!locals.user) {
 			console.log('Not authenticated');
 			return fail(401);
@@ -55,14 +54,12 @@ export const actions = {
 			if (!response.ok) {
 				return fail(response.status);
 			}
-			console.log(response.status);
-			console.log('Form done');
 		} catch {
 			return fail(500);
 		}
 	},
 	pin: async ({ locals, request }) => {
-		console.log('Pin action');
+		console.log('POST ?/pin');
 		if (!locals.user) {
 			console.log('Not authenticated');
 			return fail(401);
@@ -88,7 +85,7 @@ export const actions = {
 		}
 	},
 	save: async ({ locals, request }) => {
-		console.log('Save action');
+		console.log('POST ?/save');
 		if (!locals.user) {
 			console.log('Not authenticated');
 			return fail(401);
@@ -111,7 +108,7 @@ export const actions = {
 		}
 	},
 	logout: async ({ locals, cookies }) => {
-		console.log('Logout action');
+		console.log('POST ?/logout');
 		await revokeTokens(locals.user!.refresh_token);
 		cookies.delete('auth', { path: '/' });
 		redirect(301, '/login');
