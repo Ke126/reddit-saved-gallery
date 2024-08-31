@@ -20,3 +20,9 @@
 </h2>
 <PostList posts={data.posts.posts}></PostList>
 <Pagination totalCount={data.posts.total_count} curPage={data.posts.page}></Pagination>
+
+<style>
+	:root {
+		scroll-behavior: auto;
+	}
+</style>
