@@ -1,51 +1,86 @@
 # Reddit Saved Manager
 
-This repository contains all the necessary services to run a web application allowing users to view, filter, and manage their saved Reddit posts.
+[Reddit Saved Manager](https://hipster.one) is a SaaS web application allowing users to view, filter, and manage their saved Reddit posts.
 
-This repository should only exist on the developer machine. The remote host machine should not have any source code. The GitHub workflow `deploy.yaml` will automate building the source code into Docker images and deploying the application to the remote server via SSH.
+This repository contains all the necessary services to host Reddit Saved Manager. None of the source code in this repository needs to be downloaded to the host machine. The GitHub workflow [deploy.yaml](./.github/workflows/deploy.yaml) will automate building the Docker images and deploying the application to the host machine via SSH.
 
-## Setup
-**Developer machine:**
-1. Clone this repository and sync to a remote GitHub repository (if not done already).
+## Table of contents
 
-**Remote host machine:**
+- [Setup and installation](#setup-and-installation)
+    - [Developer machine](#developer-machine)
+    - [Host machine](#host-machine)
+    - [GitHub secrets](#github-secrets)
+    - [Reddit](#reddit)
+    - [DNS](#dns)
+- [Environment file](#environment-file)
+- [Deployment](#deployment)
+- [Roadmap](#roadmap)
+    - [Planned features](#planned-features)
+    - [Other improvements](#other-improvements)
+
+## Setup and installation
+
+### Developer machine
+1. Clone this repository and publish to a remote GitHub repository (if not done already).
+
+### Host machine
 1. Install Docker.
 2. Set up user:
     1. Create new Linux user.
-    2. Set up SSH authenticated keys.
-    3. Modify `/etc/sudoers.d` to be able to run Docker commands as root without authentication, i.e. `sudo docker compose up`.
-3. Copy the SSH private key and output of `ssh-keyscan -H ${hostname}`.
+    2. Set up SSH key-based authentication.
+    3. Modify sudo permissions to run Docker commands as root without password authentication, i.e. `sudo docker compose up`.
+3. Copy the SSH private key and output of running `ssh-keyscan -H ${hostname}`.
 
-**GitHub:**
+### GitHub secrets
 1. Create GitHub repository secrets:
     - SSH_PRIVATE_KEY: SSH private key for remote machine
     - SSH_KNOWN_HOSTS: output of running `ssh-keyscan -H ${hostname}`
-    - USER: SSH username
-    - HOSTNAME: SSH ip address
-    - ENV_FILE: environment file containing at least:
-        - DOMAIN = the web domain (ex. hipster.one)
-        - MONGO_INITDB_ROOT_USERNAME = mongodb username
-        - MONGO_INITDB_ROOT_PASSWORD = mongodb password
-        - OAUTH_CLIENT_ID = OAuth client id from Reddit
-        - OAUTH_CLIENT_SECRET = OAuth client secret from Reddit
-        - AES_KEY = 256 bit AES key encoded as base64
-        - AES_IV = 128 bit AES iv encoded as base64
+    - USER: host machine's SSH username
+    - HOSTNAME: host machine's SSH ip address
+    - ENV_FILE: see [Environment file](#environment-file)
 
-**Misc:**
-1. Ensure Cloudflare DNS A record is proxying the correct remote ip address.
-2. Ensure Reddit app is registered with the correct domain callback.
+### Reddit
+1. Create a new Reddit web app [here](https://www.reddit.com/prefs/apps).
+2. Register Reddit app with the redirect URI `https://$DOMAIN/callback`.
+3. Copy the app's client id and client secret.
 
-## How to deploy (from developer computer):
-1. Push to remote main branch on Github, or manually invoke deployment action on Github Actions.
+### DNS
+1. Create a DNS A record for the host machine's ip address.
 
-## How to deploy (from remote host machine):
-1. Run `sudo docker compose up`.
+## Environment file
 
-## TODO
-- [x] Implement GHA Docker image caching
-- [x] Reduce size of certbot image
-- [ ] Add observability with OpenTelemetry logs, metrics, and traces
+The environment file defines certain environment variables and secrets to be consumed by the application services when running `docker compose up`. The following are required:
+- DOMAIN = the domain name
+- MONGO_INITDB_ROOT_USERNAME = mongodb username
+- MONGO_INITDB_ROOT_PASSWORD = mongodb password
+- OAUTH_CLIENT_ID = OAuth client id from Reddit
+- OAUTH_CLIENT_SECRET = OAuth client secret from Reddit
+- AES_KEY = 256 bit AES key encoded as base64
+- AES_IV = 128 bit AES initialization vector encoded as base64
+
+These values should all be saved as a single GitHub secret named `ENV_FILE` (see [Github secrets](#github-secrets)).
+
+## Deployment
+
+Deployment is automated by the continuous deployment (CD) workflow defined in `deploy.yaml`. This workflow can be triggered by a `push` event to the main branch on GitHub, or by manually invoking the workflow on GitHub Actions.
+
+## Roadmap
+
+Development of Reddit Saved Gallery is still ongoing. The following are some of the enhancements planned for future updates to Reddit Saved Gallery:
+
+### Planned features
+
 - [ ] Display subreddit icons on website
-- [ ] Implement CI pipeline for testing
-- [ ] Set up automated linting/formatting
+- [ ] Improve website UI
+- [ ] Stream Reddit videos to website using DASH
+- [ ] View all images from Reddit galleries
 - [ ] Create favicon/logo
+
+### Other improvements
+
+- [x] Enable GitHub Actions cache for Docker build
+- [x] Reduce size of Certbot image
+- [ ] Add observability with OpenTelemetry logs, metrics, and traces
+- [ ] Implement CI pipeline for testing
+- [ ] Set up automated linting and formatting
+- [ ] Automate Cloudflare mTLS set up
