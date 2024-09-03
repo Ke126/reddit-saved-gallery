@@ -11,6 +11,9 @@ server {
     ssl_certificate     /etc/nginx/certs/letsencrypt/live/$DOMAIN/fullchain.pem;
     ssl_certificate_key /etc/nginx/certs/letsencrypt/live/$DOMAIN/privkey.pem;
 
+    ssl_verify_client on;
+    ssl_client_certificate /etc/nginx/certs/client.cert;
+
     # location /.well-known/acme-challenge {
     #     root /usr/share/nginx/challenges;
     # }

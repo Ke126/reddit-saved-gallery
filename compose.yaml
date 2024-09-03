@@ -45,6 +45,7 @@ services:
         condition: service_started
     volumes:
       - ./letsencrypt:/etc/nginx/certs/letsencrypt:ro # server cert and key
+      - ./client.cert:/etc/nginx/certs/client.cert:ro # client cert
 
   frontend:
     image: ${COMPOSE_PROJECT_NAME}/frontend
