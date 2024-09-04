@@ -127,7 +127,7 @@
 				width={post.media.width}
 				height={post.media.height}
 				src={post.media.link}
-				class="card-img-top"
+				class="card-img-top img-fluid"
 				alt="..."
 			/>
 		{/if}
