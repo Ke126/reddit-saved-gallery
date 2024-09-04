@@ -1,8 +1,8 @@
-# Reddit Saved Manager
+# Reddit Saved Gallery
 
-[Reddit Saved Manager](https://hipster.one) is a SaaS web application allowing users to view, filter, and manage their saved Reddit posts.
+[Reddit Saved Gallery](https://hipster.one) is a SaaS web application allowing users to view, filter, and manage their saved Reddit posts.
 
-This repository contains all the necessary services to host Reddit Saved Manager. None of the source code in this repository needs to be downloaded to the host machine. The GitHub workflow [deploy.yaml](./.github/workflows/deploy.yaml) will automate building the Docker images and deploying the application to the host machine via SSH.
+This repository contains all the necessary services to host Reddit Saved Gallery. None of the source code in this repository needs to be downloaded to the host machine. The GitHub workflow [deploy.yaml](./.github/workflows/deploy.yaml) will automate building the Docker images and deploying the application to the host machine via SSH.
 
 ## Table of contents
 
