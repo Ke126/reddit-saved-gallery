@@ -19,6 +19,8 @@ interface Comment extends BaseData {
 		[media_id: string]: {
 			s: {
 				u: string;
+				x: number;
+				y: number;
 			};
 		};
 	};
@@ -33,11 +35,17 @@ interface Link extends BaseData {
 	title: string;
 	url: string;
 
+	// not documented but seem to always exist
+	thumbnail_width: number;
+	thumbnail_height: number;
+
 	// optional
 	preview?: {
 		images: {
 			source: {
 				url: string;
+				width: number;
+				height: number;
 			};
 		}[];
 	};
@@ -45,6 +53,8 @@ interface Link extends BaseData {
 		[media_id: string]: {
 			s: {
 				u: string;
+				x: number;
+				y: number;
 			};
 		};
 	};
@@ -77,12 +87,18 @@ export interface RedditCard {
 	_id: string;
 	pinned: boolean;
 	subreddit: string;
-	media_url: string | undefined;
+	media?: {
+		type: 'image';
+		from: string;
+		link: string;
+		width: number;
+		height: number;
+	};
 	title: string;
 	selftext: string;
 	permalink: string;
 	author: string;
-	link_author: string | undefined;
+	link_author?: string;
 	num_comments: number;
 	score: number;
 	created: number;

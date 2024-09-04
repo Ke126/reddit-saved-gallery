@@ -118,8 +118,15 @@
 				</div>
 			</div>
 		</div>
-		{#if post.media_url}
-			<img loading="lazy" src={post.media_url} class="card-img-top" alt="..." />
+		{#if post.media}
+			<img
+				loading="lazy"
+				width={post.media.width}
+				height={post.media.height}
+				src={post.media.link}
+				class="card-img-top"
+				alt="..."
+			/>
 		{/if}
 		<div class="card-body">
 			<h5 class="card-title">{post.title}</h5>
