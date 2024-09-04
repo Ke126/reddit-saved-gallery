@@ -61,6 +61,9 @@
 			return subreddit;
 		});
 	}
+
+	// this alias lets me use the generically typed function in the markup
+	const promiseWithResolvers = Promise.withResolvers<void>;
 </script>
 
 <nav class="navbar navbar-expand-lg border-bottom">
@@ -132,7 +135,7 @@
 						action="?/pull"
 						use:enhance={() => {
 							isLoading = true;
-							const { promise, resolve, reject } = Promise.withResolvers();
+							const { promise, resolve, reject } = promiseWithResolvers();
 							toast.promise(promise, {
 								pending: 'Fetching saved posts from Reddit. This may take a few seconds...',
 								fulfilled: 'Success!',
@@ -142,9 +145,9 @@
 								await update({ reset: true, invalidateAll: true });
 								isLoading = false;
 								if (result.type === 'success') {
-									resolve(null);
+									resolve();
 								} else {
-									reject(null);
+									reject();
 								}
 							};
 						}}
