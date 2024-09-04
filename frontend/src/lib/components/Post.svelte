@@ -7,6 +7,9 @@
 
 	const BASE_URL = 'https://www.reddit.com';
 	let saved = true;
+
+	// this alias lets me use the generically typed function in the markup
+	const promiseWithResolvers = Promise.withResolvers<void>;
 </script>
 
 <div class="col">
@@ -47,7 +50,7 @@
 						method="POST"
 						action="?/pin"
 						use:enhance={() => {
-							const { promise, resolve, reject } = Promise.withResolvers();
+							const { promise, resolve, reject } = promiseWithResolvers();
 							toast.promise(promise, {
 								pending: 'Loading...',
 								fulfilled: post.pinned ? 'Pinned!' : 'Unpinned!',
@@ -56,9 +59,9 @@
 							return async ({ result, update }) => {
 								await update({ reset: true, invalidateAll: false });
 								if (result.type === 'success') {
-									resolve(null);
+									resolve();
 								} else {
-									reject(null);
+									reject();
 									post.pinned = !post.pinned;
 								}
 							};
@@ -83,7 +86,7 @@
 						method="POST"
 						action="?/save"
 						use:enhance={() => {
-							const { promise, resolve, reject } = Promise.withResolvers();
+							const { promise, resolve, reject } = promiseWithResolvers();
 							toast.promise(promise, {
 								pending: 'Loading...',
 								fulfilled: saved ? 'Saved!' : 'Unsaved!',
@@ -92,9 +95,9 @@
 							return async ({ result, update }) => {
 								await update({ reset: true, invalidateAll: false });
 								if (result.type === 'success') {
-									resolve(null);
+									resolve();
 								} else {
-									reject(null);
+									reject();
 									saved = !saved;
 								}
 							};
