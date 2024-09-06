@@ -79,7 +79,7 @@ Development of Reddit Saved Gallery is still ongoing. The following are some of 
 ### Other improvements
 
 - [x] Enable GitHub Actions cache for Docker build
-- [x] Reduce size of Certbot image
+- [x] Reduce size of cert-manager image
 - [ ] Add observability with OpenTelemetry logs, metrics, and traces
 - [ ] Implement CI pipeline for testing
 - [ ] Set up automated linting and formatting
