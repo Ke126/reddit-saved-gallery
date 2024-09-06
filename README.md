@@ -1,6 +1,6 @@
 # Reddit Saved Gallery
 
-![Build](https://github.com/ke126/reddit-app/actions/workflows/deploy.yaml/badge.svg)
+[![Build](https://github.com/ke126/reddit-app/actions/workflows/deploy.yaml/badge.svg)](https://github.com/Ke126/reddit-app/actions/workflows/deploy.yaml)
 
 [Reddit Saved Gallery](https://hipster.one) is a SaaS web application allowing users to view, filter, and manage their saved Reddit posts.
 
