@@ -68,19 +68,23 @@ Deployment is automated by the continuous deployment (CD) workflow defined in `d
 
 Development of Reddit Saved Gallery is still ongoing. The following are some of the enhancements planned for future updates to Reddit Saved Gallery:
 
-### Planned features
+### Website features
 
-- [ ] Display subreddit icons on website
-- [ ] Improve website UI
-- [ ] Stream Reddit videos to website using DASH
+- [ ] Display subreddit icons
+- [ ] Add post ordering filters
+- [ ] Improve UI
+- [ ] Stream Reddit videos using DASH/HLS
 - [ ] View all images from Reddit galleries
 - [ ] Create favicon/logo
+- [ ] Export all posts to .json
 
 ### Other improvements
 
-- [x] Enable GitHub Actions cache for Docker build
+- [x] Utilize GitHub Actions cache for Docker build
 - [x] Reduce size of cert-manager image
-- [ ] Add observability with OpenTelemetry logs, metrics, and traces
+- [ ] Add observability using OpenTelemetry logs, metrics, and traces
+- [ ] Use Kubernetes for orchestration
 - [ ] Implement CI pipeline for testing
+- [ ] Utilize GitHub Container Registry to store built images
 - [ ] Set up automated linting and formatting
-- [ ] Automate Cloudflare mTLS set up
+- [ ] Automate Cloudflare client certificate management for mTLS
