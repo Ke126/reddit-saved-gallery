@@ -3,6 +3,7 @@
 	import { page } from '$app/stores';
 	import { toast } from '$lib/toast/toast';
 	import type { Subreddit } from '$lib/types/reddit';
+	import { promiseWithResolvers } from '$lib/utils/promise';
 
 	export let subreddits: Subreddit[];
 	export let user: { username: string; icon_img: string };
@@ -61,9 +62,6 @@
 			return subreddit;
 		});
 	}
-
-	// this alias lets me use the generically typed function in the markup
-	const promiseWithResolvers = Promise.withResolvers<void>;
 </script>
 
 <nav class="navbar navbar-expand-lg border-bottom">

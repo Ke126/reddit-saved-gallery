@@ -3,13 +3,11 @@
 	import type { RedditCard } from '$lib/types/reddit';
 	import { timeSince, dateString } from '$lib/utils/date';
 	import { toast } from '$lib/toast/toast';
+	import { promiseWithResolvers } from '$lib/utils/promise';
 	export let post: RedditCard;
 
 	const BASE_URL = 'https://www.reddit.com';
 	let saved = true;
-
-	// this alias lets me use the generically typed function in the markup
-	const promiseWithResolvers = Promise.withResolvers<void>;
 </script>
 
 <div class="col">
