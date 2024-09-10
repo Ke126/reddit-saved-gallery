@@ -1,5 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
 	const features = [
 		'Pull saved posts directly from your Reddit account',
 		'View post previews in website, with direct links straight to Reddit',
@@ -19,6 +20,14 @@
 	<title>Login - Reddit Saved Gallery</title>
 	<meta
 		name="description"
+		content="Log in to Reddit Saved Gallery to view, filter, and manage your Reddit account's saved posts."
+	/>
+	<meta property="og:title" content="Login - Reddit Saved Gallery" />
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content={$page.url.origin + '/login'} />
+	<meta property="og:image" content={$page.url.origin + '/favicon.png'} />
+	<meta
+		property="og:description"
 		content="Log in to Reddit Saved Gallery to view, filter, and manage your Reddit account's saved posts."
 	/>
 </svelte:head>
