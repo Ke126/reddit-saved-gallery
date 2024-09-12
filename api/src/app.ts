@@ -1,6 +1,5 @@
 import express from 'express';
 import morgan from 'morgan';
-import cors from 'cors';
 import helmet from 'helmet';
 import { Logger } from './shared/logger.js';
 import { makeHttpService } from './shared/fetch.js';
@@ -27,7 +26,6 @@ export async function bootstrap(port: number) {
     // construct app
     const app = express();
     app.use(helmet());
-    app.use(cors());
     app.use(express.json());
     app.use(morgan('dev'));
 
