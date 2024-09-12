@@ -1,6 +1,6 @@
 import type { ILogger } from './loggerModel.js';
 
-export function tryThriceWrapper<A extends any[], B>(logger: ILogger, func: (logger: ILogger, ...a: A) => Promise<B>) {
+export function tryThriceWrapper<A extends unknown[], B>(logger: ILogger, func: (logger: ILogger, ...a: A) => Promise<B>) {
     return async (...arg: A) => {
         let timer = 1;
         while (true) {
