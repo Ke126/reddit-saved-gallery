@@ -1,27 +1,20 @@
 #!/usr/bin/env bash
 
-# Set path to your shared directory
-shared_dir="./shared"
+SHARED_DIR="./shared"
+PROJECT_DIRS=("./api" "./query" "./reddit")
 
-# List of project directories (replace with actual project names)
-project_dirs=("./api" "./query" "./reddit")
+for PROJECT in "${PROJECT_DIRS[@]}"; do
+    PROJECT_DIR="${PROJECT}/src/shared"
 
-# Loop through each project directory
-for project in "${project_dirs[@]}"; do
-    project_dir="${project}/src/shared"
+    # delete contents of $PROJECT_DIR
+    rm -rf "$PROJECT_DIR"/*
 
-    # Step 1: Delete contents of project/shared/
-    rm -rf "$project_dir"/*
-
-    # Step 2: Create hard links for each file in shared/
-    for file in "$shared_dir"/*; do
-        # Extract the filename (without path) from $file
-        filename=$(basename "$file")
-
-        # Create a hard link in project/shared/
-        ln "$file" "$project_dir/$filename"
-        echo "Hard link created for ${project}/src/shared/${filename}"
+    # create hard links for each file in ./shared
+    for FILE in "$SHARED_DIR"/*; do
+        FILENAME=$(basename "$FILE")
+        ln "$FILE" "$PROJECT_DIR/$FILENAME"
+        echo "Hard link created for ${PROJECT}/src/shared/${FILENAME}"
     done
 
-    echo "Hard links created for ${project}!"
+    echo "Finished creating all hard links for ${PROJECT}"
 done
