@@ -12,14 +12,14 @@ export class Logger implements ILogger {
             level: 'verbose',
             format: winston.format.combine(
                 winston.format.timestamp(),
-                winston.format.simple()
+                winston.format.simple(),
             ),
             transports: [
                 new winston.transports.Console({
-                    format: winston.format.colorize({ all: true })
+                    format: winston.format.colorize({ all: true }),
                 }),
-                new winston.transports.File({ filename: 'app.log' })
-            ]
+                new winston.transports.File({ filename: 'app.log' }),
+            ],
         });
     }
     error(msg: string): void {

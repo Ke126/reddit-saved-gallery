@@ -9,7 +9,9 @@ afterEach(() => {
 
 describe('tryThriceWrapper', () => {
     test('should return when wrapping deterministic function', async () => {
-        const toWrap = vi.fn((logger: ILogger, x: number) => Promise.resolve(x));
+        const toWrap = vi.fn((logger: ILogger, x: number) =>
+            Promise.resolve(x),
+        );
         const wrapped = tryThriceWrapper(mockLogger, toWrap);
         const result = await wrapped(123);
         expect(result).toEqual(123);
@@ -19,7 +21,9 @@ describe('tryThriceWrapper', () => {
     test('should return when succeeding after 2 fails', async () => {
         const toWrap = (() => {
             let count = 0;
-            return vi.fn((logger: ILogger, x: number) => ++count === 3 ? Promise.resolve(x) : Promise.reject(x));
+            return vi.fn((logger: ILogger, x: number) =>
+                ++count === 3 ? Promise.resolve(x) : Promise.reject(x),
+            );
         })();
         const wrapped = tryThriceWrapper(mockLogger, toWrap);
         const result = await wrapped(123);
@@ -35,7 +39,9 @@ describe('tryThriceWrapper', () => {
         expect(mockLogger.error).toHaveBeenCalledTimes(1);
     });
     test('should work when wrapping deterministic 2 argument function', async () => {
-        const toWrap = vi.fn((logger: ILogger, x: number, y: string) => Promise.resolve(x + y));
+        const toWrap = vi.fn((logger: ILogger, x: number, y: string) =>
+            Promise.resolve(x + y),
+        );
         const wrapped = tryThriceWrapper(mockLogger, toWrap);
         const result = await wrapped(123, 'hello');
         expect(result).toEqual('123hello');

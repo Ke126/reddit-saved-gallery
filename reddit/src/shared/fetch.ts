@@ -1,4 +1,4 @@
-import type { ILogger } from "./loggerModel.js";
+import type { ILogger } from './loggerModel.js';
 
 type fetchParams = Parameters<typeof fetch>;
 type fetchInput = fetchParams[0];
@@ -10,10 +10,12 @@ export function makeHttpService(logger: ILogger) {
         async fetch(input: fetchInput, init: fetchInit): fetchReturn {
             const response = await fetch(input, init);
             if (!response.ok) {
-                throw new Error(`Bad response code ${response.status} from fetch`);
+                throw new Error(
+                    `Bad response code ${response.status} from fetch`,
+                );
             }
             logger.info(`Successful fetch with status code ${response.status}`);
             return response;
-        }
-    }
+        },
+    };
 }
