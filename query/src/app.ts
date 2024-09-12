@@ -2,19 +2,22 @@ import express from 'express';
 import morgan from 'morgan';
 import { Logger } from './shared/logger.js';
 import { MongoDbService } from './services/mongoDbService.js';
-import { makePostsController } from './controllers/postsController.js'
-import { makeSubredditsController } from './controllers/subredditsController.js'
+import { makePostsController } from './controllers/postsController.js';
+import { makeSubredditsController } from './controllers/subredditsController.js';
 import { makeMiddleware } from './shared/middleware.js';
 
 export async function bootstrap(port: number) {
     // construct services
-    const loggerService = new Logger("Query Service");
+    const loggerService = new Logger('Query Service');
     const mongoDbService = new MongoDbService(loggerService);
 
     // construct middleware and controllers
     const middleware = makeMiddleware(loggerService);
     const postsController = makePostsController(loggerService, mongoDbService);
-    const subredditsController = makeSubredditsController(loggerService, mongoDbService);
+    const subredditsController = makeSubredditsController(
+        loggerService,
+        mongoDbService,
+    );
 
     // construct app
     const app = express();
@@ -25,8 +28,16 @@ export async function bootstrap(port: number) {
     app.use(middleware.checkAuthorization());
 
     app.get('/posts', postsController.getHandler());
-    app.post('/posts', middleware.validateBody({ 'timestamp': 'number', 'posts': 'object' }), postsController.postHandler());
-    app.patch('/posts/:id', middleware.validateBody({ 'pinned': 'boolean' }), postsController.patchHandler());
+    app.post(
+        '/posts',
+        middleware.validateBody({ timestamp: 'number', posts: 'object' }),
+        postsController.postHandler(),
+    );
+    app.patch(
+        '/posts/:id',
+        middleware.validateBody({ pinned: 'boolean' }),
+        postsController.patchHandler(),
+    );
     app.put('/posts/:id', postsController.putHandler());
     app.delete('/posts/:id', postsController.deleteHandler());
 

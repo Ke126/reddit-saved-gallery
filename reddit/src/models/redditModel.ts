@@ -1,7 +1,7 @@
 export interface RedditListing {
     data: {
-        after: string,
-        dist: number,
-        children: unknown
-    }
+        after: string;
+        dist: number;
+        children: unknown;
+    };
 }
