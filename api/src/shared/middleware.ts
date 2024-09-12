@@ -22,19 +22,19 @@ export function makeMiddleware(logger: ILogger) {
         validateBody(schema: { [k: string]: "string" | "number" | "boolean" | "object" }) {
             return (req: Request, res: Response, next: NextFunction) => {
                 // check body for minimum criteria
-                if (Object.keys(schema).some(key => !req.body.hasOwnProperty(key) || (typeof (req.body[key]) !== schema[key]))) {
+                if (Object.keys(schema).some(key => !Object.hasOwn(req.body, key) || (typeof (req.body[key]) !== schema[key]))) {
                     res.status(400).json({ error: 'Bad Request' });
                 }
                 else next()
             }
         },
         notFoundHandler() {
-            return (req: Request, res: Response, next: NextFunction) => {
+            return (req: Request, res: Response) => {
                 res.status(404).json({ error: "Not Found" });
             }
         },
         errorHandler() {
-            return (err: Error, req: Request, res: Response, next: NextFunction) => {
+            return (err: Error, req: Request, res: Response) => {
                 if (res.headersSent) {
                     return;
                 }

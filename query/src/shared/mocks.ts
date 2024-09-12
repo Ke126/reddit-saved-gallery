@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { vi } from 'vitest';
 import type { ILogger } from './loggerModel.js';
 import type { Request as ExpressRequest, Response as ExpressResponse, NextFunction } from 'express';
