@@ -35,18 +35,21 @@
 <div class="container text-center position-absolute top-50 start-50 translate-middle">
 	<h1 class="display-1">Reddit Saved Gallery</h1>
 	<h6 class="display-6 mb-5">View, filter, and manage your Reddit account's saved posts!</h6>
-	<h6>Features:</h6>
+	<br />
+	<br />
+	<form method="POST">
+		<button class="btn btn-lg btn-success" type="submit"
+			>Log in with <i class="bi bi-reddit" style="color: #FF5700;"></i></button
+		>
+	</form>
+	<!-- <h6>Features:</h6>
 	<ul class="list-group d-inline-block mb-5">
 		{#each features as feature, idx}
 			<li class="list-group-item feature" class:active={activeIdx === idx}>{feature}</li>
 		{/each}
-	</ul>
+	</ul> -->
 
-	<form method="POST">
-		<button class="btn btn-outline-light" type="submit"
-			>Log in with <i class="bi bi-reddit" style="color: #FF5700;"></i></button
-		>
-	</form>
+
 </div>
 
 <style>
