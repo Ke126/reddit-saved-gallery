@@ -4,6 +4,7 @@
 	import { toast } from '$lib/toast/toast';
 	import type { Subreddit } from '$lib/types/reddit';
 	import { promiseWithResolvers } from '$lib/utils/promise';
+	import RedditSvg from './RedditSvg.svelte';
 
 	export let subreddits: Subreddit[];
 	export let user: { username: string; icon_img: string };
@@ -150,13 +151,17 @@
 							};
 						}}
 					>
-						<button class="dropdown-item" type="submit" disabled={isLoading}>
+						<button
+							class="dropdown-item d-flex align-items-center gap-1"
+							type="submit"
+							disabled={isLoading}
+						>
 							{#if isLoading}
 								<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
 								></span>
 								Loading...
 							{:else}
-								Pull posts from <i class="bi bi-reddit" style="color: #FF5700;"></i>
+								Pull posts from Reddit <RedditSvg />
 							{/if}
 						</button>
 					</form>
