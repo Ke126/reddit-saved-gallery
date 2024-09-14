@@ -1,18 +1,46 @@
 <script>
-	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
+	import RedditSvg from '$lib/components/RedditSvg.svelte';
+	import { onMount } from 'svelte';
+	import { fade } from 'svelte/transition';
 	const features = [
-		'Pull saved posts directly from your Reddit account',
-		'View post previews in website, with direct links straight to Reddit',
-		'Search and filter by title, subreddit, author, or selftext',
-		'Locally pin and unpin posts for viewing convenience',
-		'Save and unsave posts directly to Reddit'
+		{
+			icon: RedditSvg,
+			title: 'Direct Integration With Your Reddit Account',
+			description: [
+				'Log in directly using your Reddit account - no extra sign up is needed!',
+				'Reddit Saved Gallery will never have access to your password, and will never do anything without your permission.'
+			]
+		},
+		{
+			icon: '🖼️',
+			title: 'Stylish Post Viewer',
+			description: [
+				"View the contents of all your saved posts directly on Reddit Saved Gallery's website - no need to switch between multiple tabs!",
+				'Live video player and image gallery viewer coming soon!'
+			]
+		},
+		{
+			icon: '🔍',
+			title: 'Advanced Search And Filter',
+			description: [
+				"Search through your saved posts using Reddit Saved Gallery's advanced filtering options.",
+				'Easily filter posts using multiple criteria like title, author, subreddit, selftext, and more!'
+			]
+		},
+		{
+			icon: '📌',
+			title: 'Saved Post Management',
+			description: [
+				"Retrieve, save, and unsave posts directly to your Reddit account, all from the comfort of Reddit Saved Gallery's website!",
+				'Pin posts locally to easily mark them for later!'
+			]
+		}
 	];
-	let activeIdx = -1;
 
+	let animate = false;
 	onMount(() => {
-		setInterval(() => (activeIdx = (activeIdx + 1) % features.length), 5000);
-		activeIdx = 0;
+		animate = true;
 	});
 </script>
 
@@ -32,31 +60,75 @@
 	/>
 </svelte:head>
 
-<div class="container text-center position-absolute top-50 start-50 translate-middle">
-	<h1 class="display-1">Reddit Saved Gallery</h1>
-	<h6 class="display-6 mb-5">View, filter, and manage your Reddit account's saved posts!</h6>
-	<br />
-	<br />
-	<form method="POST">
-		<button class="btn btn-lg btn-success" type="submit"
-			>Log in with <i class="bi bi-reddit" style="color: #FF5700;"></i></button
+<nav class="navbar position-absolute w-100 navbar-expand-sm border-bottom">
+	<div class="container">
+		<a class="navbar-brand display-1" href="/login">Reddit Saved Gallery</a>
+		<button
+			class="navbar-toggler"
+			type="button"
+			data-bs-toggle="collapse"
+			data-bs-target="#navbarNavDropdown"
+			aria-controls="navbarNavDropdown"
+			aria-expanded="false"
+			aria-label="Toggle navigation"
 		>
-	</form>
-	<!-- <h6>Features:</h6>
-	<ul class="list-group d-inline-block mb-5">
-		{#each features as feature, idx}
-			<li class="list-group-item feature" class:active={activeIdx === idx}>{feature}</li>
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNavDropdown">
+			<div class="navbar-nav">
+				<a class="nav-link" href="#features">Features</a>
+				<!-- <a class="nav-link" href="#about">About</a> -->
+			</div>
+		</div>
+	</div>
+</nav>
+
+<div
+	class="container-fluid text-center vh-100 d-flex flex-column justify-content-center align-items-center"
+>
+	{#if animate}
+		<h1 transition:fade class="display-1">Reddit Saved Gallery</h1>
+		<h6 transition:fade class="display-6 pb-3 mb-5">
+			View, filter, and manage your Reddit saved posts!
+		</h6>
+		<form transition:fade method="POST">
+			<button class="btn btn-lg btn-success d-flex gap-2 align-items-center" type="submit"
+				>Log in with Reddit <RedditSvg width={24} height={24} /></button
+			>
+		</form>
+	{/if}
+</div>
+
+<div class="container-fluid min-vh-auto bg-custom">
+	<h6 class="display-6 py-5 text-center" id="features">Features</h6>
+	<div class="d-flex flex-wrap justify-content-center align-items-start pb-5 gap-5">
+		{#each features as Feature}
+			<div class="card shadow border-0" style="width: 20rem;">
+				<div class="card-body">
+					{#if typeof Feature.icon !== 'string'}
+						<div class="mb-2">
+							<Feature.icon width={48} height={48} />
+						</div>
+					{:else}
+						<h1>{Feature.icon}</h1>
+					{/if}
+					<h5 class="card-title">{Feature.title}</h5>
+					<br />
+					{#each Feature.description as sentence}
+						<p class="card-text">{sentence}</p>
+					{/each}
+				</div>
+			</div>
 		{/each}
-	</ul> -->
-
-
+	</div>
 </div>
 
 <style>
-	.feature {
-		transition:
-			background 0.5s ease-in-out,
-			color 0.5s ease-in-out,
-			border-color 0.5s ease-in-out;
+	.bg-custom {
+		background-color: hsl(from var(--bs-dark) h s calc(l + 8));
+	}
+	.min-vh-auto {
+		min-height: 100vh;
+		height: auto;
 	}
 </style>
