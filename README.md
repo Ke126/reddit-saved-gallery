@@ -17,7 +17,7 @@ This repository contains all the necessary services to host Reddit Saved Gallery
 - [Environment file](#environment-file)
 - [Deployment](#deployment)
 - [Roadmap](#roadmap)
-    - [Planned features](#planned-features)
+    - [Website features](#website-features)
     - [Other improvements](#other-improvements)
 
 ## Setup and installation
