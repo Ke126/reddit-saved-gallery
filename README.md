@@ -2,11 +2,10 @@
 
 [![Build](https://github.com/ke126/reddit-app/actions/workflows/deploy.yaml/badge.svg)](https://github.com/Ke126/reddit-app/actions/workflows/deploy.yaml)
 
-[Reddit Saved Gallery](https://hipster.one) is a SaaS web application allowing users to view, filter, and manage their saved Reddit posts.
+[Reddit Saved Gallery](https://savedgallery.net) is a SaaS web application allowing users to view, filter, and manage their saved Reddit posts.
 
 This repository contains all the necessary services to host Reddit Saved Gallery. None of the source code in this repository needs to be downloaded to the host machine. The GitHub workflow [deploy.yaml](./.github/workflows/deploy.yaml) will automate building the Docker images and deploying the application to the host machine via SSH.
 
-<a name="article"></a>
 For more details about the application, check out [Reddit Saved Gallery: A Scalable Web Application](https://www.linkedin.com/pulse/reddit-saved-gallery-scalable-web-application-kevin-chen-vztde/) on LinkedIn.
 
 ## Table of contents
