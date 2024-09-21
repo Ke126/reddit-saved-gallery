@@ -6,6 +6,9 @@
 
 This repository contains all the necessary services to host Reddit Saved Gallery. None of the source code in this repository needs to be downloaded to the host machine. The GitHub workflow [deploy.yaml](./.github/workflows/deploy.yaml) will automate building the Docker images and deploying the application to the host machine via SSH.
 
+<a name="article"></a>
+For more details about the application, check out [Reddit Saved Gallery: A Scalable Web Application](https://www.linkedin.com/pulse/reddit-saved-gallery-scalable-web-application-kevin-chen-vztde/) on LinkedIn.
+
 ## Table of contents
 
 - [Setup and installation](#setup-and-installation)
