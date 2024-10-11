@@ -4,8 +4,6 @@
 	import MagnifyingGlass from '$lib/svg/MagnifyingGlass.svelte';
 	import Photo from '$lib/svg/Photo.svelte';
 	import Pin from '$lib/svg/Pin.svelte';
-	import { onMount } from 'svelte';
-	import { fade } from 'svelte/transition';
 	const features = [
 		{
 			icon: Reddit,
@@ -40,11 +38,6 @@
 			]
 		}
 	];
-
-	let animate = false;
-	onMount(() => {
-		animate = true;
-	});
 </script>
 
 <svelte:head>
