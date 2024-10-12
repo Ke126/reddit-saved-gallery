@@ -66,13 +66,13 @@
 			</a>
 			<a
 				href="#features"
-				class="mr-auto rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+				class="mr-auto rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition-all"
 				>Features</a
 			>
 			<button
 				form="login"
 				type="submit"
-				class="rounded-lg px-3 py-1 border-2 hover:border-slate-200 border-orange-600 hover:bg-orange-700 font-bold transition-colors bg-orange-600 text-white"
+				class="rounded-lg px-3 py-1 border-2 hover:border-slate-200 border-orange-600 hover:bg-orange-700 font-bold transition-all bg-orange-600 text-white"
 				>Log in</button
 			>
 		</div>
@@ -86,7 +86,7 @@
 		<form id="login" method="post">
 			<button
 				type="submit"
-				class="mx-auto flex items-center gap-1 h-16 rounded-lg px-6 text-xl border-2 hover:border-slate-200 border-orange-600 hover:bg-orange-700 font-bold transition-colors bg-orange-600 text-white"
+				class="mx-auto flex items-center gap-1 h-16 rounded-lg px-6 text-xl border-2 hover:border-slate-200 border-orange-600 hover:bg-orange-700 font-bold transition-all bg-orange-600 text-white"
 				>Log in with Reddit<Reddit class="size-8 text-white" />
 			</button>
 		</form>
