@@ -156,18 +156,18 @@
 
 	<!-- Buttons -->
 	<div class="flex px-3 gap-4">
-		<div class="flex items-center gap-1 py-2 px-3 bg-slate-600 text-slate-200 rounded-full">
-			<ArrowUp class="size-5" />
+		<div class="flex items-center gap-1 py-2 px-3 bg-slate-600 text-slate-200 text-sm rounded-full">
+			<ArrowUp class="size-4" />
 			{post.score}
-			<ArrowDown class="size-5" />
+			<ArrowDown class="size-4" />
 		</div>
 
 		<a
 			href="{BASE_URL}{post.permalink}"
 			target="_blank"
-			class="flex items-center gap-1 py-2 px-3 bg-slate-600 hover:bg-slate-500 text-slate-200 rounded-full"
+			class="flex items-center gap-1 py-2 px-3 bg-slate-600 hover:bg-slate-500 text-slate-200 text-sm rounded-full"
 		>
-			<Message class="size-5" />
+			<Message class="size-4" />
 			{post.num_comments}
 		</a>
 	</div>
