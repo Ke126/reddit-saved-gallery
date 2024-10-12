@@ -28,7 +28,7 @@
 				<a
 					href="{BASE_URL}/r/{post.subreddit}"
 					target="_blank"
-					class="text-slate-200 font-semibold hover:text-orange-600 transition-all hover:underline"
+					class="text-slate-200 hover:text-orange-600 transition-all hover:underline"
 					>r/{post.subreddit}</a
 				>
 				<span class="text-slate-400">•</span>
@@ -40,7 +40,7 @@
 				<a
 					href="{BASE_URL}/u/{post.author}"
 					target="_blank"
-					class="text-slate-200 font-semibold hover:text-orange-600 transition-all hover:underline"
+					class="text-slate-200 hover:text-orange-600 transition-all hover:underline"
 					>u/{post.author}</a
 				>
 				{#if post.link_author}
@@ -141,7 +141,7 @@
 	{/if}
 
 	<!-- Title -->
-	<h1 class="text-2xl px-3 text-slate-200 font-bold mb-2">{post.title}</h1>
+	<h1 class="text-xl px-3 text-slate-200 font-semibold mb-2">{post.title}</h1>
 
 	<!-- Selftext -->
 	{#if post.selftext}
