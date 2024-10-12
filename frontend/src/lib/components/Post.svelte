@@ -78,7 +78,7 @@
 			<input type="hidden" name="_id" value={post._id} />
 			<input hidden type="checkbox" name="pinned" bind:checked={post.pinned} />
 			<button
-				class="group rounded-full p-2 hover:bg-green-600 hover:bg-opacity-25 transition-all"
+				class="group rounded-full p-2 hover:bg-green-600/25 transition-all"
 				type="submit"
 				title={post.pinned ? 'Unpin' : 'Pin'}
 				on:click={() => (post.pinned = !post.pinned)}
@@ -114,7 +114,7 @@
 			<input type="hidden" name="_id" value={post._id} />
 			<input hidden type="checkbox" name="saved" bind:checked={saved} />
 			<button
-				class="group rounded-full p-2 hover:bg-white hover:bg-opacity-25 transition-all"
+				class="group rounded-full p-2 hover:bg-white/25 transition-all"
 				type="submit"
 				title={saved ? 'Unsave' : 'Save'}
 				on:click={() => ((saved = !saved), (post.pinned = false))}
@@ -165,7 +165,7 @@
 		<a
 			href="{BASE_URL}{post.permalink}"
 			target="_blank"
-			class="flex items-center gap-1 py-2 px-3 bg-slate-600 hover:bg-slate-500 text-slate-200 text-sm rounded-full"
+			class="flex items-center gap-1 py-2 px-3 bg-slate-600 hover:bg-slate-500 text-slate-200 text-sm rounded-full transition-all"
 		>
 			<Message class="size-4" />
 			{post.num_comments}

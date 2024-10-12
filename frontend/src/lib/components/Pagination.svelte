@@ -22,7 +22,7 @@
 	const active =
 		'text-sm text-slate-200 font-semibold inline-flex items-center px-4 py-2 bg-orange-600';
 	const inactive =
-		'text-sm text-slate-200 font-semibold inline-flex items-center px-4 py-2 ring-1 ring-slate-700 hover:bg-orange-600 hover:bg-opacity-25 ring-inset';
+		'text-sm text-slate-200 font-semibold inline-flex items-center px-4 py-2 ring-1 ring-slate-700 hover:bg-orange-600/25 transition-all ring-inset';
 	const left = ' rounded-l-md';
 	const right = ' rounded-r-md';
 </script>
