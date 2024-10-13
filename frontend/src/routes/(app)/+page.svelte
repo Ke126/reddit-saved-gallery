@@ -6,9 +6,17 @@
 </script>
 
 <Toaster />
-<Pagination count={data.posts.count} totalCount={data.posts.total_count} curPage={data.posts.page}></Pagination>
-<PostList posts={data.posts.posts}></PostList>
+<Pagination
+	count={data.posts.count}
+	totalCount={data.posts.total_count}
+	curPage={data.posts.page}
+/>
+<PostList posts={data.posts.posts} />
 <!-- Display bottom pagination only if there are posts to be displayed -->
 {#if data.posts.count !== 0}
-	<Pagination count={data.posts.count} totalCount={data.posts.total_count} curPage={data.posts.page}></Pagination>
+	<Pagination
+		count={data.posts.count}
+		totalCount={data.posts.total_count}
+		curPage={data.posts.page}
+	/>
 {/if}
