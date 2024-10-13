@@ -19,7 +19,7 @@
 
 <!-- Card -->
 <article
-	class="max-w-md rounded-xl py-3 bg-slate-800 hover:bg-slate-700 hover:scale-105 transition-all flex flex-col"
+	class="max-w-md rounded-xl py-3 bg-slate-800 hover:bg-slate-700 hover:scale-105 transition-all flex flex-col border border-slate-700"
 >
 	<!-- Header -->
 	<div class="flex items-center mb-2 px-3">
@@ -155,7 +155,7 @@
 	{/if}
 
 	<!-- Buttons -->
-	<div class="flex px-3 gap-4">
+	<div class="flex px-3 pt-3 gap-4 border-t border-slate-700">
 		<div class="flex items-center gap-1 py-2 px-3 bg-slate-600 text-slate-200 text-sm rounded-full">
 			<ArrowUp class="size-4" />
 			{post.score}
