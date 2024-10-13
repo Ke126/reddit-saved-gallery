@@ -4,6 +4,7 @@ services:
 
   cert-manager:
     image: ${COMPOSE_PROJECT_NAME}/cert-manager
+    container_name: cert-manager
     build: 
       context: ./cert-manager
       cache_from:
@@ -24,6 +25,7 @@ services:
 
   nginx:
     image: ${COMPOSE_PROJECT_NAME}/nginx
+    container_name: nginx
     build: 
       context: ./nginx
       cache_from:
@@ -49,6 +51,7 @@ services:
 
   frontend:
     image: ${COMPOSE_PROJECT_NAME}/frontend
+    container_name: frontend
     build: 
       context: ./frontend
       cache_from:
@@ -73,6 +76,7 @@ services:
 
   api:
     image: ${COMPOSE_PROJECT_NAME}/api
+    container_name: api
     build: 
       context: ./api
       cache_from:
@@ -86,6 +90,7 @@ services:
 
   query:
     image: ${COMPOSE_PROJECT_NAME}/query
+    container_name: query
     build: 
       context: ./query
       cache_from:
@@ -107,6 +112,7 @@ services:
 
   reddit:
     image: ${COMPOSE_PROJECT_NAME}/reddit
+    container_name: reddit
     build: 
       context: ./reddit
       cache_from:
@@ -120,6 +126,7 @@ services:
 
   mongo:
     image: mongo
+    container_name: mongo
     environment:
       MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/mongo_username
       MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo_password
