@@ -3,6 +3,7 @@ name: reddit-app
 services:
   api:
     image: reddit-app/api:latest
+    container_name: api
     build: ./api
     networks:
       - app-net
@@ -11,6 +12,7 @@ services:
 
   query:
     image: reddit-app/query:latest
+    container_name: query
     build: ./query
     networks:
       - app-net
@@ -25,12 +27,14 @@ services:
 
   reddit:
     image: reddit-app/reddit:latest
+    container_name: reddit
     build: ./reddit
     networks:
       - app-net
 
   mongo:
     image: mongo:latest
+    container_name: mongo
     environment:
       MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/mongo_username
       MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo_password
