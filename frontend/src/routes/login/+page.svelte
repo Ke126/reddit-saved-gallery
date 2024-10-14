@@ -61,7 +61,7 @@
 		<div
 			class="mx-auto max-w-7xl flex items-center h-16 px-2 border-b border-slate-700 sm:px-6 lg:px-8"
 		>
-			<a href="/login" class="text-lg font-bold tracking-tight text-slate-200 mr-4">
+			<a href="/login" class="text-lg font-bold tracking-tight text-slate-200 mr-4 hover:text-orange-600 transition-all">
 				Reddit Saved Gallery
 			</a>
 			<a

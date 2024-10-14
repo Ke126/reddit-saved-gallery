@@ -70,7 +70,7 @@
 			class="mx-auto max-w-7xl flex items-center justify-between h-16 px-2 border-b border-slate-700 sm:px-6 lg:px-8"
 		>
 			<!-- Nav header -->
-			<a href="/" class="text-lg font-bold tracking-tight text-slate-200"> Reddit Saved Gallery </a>
+			<a href="/" class="text-lg font-bold tracking-tight text-slate-200 hover:text-orange-600 transition-all"> Reddit Saved Gallery </a>
 
 			<!-- Search bar, search button, and filter button -->
 			<div class="flex items-center gap-2">
