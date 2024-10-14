@@ -8,14 +8,14 @@
 </script>
 
 <div
-	class="fixed inset-x-0 top-0 p-0 flex flex-col items-center justify-center pointer-events-none"
+	class="fixed inset-x-0 top-0 p-0 flex flex-col items-center justify-center pointer-events-none z-50"
 >
 	{#each $toasts as toast (toast.id)}
 		<article
 			animate:flip={{ duration: 300 }}
 			in:scale={{ duration: 300 }}
 			out:scale={{ duration: 300 }}
-			class="flex items-center justify-center gap-2 rounded-md bg-slate-800 border border-slate-700 mt-4 p-2 z-50"
+			class="flex items-center justify-center gap-2 rounded-md bg-slate-800 border border-slate-700 mt-4 p-2"
 			role="alert"
 		>
 			{#if toast.state === 'fulfilled'}
