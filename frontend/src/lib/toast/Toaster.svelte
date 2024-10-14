@@ -25,15 +25,13 @@
 			{:else}
 				<Spinner class="size-5 text-slate-200" />
 			{/if}
-			<p class="text-slate-200">
+			<p class="text-slate-200 text-sm">
 				{toast.message}
 			</p>
 			<!-- X button -->
 			<!-- <button
 				type="button"
 				on:click={() => deleteToast(toast)}
-				class="btn-close ms-1"
-				aria-label="Close"
 			></button> -->
 		</article>
 	{/each}
