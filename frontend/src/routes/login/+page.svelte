@@ -59,20 +59,20 @@
 <header class="bg-slate-900">
 	<nav class="absolute w-full">
 		<div
-			class="mx-auto max-w-7xl flex items-center h-16 px-2 border-b border-slate-700 sm:px-6 lg:px-8"
+			class="mx-auto max-w-7xl flex items-center h-16 border-b border-slate-700 px-4 sm:px-8"
 		>
-			<a href="/login" class="text-lg font-bold tracking-tight text-slate-200 mr-4 hover:text-orange-600 transition-all">
+			<a href="/login" class="text-lg font-bold tracking-tight text-slate-200 mr-4 hover:text-orange-600 transition-colors">
 				Reddit Saved Gallery
 			</a>
 			<a
 				href="#features"
-				class="mr-auto rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition-all"
+				class="mr-auto rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
 				>Features</a
 			>
 			<button
 				form="login"
 				type="submit"
-				class="rounded-lg px-3 py-1 border-2 hover:border-slate-200 border-orange-600 hover:bg-orange-700 font-bold transition-all bg-orange-600 text-white"
+				class="rounded-lg px-3 py-2 hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200 font-bold transition-colors bg-orange-600 text-white"
 				>Log in</button
 			>
 		</div>
@@ -86,7 +86,7 @@
 		<form id="login" method="post">
 			<button
 				type="submit"
-				class="mx-auto flex items-center gap-1 h-16 rounded-lg px-6 text-xl border-2 hover:border-slate-200 border-orange-600 hover:bg-orange-700 font-bold transition-all bg-orange-600 text-white"
+				class="mx-auto flex items-center gap-1 h-16 rounded-lg px-6 text-xl hover:ring-2 hover:ring-inset hover:ring-slate-200 hover:bg-orange-700 font-bold transition-colors bg-orange-600 text-white"
 				>Log in with Reddit<Reddit class="size-8 text-white" />
 			</button>
 		</form>

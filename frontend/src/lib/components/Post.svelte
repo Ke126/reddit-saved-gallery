@@ -28,7 +28,7 @@
 				<a
 					href="{BASE_URL}/r/{post.subreddit}"
 					target="_blank"
-					class="text-slate-200 hover:text-orange-600 transition-all hover:underline"
+					class="text-slate-200 hover:text-orange-600 hover:underline font-medium"
 					>r/{post.subreddit}</a
 				>
 				<span class="text-slate-400">•</span>
@@ -40,7 +40,7 @@
 				<a
 					href="{BASE_URL}/u/{post.author}"
 					target="_blank"
-					class="text-slate-200 hover:text-orange-600 transition-all hover:underline"
+					class="text-slate-200 hover:text-orange-600 hover:underline font-medium"
 					>u/{post.author}</a
 				>
 				{#if post.link_author}
@@ -48,7 +48,7 @@
 					<a
 						href="{BASE_URL}/u/{post.link_author}"
 						target="_blank"
-						class="text-slate-200 font-semibold hover:text-orange-600 transition-all hover:underline"
+						class="text-slate-200 hover:text-orange-600 hover:underline font-medium"
 						>u/{post.link_author}</a
 					>
 				{/if}
@@ -78,7 +78,7 @@
 			<input type="hidden" name="_id" value={post._id} />
 			<input hidden type="checkbox" name="pinned" bind:checked={post.pinned} />
 			<button
-				class="group rounded-full p-2 hover:bg-green-600/25 transition-all"
+				class="group rounded-full p-2 hover:bg-green-600/25 transition-colors"
 				type="submit"
 				title={post.pinned ? 'Unpin' : 'Pin'}
 				on:click={() => (post.pinned = !post.pinned)}
@@ -86,7 +86,7 @@
 				{#if post.pinned}
 					<PinFill class="text-green-600 size-6" />
 				{:else}
-					<Pin class="text-slate-400 group-hover:text-green-600 size-6 transition-all" />
+					<Pin class="text-slate-400 group-hover:text-green-600 size-6 transition-colors" />
 				{/if}
 			</button>
 		</form>
@@ -114,7 +114,7 @@
 			<input type="hidden" name="_id" value={post._id} />
 			<input hidden type="checkbox" name="saved" bind:checked={saved} />
 			<button
-				class="group rounded-full p-2 hover:bg-white/25 transition-all"
+				class="group rounded-full p-2 hover:bg-white/25 transition-colors"
 				type="submit"
 				title={saved ? 'Unsave' : 'Save'}
 				on:click={() => ((saved = !saved), (post.pinned = false))}
@@ -122,7 +122,7 @@
 				{#if saved}
 					<BookmarkFill class="text-white size-6" />
 				{:else}
-					<Bookmark class="text-slate-400 group-hover:text-white size-6 transition-all" />
+					<Bookmark class="text-slate-400 group-hover:text-white size-6 transition-colors" />
 				{/if}
 			</button>
 		</form>
@@ -145,7 +145,7 @@
 
 	<!-- Selftext -->
 	{#if post.selftext}
-		<p class="text-slate-400 mb-2">
+		<p class="text-slate-400 mb-2 px-3">
 			{#if post.selftext.length > 500}
 				{post.selftext.slice(0, 500)}...
 			{:else}
@@ -165,7 +165,7 @@
 		<a
 			href="{BASE_URL}{post.permalink}"
 			target="_blank"
-			class="flex items-center gap-1 py-2 px-3 bg-slate-600 hover:bg-slate-500 text-slate-200 text-sm rounded-full transition-all"
+			class="flex items-center gap-1 py-2 px-3 bg-slate-600 hover:bg-slate-500 text-slate-200 text-sm rounded-full transition-colors"
 		>
 			<Message class="size-4" />
 			{post.num_comments}

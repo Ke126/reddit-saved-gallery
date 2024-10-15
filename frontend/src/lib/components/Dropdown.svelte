@@ -26,7 +26,7 @@
 
 <svelte:window on:click={closeDropdown} />
 
-<div class="relative inline-block h-10">
+<div class="relative inline-block h-10 ml-2">
 	<!-- Dropdown button -->
 	<button
 		bind:this={dropdownButton}

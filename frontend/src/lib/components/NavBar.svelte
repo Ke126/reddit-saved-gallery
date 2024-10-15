@@ -67,18 +67,23 @@
 <header class="bg-slate-900">
 	<nav>
 		<div
-			class="mx-auto max-w-7xl flex items-center justify-between h-16 px-2 border-b border-slate-700 sm:px-6 lg:px-8"
+			class="mx-auto max-w-7xl flex items-center justify-between h-16 sm:border-b sm:border-slate-700 px-4 sm:px-8"
 		>
 			<!-- Nav header -->
-			<a href="/" class="text-lg font-bold tracking-tight text-slate-200 hover:text-orange-600 transition-all"> Reddit Saved Gallery </a>
+			<a
+				href="/"
+				class="text-lg text-nowrap font-bold tracking-tight text-slate-200 hover:text-orange-600 transition-colors mr-2"
+			>
+				Reddit Saved Gallery
+			</a>
 
 			<!-- Search bar, search button, and filter button -->
-			<div class="flex items-center gap-2">
-				<form id="search" class="relative max-w-7xl rounded-lg">
+			<div class="items-center justify-center gap-2 hidden sm:flex grow">
+				<form id="search" class="relative grow max-w-96">
 					<input
 						name={queryName}
 						bind:value={queryValue}
-						class="peer block w-full rounded-lg border placeholder:text-slate-400 border-slate-700 bg-slate-200 p-2 pl-10 focus:border-orange-600 focus:outline-none focus:ring-1 focus:ring-orange-600"
+						class="peer w-full rounded-lg placeholder:text-slate-400 bg-slate-200 p-2 pl-10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600"
 						type="search"
 						placeholder="Search"
 					/>
@@ -93,18 +98,50 @@
 				<button
 					form="search"
 					type="submit"
-					class="rounded-lg px-3 py-2 border-2 hover:border-slate-200 border-orange-600 hover:bg-orange-700 font-bold transition-colors bg-orange-600 text-white"
+					class="rounded-lg px-3 py-2 hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200 font-bold transition-colors bg-orange-600 text-white"
 					>Search</button
 				><button
 					type="button"
 					on:click={() => (showCollapseMenu = !showCollapseMenu)}
-					class="rounded-lg px-3 py-2 border-2 hover:border-slate-200 border-orange-600 hover:bg-orange-700 font-bold transition-colors bg-orange-600 text-white"
+					class="rounded-lg px-3 py-2 hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200 font-bold transition-colors bg-orange-600 text-white"
 					>Filters</button
 				>
 			</div>
 
 			<!-- User dropdown -->
 			<Dropdown username={user.username} pfp={user.icon_img} />
+		</div>
+
+		<!-- Second row on <sm breakpoint -->
+		<div class="flex sm:hidden mx-auto items-center gap-2 h-16 border-b border-slate-700 px-4">
+			<!-- Search bar, search button, and filter button -->
+			<form id="search" class="relative grow">
+				<input
+					name={queryName}
+					bind:value={queryValue}
+					class="w-full peer rounded-lg placeholder:text-slate-400 bg-slate-200 p-2 pl-10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600"
+					type="search"
+					placeholder="Search"
+				/>
+				<!-- svg text color classes are here so tailwind peer selector works properly -->
+				<div
+					class="peer-focus:text-orange-600 text-slate-400 absolute pointer-events-none inset-y-0 left-0 flex items-center pl-3"
+				>
+					<MagnifyingGlass class="size-6" />
+				</div>
+				<input type="hidden" name={filterName} value={filterValue} />
+			</form>
+			<button
+				form="search"
+				type="submit"
+				class="rounded-lg px-3 py-2 hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200 font-bold transition-colors bg-orange-600 text-white"
+				>Search</button
+			><button
+				type="button"
+				on:click={() => (showCollapseMenu = !showCollapseMenu)}
+				class="rounded-lg px-3 py-2 hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200 font-bold transition-colors bg-orange-600 text-white"
+				>Filters</button
+			>
 		</div>
 	</nav>
 
@@ -113,19 +150,19 @@
 		<div
 			in:slide
 			out:slide
-			class="mx-auto max-w-7xl py-4 px-2 border-b border-slate-700 sm:px-6 lg:px-8"
+			class="mx-auto max-w-7xl py-4 px-4 border-b border-slate-700 sm:px-8"
 		>
 			<div class="flex gap-2">
 				<button
 					on:click={() => setChecks(true)}
 					type="submit"
-					class="rounded-lg px-2 py-1 border-2 hover:border-slate-200 border-orange-600 hover:bg-orange-700 font-bold transition-colors bg-orange-600 text-white"
+					class="rounded-lg px-3 py-2 hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200 font-bold transition-colors bg-orange-600 text-white"
 					>Check all</button
 				>
 				<button
 					on:click={() => setChecks(false)}
 					type="submit"
-					class="rounded-lg px-2 py-1 border-2 hover:border-slate-200 border-orange-600 hover:bg-orange-700 font-bold transition-colors bg-orange-600 text-white"
+					class="rounded-lg px-3 py-2 hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200 font-bold transition-colors bg-orange-600 text-white"
 					>Uncheck all</button
 				>
 			</div>
