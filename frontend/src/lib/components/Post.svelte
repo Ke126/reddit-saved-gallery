@@ -141,11 +141,11 @@
 	{/if}
 
 	<!-- Title -->
-	<h1 class="text-xl px-3 text-slate-200 font-semibold mb-2">{post.title}</h1>
+	<h1 class="text-xl px-3 text-slate-200 font-semibold mb-2 break-words">{post.title}</h1>
 
 	<!-- Selftext -->
 	{#if post.selftext}
-		<p class="text-slate-400 mb-2 px-3">
+		<p class="text-slate-400 mb-2 px-3 break-words">
 			{#if post.selftext.length > 500}
 				{post.selftext.slice(0, 500)}...
 			{:else}
