@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '../../app.css'
 	import PostList from '$lib/components/PostList.svelte';
 	import Pagination from '$lib/components/Pagination.svelte';
 	import Toaster from '$lib/toast/Toaster.svelte';
@@ -20,3 +21,9 @@
 		curPage={data.posts.page}
 	/>
 {/if}
+
+<style lang="postcss">
+	:global(body) {
+		background: theme(colors.slate.900)
+	}
+</style>

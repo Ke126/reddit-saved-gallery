@@ -1,4 +1,5 @@
 <script>
+	import '../../app.css'
 	import { page } from '$app/stores';
 	import Reddit from '$lib/svg/Reddit.svelte';
 	import MagnifyingGlass from '$lib/svg/MagnifyingGlass.svelte';
