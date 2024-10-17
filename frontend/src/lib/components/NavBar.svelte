@@ -72,6 +72,7 @@
 			<!-- Nav header -->
 			<a
 				href="/"
+				data-sveltekit-preload-data="tap"
 				class="text-lg text-nowrap font-bold tracking-tight text-slate-200 hover:text-orange-600 transition-colors mr-2"
 			>
 				Reddit Saved Gallery
