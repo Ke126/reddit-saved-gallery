@@ -22,6 +22,9 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 		}
 	});
 	const result = (await response.json()) as GetPostsResponseBody;
+	// non-numeric page numbers ("abc") => 1
+	// page numbers < 1 (0, -1, -2.4) => 1
+	// decimals > 1 (1.5, 15.7) => Math.floor()
 	return {
 		posts: {
 			total_count: result.total_count,

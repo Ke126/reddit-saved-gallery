@@ -1,47 +1,44 @@
 <script>
+	import '../../app.css'
 	import { page } from '$app/stores';
-	import RedditSvg from '$lib/components/RedditSvg.svelte';
-	import { onMount } from 'svelte';
-	import { fade } from 'svelte/transition';
+	import Reddit from '$lib/svg/Reddit.svelte';
+	import MagnifyingGlass from '$lib/svg/MagnifyingGlass.svelte';
+	import Photo from '$lib/svg/Photo.svelte';
+	import Pin from '$lib/svg/Pin.svelte';
 	const features = [
 		{
-			icon: RedditSvg,
-			title: 'Direct Integration With Your Reddit Account',
+			icon: Reddit,
+			title: 'Direct integration with Reddit',
 			description: [
 				'Log in directly using your Reddit account - no extra sign up is needed!',
 				'Reddit Saved Gallery will never have access to your password, and will never do anything without your permission.'
 			]
 		},
 		{
-			icon: '🖼️',
-			title: 'Stylish Post Viewer',
-			description: [
-				"View the contents of all your saved posts directly on Reddit Saved Gallery's website - no need to switch between multiple tabs!",
-				'Live video player and image gallery viewer coming soon!'
-			]
-		},
-		{
-			icon: '🔍',
-			title: 'Advanced Search And Filter',
+			icon: MagnifyingGlass,
+			title: 'Advanced search and filter',
 			description: [
 				"Search through your saved posts using Reddit Saved Gallery's advanced filtering options.",
 				'Easily filter posts using multiple criteria like title, author, subreddit, selftext, and more!'
 			]
 		},
 		{
-			icon: '📌',
-			title: 'Saved Post Management',
+			icon: Photo,
+			title: 'Stylish post viewer',
+			description: [
+				"View the contents of all your saved posts directly on Reddit Saved Gallery's website - no need to switch between multiple tabs!",
+				'Live video player and image gallery viewer coming soon!'
+			]
+		},
+		{
+			icon: Pin,
+			title: 'Simple post management',
 			description: [
 				"Retrieve, save, and unsave posts directly to your Reddit account, all from the comfort of Reddit Saved Gallery's website!",
 				'Pin posts locally to easily mark them for later!'
 			]
 		}
 	];
-
-	let animate = false;
-	onMount(() => {
-		animate = true;
-	});
 </script>
 
 <svelte:head>
@@ -60,75 +57,81 @@
 	/>
 </svelte:head>
 
-<nav class="navbar position-absolute w-100 navbar-expand-sm border-bottom">
-	<div class="container">
-		<a class="navbar-brand display-1" href="/login">Reddit Saved Gallery</a>
-		<button
-			class="navbar-toggler"
-			type="button"
-			data-bs-toggle="collapse"
-			data-bs-target="#navbarNavDropdown"
-			aria-controls="navbarNavDropdown"
-			aria-expanded="false"
-			aria-label="Toggle navigation"
+<header class="bg-slate-900">
+	<nav class="absolute w-full">
+		<div
+			class="mx-auto max-w-7xl flex items-center h-16 border-b border-slate-700 px-4 sm:px-8"
 		>
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarNavDropdown">
-			<div class="navbar-nav">
-				<a class="nav-link" href="#features">Features</a>
-				<!-- <a class="nav-link" href="#about">About</a> -->
-			</div>
-		</div>
-	</div>
-</nav>
-
-<div
-	class="container-fluid text-center vh-100 d-flex flex-column justify-content-center align-items-center"
->
-	{#if animate}
-		<h1 transition:fade class="display-1">Reddit Saved Gallery</h1>
-		<h6 transition:fade class="display-6 pb-3 mb-5">
-			View, filter, and manage your Reddit saved posts!
-		</h6>
-		<form transition:fade method="POST">
-			<button class="btn btn-lg btn-success d-flex gap-2 align-items-center" type="submit"
-				>Log in with Reddit <RedditSvg width={24} height={24} /></button
+			<a href="/login" class="text-lg font-bold tracking-tight text-slate-200 mr-4 hover:text-orange-600 transition-colors">
+				Reddit Saved Gallery
+			</a>
+			<a
+				href="#features"
+				class="mr-auto rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
+				>Features</a
 			>
+			<button
+				form="login"
+				type="submit"
+				class="rounded-lg px-3 py-2 hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200 font-bold transition-colors bg-orange-600 text-white"
+				>Log in</button
+			>
+		</div>
+	</nav>
+</header>
+
+<div class="bg-slate-900 h-screen flex items-center justify-center">
+	<div class="text-center px-8">
+		<h1 class="text-6xl font-extrabold tracking-tight mb-4 text-slate-200">Reddit Saved Gallery</h1>
+		<p class="text-2xl text-slate-400 mb-10">View, filter, and manage your Reddit saved posts!</p>
+		<form id="login" method="post">
+			<button
+				type="submit"
+				class="mx-auto flex items-center gap-1 h-16 rounded-lg px-6 text-xl hover:ring-2 hover:ring-inset hover:ring-slate-200 hover:bg-orange-700 font-bold transition-colors bg-orange-600 text-white"
+				>Log in with Reddit<Reddit class="size-8 text-white" />
+			</button>
 		</form>
-	{/if}
+	</div>
 </div>
 
-<div class="container-fluid min-vh-auto bg-custom">
-	<h6 class="display-6 py-5 text-center" id="features">Features</h6>
-	<div class="d-flex flex-wrap justify-content-center align-items-start pb-5 gap-5">
-		{#each features as Feature}
-			<div class="card shadow border-0" style="width: 20rem;">
-				<div class="card-body">
-					{#if typeof Feature.icon !== 'string'}
-						<div class="mb-2">
-							<Feature.icon width={48} height={48} />
-						</div>
-					{:else}
-						<h1>{Feature.icon}</h1>
-					{/if}
-					<h5 class="card-title">{Feature.title}</h5>
-					<br />
-					{#each Feature.description as sentence}
-						<p class="card-text">{sentence}</p>
-					{/each}
-				</div>
-			</div>
-		{/each}
+<div class="bg-white py-12 min-h-screen">
+	<div class="mx-auto max-w-7xl px-6 lg:px-8">
+		<div class="mx-auto max-w-2xl lg:text-center">
+			<h2 class="text-base font-semibold leading-7 text-orange-600">Reddit Saved Gallery</h2>
+			<p id="features" class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+				Features
+			</p>
+			<p class="mt-6 text-lg leading-8 text-gray-600">
+				Reddit Saved Gallery provides a wide variety of advanced, user-friendly features to make
+				your browsing experience the best it can be.
+			</p>
+		</div>
+		<div class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
+			<dl
+				class="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16"
+			>
+				{#each features as Feature, i}
+					<div class="relative pl-16">
+						<dt class="text-base font-semibold leading-7 text-gray-900">
+							<div
+								class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-orange-600"
+							>
+								<Feature.icon class={i === 0 ? 'size-8 text-white' : 'size-6 text-white'} />
+							</div>
+							{Feature.title}
+						</dt>
+						<dd class="mt-2 text-base leading-7 text-gray-600">
+							{Feature.description.join(' ')}
+						</dd>
+					</div>
+				{/each}
+			</dl>
+		</div>
 	</div>
 </div>
 
 <style>
-	.bg-custom {
-		background-color: hsl(from var(--bs-dark) h s calc(l + 8));
-	}
-	.min-vh-auto {
-		min-height: 100vh;
-		height: auto;
+	:root {
+		scroll-behavior: smooth;
 	}
 </style>

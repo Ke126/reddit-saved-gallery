@@ -1,15 +1,14 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
-	import { toast } from '$lib/toast/toast';
 	import type { Subreddit } from '$lib/types/reddit';
-	import { promiseWithResolvers } from '$lib/utils/promise';
-	import RedditSvg from './RedditSvg.svelte';
+	import MagnifyingGlass from '$lib/svg/MagnifyingGlass.svelte';
+	import { slide } from 'svelte/transition';
+	import Dropdown from './Dropdown.svelte';
 
 	export let subreddits: Subreddit[];
 	export let user: { username: string; icon_img: string };
 
-	let isLoading = false;
+	let showCollapseMenu = false;
 
 	let queryName = '';
 	let queryValue = '';
@@ -65,166 +64,131 @@
 	}
 </script>
 
-<nav class="navbar navbar-expand-lg border-bottom">
-	<div class="container">
-		<a class="navbar-brand display-1" href="/">Reddit Saved Gallery</a>
-		<button
-			class="navbar-toggler"
-			type="button"
-			data-bs-toggle="collapse"
-			data-bs-target="#navbarSupportedContent"
-			aria-controls="navbarSupportedContent"
-			aria-expanded="false"
-			aria-label="Toggle navigation"
+<header class="bg-slate-900">
+	<nav>
+		<div
+			class="mx-auto max-w-7xl flex items-center justify-between h-16 sm:border-b sm:border-slate-700 px-4 sm:px-8"
 		>
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="navbar-nav me-auto">
-				<li class="nav-item me-2">
-					<form>
-						<div class="input-group">
-							<input
-								bind:value={queryValue}
-								type="search"
-								class="form-control border-light"
-								name={queryName}
-								placeholder="Search"
-							/>
-							<input type="hidden" name={filterName} value={filterValue} />
-							<button class="btn btn-outline-success" type="submit"
-								><i class="bi bi-search"></i></button
-							>
-						</div>
-					</form>
-				</li>
-				<li class="nav-item">
-					<button
-						class="btn btn-outline-light"
-						type="button"
-						data-bs-toggle="collapse"
-						data-bs-target="#filterPanel"
-						aria-expanded="false"
-						aria-controls="filterPanel"
-					>
-						Filters <i class="bi bi-funnel"></i>
-					</button>
-				</li>
-			</ul>
-		</div>
-		<div class="dropdown">
-			<button
-				type="button"
-				class="badge rounded-pill btn btn-outline-light d-flex align-items-center dropdown-toggle"
-				data-bs-toggle="dropdown"
-				aria-expanded="false"
+			<!-- Nav header -->
+			<a
+				href="/"
+				data-sveltekit-preload-data="tap"
+				class="text-lg text-nowrap font-bold tracking-tight text-slate-200 hover:text-orange-600 transition-colors mr-2"
 			>
-				<img
-					class="rounded-circle me-1"
-					width="24"
-					height="24"
-					src={user.icon_img}
-					alt=""
-				/>u/{user.username}
-			</button>
-			<ul class="dropdown-menu dropdown-menu-end">
-				<li>
-					<form
-						method="POST"
-						action="?/pull"
-						use:enhance={() => {
-							isLoading = true;
-							const { promise, resolve, reject } = promiseWithResolvers();
-							toast.promise(promise, {
-								pending: 'Fetching saved posts from Reddit. This may take a few seconds...',
-								fulfilled: 'Success!',
-								rejected: 'Failed to fetch posts from Reddit. Please try again later.'
-							});
-							return async ({ result, update }) => {
-								await update({ reset: true, invalidateAll: true });
-								isLoading = false;
-								if (result.type === 'success') {
-									resolve();
-								} else {
-									reject();
-								}
-							};
-						}}
-					>
-						<button
-							class="dropdown-item d-flex align-items-center gap-1"
-							type="submit"
-							disabled={isLoading}
-						>
-							{#if isLoading}
-								<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
-								></span>
-								Loading...
-							{:else}
-								Pull posts from Reddit <RedditSvg />
-							{/if}
-						</button>
-					</form>
-				</li>
-				<li>
-					<form method="POST" action="?/logout">
-						<button class="dropdown-item text-danger" type="submit">Logout</button>
-					</form>
-				</li>
-			</ul>
-		</div>
-	</div>
-</nav>
+				Reddit Saved Gallery
+			</a>
 
-<div class="collapse border-bottom" id="filterPanel">
-	<div class="container py-2">
-		<form>
-			<div class="mb-2">
-				<button on:click={() => setChecks(true)} class="btn btn-outline-primary" type="button"
-					>Check all
-				</button>
-				<button on:click={() => setChecks(false)} class="btn btn-outline-danger" type="button"
-					>Uncheck all
-				</button>
-			</div>
-			<h5>Subreddits ({subreddits.filter((subreddit) => subreddit.checked).length})</h5>
-			<div class="row g-2">
-				{#each subreddits as subreddit (subreddit.subreddit)}
-					<div class="col-auto">
-						{#if subreddit.checked}
-							<button
-								class="badge p-2 btn btn-success"
-								on:click={() => (subreddit.checked = !subreddit.checked)}
-							>
-								r/{subreddit.subreddit} ({subreddit.count})
-							</button>
-						{:else}
-							<button
-								class="badge p-2 btn btn-outline-secondary"
-								on:click={() => (subreddit.checked = !subreddit.checked)}
-							>
-								r/{subreddit.subreddit} ({subreddit.count})
-							</button>
-						{/if}
+			<!-- Search bar, search button, and filter button -->
+			<div class="items-center justify-center gap-2 hidden sm:flex grow">
+				<form id="search" class="relative grow max-w-96">
+					<input
+						name={queryName}
+						bind:value={queryValue}
+						class="peer w-full rounded-lg placeholder:text-slate-400 bg-slate-200 p-2 pl-10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600"
+						type="search"
+						placeholder="Search"
+					/>
+					<!-- svg text color classes are here so tailwind peer selector works properly -->
+					<div
+						class="peer-focus:text-orange-600 text-slate-400 absolute pointer-events-none inset-y-0 left-0 flex items-center pl-3"
+					>
+						<MagnifyingGlass class="size-6" />
 					</div>
-					<!-- <div class="col">
-						<div class="form-check" title="r/{subreddit.subreddit} ({subreddit.count})">
-							<input
-								type="checkbox"
-								bind:checked={subreddit.checked}
-								class="form-check-input"
-								id={subreddit.subreddit}
-							/>
-							<label class="form-check-label" for={subreddit.subreddit}>
-								r/{subreddit.subreddit}
-							</label>
-							<span class="badge bg-dark-subtle border border-dark-subtle rounded-pill">
-								{subreddit.count}
-							</span>
-						</div>
-					</div> -->
+					<input type="hidden" name={filterName} value={filterValue} />
+				</form>
+				<button
+					form="search"
+					type="submit"
+					class="rounded-lg px-3 py-2 hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200 font-bold transition-colors bg-orange-600 text-white"
+					>Search</button
+				><button
+					type="button"
+					on:click={() => (showCollapseMenu = !showCollapseMenu)}
+					class="rounded-lg px-3 py-2 hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200 font-bold transition-colors bg-orange-600 text-white"
+					>Filters</button
+				>
+			</div>
+
+			<!-- User dropdown -->
+			<Dropdown username={user.username} pfp={user.icon_img} />
+		</div>
+
+		<!-- Second row on <sm breakpoint -->
+		<div class="flex sm:hidden mx-auto items-center gap-2 h-16 border-b border-slate-700 px-4">
+			<!-- Search bar, search button, and filter button -->
+			<form id="search" class="relative grow">
+				<input
+					name={queryName}
+					bind:value={queryValue}
+					class="w-full peer rounded-lg placeholder:text-slate-400 bg-slate-200 p-2 pl-10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600"
+					type="search"
+					placeholder="Search"
+				/>
+				<!-- svg text color classes are here so tailwind peer selector works properly -->
+				<div
+					class="peer-focus:text-orange-600 text-slate-400 absolute pointer-events-none inset-y-0 left-0 flex items-center pl-3"
+				>
+					<MagnifyingGlass class="size-6" />
+				</div>
+				<input type="hidden" name={filterName} value={filterValue} />
+			</form>
+			<button
+				form="search"
+				type="submit"
+				class="rounded-lg px-3 py-2 hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200 font-bold transition-colors bg-orange-600 text-white"
+				>Search</button
+			><button
+				type="button"
+				on:click={() => (showCollapseMenu = !showCollapseMenu)}
+				class="rounded-lg px-3 py-2 hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200 font-bold transition-colors bg-orange-600 text-white"
+				>Filters</button
+			>
+		</div>
+	</nav>
+
+	<!-- Filter menu -->
+	{#if showCollapseMenu}
+		<div
+			in:slide
+			out:slide
+			class="mx-auto max-w-7xl py-4 px-4 border-b border-slate-700 sm:px-8"
+		>
+			<div class="flex gap-2">
+				<button
+					on:click={() => setChecks(true)}
+					type="submit"
+					class="rounded-lg px-3 py-2 hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200 font-bold transition-colors bg-orange-600 text-white"
+					>Check all</button
+				>
+				<button
+					on:click={() => setChecks(false)}
+					type="submit"
+					class="rounded-lg px-3 py-2 hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200 font-bold transition-colors bg-orange-600 text-white"
+					>Uncheck all</button
+				>
+			</div>
+			<p class="text-slate-200 font-semibold text-lg">
+				Subreddits ({subreddits.filter((subreddit) => subreddit.checked).length})
+			</p>
+			<div class="flex flex-wrap gap-2">
+				{#each subreddits as subreddit (subreddit.subreddit)}
+					<label
+						class="flex ps-2 items-center border rounded-md border-slate-700 has-[:checked]:border-orange-600 cursor-pointer"
+					>
+						<input
+							id={subreddit.subreddit}
+							type="checkbox"
+							bind:checked={subreddit.checked}
+							class="peer rounded ring-orange-600 focus:ring-2 accent-orange-600 ring-offset-1 ring-offset-slate-900 cursor-pointer"
+						/>
+						<label
+							for={subreddit.subreddit}
+							class="w-full py-2 pr-2 ms-2 text-sm font-medium text-slate-400 peer-checked:text-orange-600 cursor-pointer"
+							>r/{subreddit.subreddit} ({subreddit.count})</label
+						>
+					</label>
 				{/each}
 			</div>
-		</form>
-	</div>
-</div>
+		</div>
+	{/if}
+</header>

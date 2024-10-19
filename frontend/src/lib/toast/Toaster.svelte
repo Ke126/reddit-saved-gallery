@@ -4,47 +4,35 @@
 	import { scale } from 'svelte/transition';
 	import Check from '$lib/components/Check.svelte';
 	import Cross from '$lib/components/Cross.svelte';
+	import Spinner from '$lib/svg/Spinner.svelte';
 </script>
 
 <div
-	class="toast-container position-fixed top-0 start-50 translate-middle-x p-3 d-flex flex-column justify-content-center align-items-center"
+	class="fixed inset-x-0 top-0 p-0 flex flex-col items-center justify-center pointer-events-none z-50"
 >
 	{#each $toasts as toast (toast.id)}
-		<div
+		<article
 			animate:flip={{ duration: 300 }}
 			in:scale={{ duration: 300 }}
 			out:scale={{ duration: 300 }}
-			class="toast show mb-2 w-auto"
+			class="flex items-center justify-center gap-2 rounded-md bg-slate-800 border border-slate-700 mt-4 p-2"
 			role="alert"
-			aria-live="assertive"
-			aria-atomic="true"
 		>
-			<div class="toast-body d-flex justify-content-center align-items-center">
-				<div class="me-2">
-					{#if toast.state === 'fulfilled'}
-						<Check />
-					{:else if toast.state === 'rejected'}
-						<Cross />
-					{:else}
-						<div class="spinner-border" role="status" style="width: 20px; height: 20px">
-							<span class="visually-hidden">Loading...</span>
-						</div>
-					{/if}
-				</div>
+			{#if toast.state === 'fulfilled'}
+				<Check />
+			{:else if toast.state === 'rejected'}
+				<Cross />
+			{:else}
+				<Spinner class="size-5 text-slate-200" />
+			{/if}
+			<p class="text-slate-200 text-sm">
 				{toast.message}
-				<button
-					type="button"
-					on:click={() => deleteToast(toast)}
-					class="btn-close ms-1"
-					aria-label="Close"
-				></button>
-			</div>
-		</div>
+			</p>
+			<!-- X button -->
+			<!-- <button
+				type="button"
+				on:click={() => deleteToast(toast)}
+			></button> -->
+		</article>
 	{/each}
 </div>
-
-<style>
-	.toast {
-		backdrop-filter: blur(3px);
-	}
-</style>
