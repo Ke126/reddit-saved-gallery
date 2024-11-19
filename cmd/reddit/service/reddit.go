@@ -15,6 +15,7 @@ import (
 // https://oauth.reddit.com/api/save?id=${postId}
 // https://oauth.reddit.com/api/unsave?id=${postId}
 const REDDIT_API = "https://oauth.reddit.com"
+const USER_AGENT = "web:net.savedgallery:v1.0.0 (by /u/1234353)"
 const MAX_ITER = 10
 
 type redditService struct {
@@ -69,6 +70,7 @@ func (rs *redditService) importFromReddit(accessToken string, username string, a
 	}
 
 	req.Header.Set("Authorization", "bearer "+accessToken)
+	req.Header.Set("User-Agent", USER_AGENT)
 	res, err := rs.client.Do(req)
 
 	if err != nil {
@@ -144,6 +146,7 @@ func (rs *redditService) doSave(accessToken string, postId string, save bool) er
 		return err
 	}
 	req.Header.Set("Authorization", "bearer "+accessToken)
+	req.Header.Set("User-Agent", USER_AGENT)
 	res, err := rs.client.Do(req)
 	if err != nil {
 		return err
