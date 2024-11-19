@@ -1,19 +1,19 @@
-name: reddit-app
+name: reddit-saved-gallery
 
 services:
   api:
-    image: reddit-app/api:latest
+    image: ${COMPOSE_PROJECT_NAME}/api
     container_name: api
-    build: ./api
+    build: ./cmd/api
     networks:
       - app-net
     ports:
       - 4000:4000
 
   query:
-    image: reddit-app/query:latest
+    image: ${COMPOSE_PROJECT_NAME}/query
     container_name: query
-    build: ./query
+    build: ./query # use the original Node.js service
     networks:
       - app-net
     environment:
@@ -26,14 +26,14 @@ services:
       - mongo
 
   reddit:
-    image: reddit-app/reddit:latest
+    image: ${COMPOSE_PROJECT_NAME}/reddit
     container_name: reddit
-    build: ./reddit
+    build: ./cmd/reddit
     networks:
       - app-net
 
   mongo:
-    image: mongo:latest
+    image: mongo
     container_name: mongo
     environment:
       MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/mongo_username
