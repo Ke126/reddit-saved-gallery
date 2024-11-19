@@ -14,7 +14,7 @@ jobs:
       name: production
       url: https://savedgallery.net
     env:
-      APP_NAME: reddit-app
+      APP_NAME: reddit-saved-gallery
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
@@ -22,6 +22,8 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Expose Github runtime
         uses: crazy-max/ghaction-github-runtime@v3
+      - name: Build go binaries
+        run: make build
       - name: Docker build
         run: docker compose build
       - name: Set up SSH
