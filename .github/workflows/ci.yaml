@@ -23,7 +23,7 @@ jobs:
       - name: Expose GitHub runtime
         uses: crazy-max/ghaction-github-runtime@v3
       - name: Run tests
-        uses: make test
+        run: make test
       - name: Build Go binaries
         run: make build
       - name: Build Docker images
