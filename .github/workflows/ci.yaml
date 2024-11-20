@@ -38,8 +38,7 @@ jobs:
         run: |
           echo "$DOCKER_IMAGES"
           docker save $DOCKER_IMAGES |
-          gzip >
-          images.tar.gz
+          gzip > images.tar.gz
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
