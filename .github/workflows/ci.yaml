@@ -36,7 +36,7 @@ jobs:
           echo "DOCKER_IMAGES=$TEMP_VAR" >> "$GITHUB_ENV"
       - name: Tar and gzip Docker images
         run: |
-          echo $DOCKER_IMAGES
+          echo "$DOCKER_IMAGES"
           docker save $DOCKER_IMAGES |
           gzip >
           images.tar.gz
