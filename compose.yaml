@@ -140,7 +140,7 @@ services:
 
 networks:
   app-net:
-    name: reddit-application
+    name: ${COMPOSE_PROJECT_NAME}
 
 secrets:
   client_id:
