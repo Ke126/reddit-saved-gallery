@@ -1,55 +1,33 @@
-name: build and deploy
-run-name: ${{ github.actor }} is building and deploying to production
+name: deploy
+run-name: ${{ github.actor }} is deploying to production
 
-on: 
-  push:
-    branches:
-      - main
+on:
   workflow_dispatch:
 
+env:
+  REPO_NAME: reddit-saved-gallery
+
 jobs:
-  build-and-deploy:
+  deploy-to-production:
     runs-on: ubuntu-latest
     environment:
       name: production
       url: https://savedgallery.net
-    env:
-      APP_NAME: reddit-saved-gallery
     steps:
-      - name: Check out repository code
+      - name: Checkout repository code
         uses: actions/checkout@v4
-      - name: Set up buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Expose Github runtime
-        uses: crazy-max/ghaction-github-runtime@v3
-      - name: Build go binaries
-        run: make build
-      - name: Docker build
-        run: docker compose build
       - name: Set up SSH
         run: |
           mkdir ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/key.pem
           chmod 600 ~/.ssh/key.pem
           echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
-      - name: Set up /${{ env.APP_NAME }} directory
+      - name: Copy files to remote machine
         run: |
-          mkdir ./$APP_NAME
-          cp ./compose.yaml ./$APP_NAME/compose.yaml
-          echo "${{ secrets.ENV_FILE }}" > ./$APP_NAME/.env
-          chmod 600 ./$APP_NAME/.env
-      - name: Copy /${{ env.APP_NAME }} directory to remote server
+          echo "${{ secrets.ENV_FILE }}" > ./.env
+          chmod 600 ./.env
+          scp -i ~/.ssh/key.pem ./.env ${{ secrets.USER }}@${{ secrets.HOSTNAME }}:~/${{ env.REPO_NAME }}
+          scp -i ~/.ssh/key.pem ./compose.yaml ${{ secrets.USER }}@${{ secrets.HOSTNAME }}:~/${{ env.REPO_NAME }}
+      - name: SSH to remote machine and run docker compose up
         run: |
-          scp -i ~/.ssh/key.pem -r ./$APP_NAME ${{ secrets.USER }}@${{ secrets.HOSTNAME }}:~
-      - name: Save names of all docker images to an environment variable
-        run: |
-          TEMP_VAR=$(docker images --format "{{.Repository}}:{{.Tag}}" |
-            grep -E "$APP_NAME" |
-            tr '\n' ' ')
-          echo "DOCKER_IMAGES=$TEMP_VAR" >> "$GITHUB_ENV"
-      - name: Pipe docker images tar to remote server and run docker compose up
-        run: |
-          echo "$DOCKER_IMAGES"
-          docker save $DOCKER_IMAGES |
-          gzip |
-          ssh ${{ secrets.USER }}@${{ secrets.HOSTNAME }} -i ~/.ssh/key.pem 'sudo docker load && cd ~/${{ env.APP_NAME }} && sudo docker compose down && sudo docker compose up -d'
+          ssh -i ~/.ssh/key.pem ${{ secrets.USER }}@${{ secrets.HOSTNAME }} 'cd ~/${{ env.REPO_NAME }} && sudo docker compose down && sudo docker compose up -d'
