@@ -2,3 +2,7 @@
 **/dist
 **/.env
 **/temp
+
+# binaries
+cmd/api/api
+cmd/reddit/reddit

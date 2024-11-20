@@ -1,4 +1,4 @@
-name: reddit-app
+name: reddit-saved-gallery
 
 services:
 
@@ -78,7 +78,7 @@ services:
     image: ${COMPOSE_PROJECT_NAME}/api
     container_name: api
     build: 
-      context: ./api
+      context: ./cmd/api
       cache_from:
         - type=gha,scope=${COMPOSE_PROJECT_NAME}/api
       cache_to:
@@ -92,7 +92,7 @@ services:
     image: ${COMPOSE_PROJECT_NAME}/query
     container_name: query
     build: 
-      context: ./query
+      context: ./query # use the original Node.js service
       cache_from:
         - type=gha,scope=${COMPOSE_PROJECT_NAME}/query
       cache_to:
@@ -114,7 +114,7 @@ services:
     image: ${COMPOSE_PROJECT_NAME}/reddit
     container_name: reddit
     build: 
-      context: ./reddit
+      context: ./cmd/reddit
       cache_from:
         - type=gha,scope=${COMPOSE_PROJECT_NAME}/reddit
       cache_to:
