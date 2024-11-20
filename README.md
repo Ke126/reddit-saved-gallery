@@ -1,6 +1,6 @@
 # Reddit Saved Gallery
 
-[![Build](https://github.com/ke126/reddit-app/actions/workflows/deploy.yaml/badge.svg)](https://github.com/Ke126/reddit-app/actions/workflows/deploy.yaml)
+[![Build](https://github.com/ke126/reddit-saved-gallery/actions/workflows/deploy.yaml/badge.svg)](https://github.com/Ke126/reddit-saved-gallery/actions/workflows/deploy.yaml)
 
 [Reddit Saved Gallery](https://savedgallery.net) is a SaaS web application allowing users to view, filter, and manage their saved Reddit posts.
 
