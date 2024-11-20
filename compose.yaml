@@ -1,9 +1,8 @@
 name: reddit-saved-gallery
 
 services:
-
   cert-manager:
-    image: ${COMPOSE_PROJECT_NAME}/cert-manager
+    image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/cert-manager
     container_name: cert-manager
     build: 
       context: ./cert-manager
@@ -24,7 +23,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro # socket
 
   nginx:
-    image: ${COMPOSE_PROJECT_NAME}/nginx
+    image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/nginx
     container_name: nginx
     build: 
       context: ./nginx
@@ -50,7 +49,7 @@ services:
       - ./client.cert:/etc/nginx/certs/client.cert:ro # client cert
 
   frontend:
-    image: ${COMPOSE_PROJECT_NAME}/frontend
+    image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/frontend
     container_name: frontend
     build: 
       context: ./frontend
@@ -75,7 +74,7 @@ services:
       - aes_iv
 
   api:
-    image: ${COMPOSE_PROJECT_NAME}/api
+    image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/api
     container_name: api
     build: 
       context: ./cmd/api
@@ -89,7 +88,7 @@ services:
       - app-net
 
   query:
-    image: ${COMPOSE_PROJECT_NAME}/query
+    image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/query
     container_name: query
     build: 
       context: ./query # use the original Node.js service
@@ -111,7 +110,7 @@ services:
       - mongo
 
   reddit:
-    image: ${COMPOSE_PROJECT_NAME}/reddit
+    image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/reddit
     container_name: reddit
     build: 
       context: ./cmd/reddit
