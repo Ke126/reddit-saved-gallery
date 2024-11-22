@@ -1,5 +1,5 @@
 <script>
-	import '../../app.css'
+	import '../../app.css';
 	import { page } from '$app/stores';
 	import Reddit from '$lib/svg/Reddit.svelte';
 	import MagnifyingGlass from '$lib/svg/MagnifyingGlass.svelte';
@@ -59,10 +59,11 @@
 
 <header class="bg-slate-900">
 	<nav class="absolute w-full">
-		<div
-			class="mx-auto max-w-7xl flex items-center h-16 border-b border-slate-700 px-4 sm:px-8"
-		>
-			<a href="/login" class="text-lg font-bold tracking-tight text-slate-200 mr-4 hover:text-orange-600 transition-colors">
+		<div class="mx-auto max-w-7xl flex items-center h-16 border-b border-slate-700 px-4 sm:px-8">
+			<a
+				href="/login"
+				class="text-lg font-bold tracking-tight text-slate-200 mr-4 hover:text-orange-600 transition-colors"
+			>
 				Reddit Saved Gallery
 			</a>
 			<a

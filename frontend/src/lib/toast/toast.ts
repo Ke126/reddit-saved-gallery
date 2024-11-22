@@ -1,5 +1,8 @@
 import { createToast, upsertToast, deleteToast } from './store';
+import { idGenerator } from './id';
 import type { Toast } from './type';
+
+const nextId = idGenerator();
 
 export const toast = {
 	promise(
@@ -7,7 +10,7 @@ export const toast = {
 		stateStrings: { pending: string; fulfilled: string; rejected: string }
 	) {
 		const toast: Toast = {
-			id: crypto.randomUUID(),
+			id: nextId(),
 			message: stateStrings.pending,
 			state: 'pending',
 			timer: null

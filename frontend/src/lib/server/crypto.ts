@@ -1,9 +1,13 @@
 import { secrets } from './secrets';
 import crypto, { type CipherKey } from 'node:crypto';
 
-// doing secrets.AES_KEY || '' fixes the same issue mentioned in ./secrets.ts
-const key: CipherKey = new Uint8Array(Buffer.from(secrets.AES_KEY || '', 'base64'));
-const iv: Uint8Array = new Uint8Array(Buffer.from(secrets.AES_IV || '', 'base64'));
+const key: CipherKey = secrets.AES_KEY
+	? new Uint8Array(Buffer.from(secrets.AES_KEY, 'base64'))
+	: crypto.generateKeySync('aes', { length: 256 });
+
+const iv: Uint8Array = secrets.AES_IV
+	? new Uint8Array(Buffer.from(secrets.AES_IV, 'base64'))
+	: new Uint8Array(crypto.randomBytes(16));
 
 export function encrypt(input: string): string {
 	const cipher = crypto.createCipheriv('aes-256-gcm', key, iv);

@@ -148,11 +148,7 @@
 
 	<!-- Filter menu -->
 	{#if showCollapseMenu}
-		<div
-			in:slide
-			out:slide
-			class="mx-auto max-w-7xl py-4 px-4 border-b border-slate-700 sm:px-8"
-		>
+		<div in:slide out:slide class="mx-auto max-w-7xl py-4 px-4 border-b border-slate-700 sm:px-8">
 			<div class="flex gap-2">
 				<button
 					on:click={() => setChecks(true)}

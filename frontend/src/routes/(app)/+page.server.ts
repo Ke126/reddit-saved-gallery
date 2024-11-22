@@ -3,7 +3,9 @@ import { formatter } from '$lib/server/formatter';
 import type { PageServerLoad, Actions } from './$types';
 import { redirect, fail } from '@sveltejs/kit';
 import { revokeTokens } from '$lib/server/auth';
-import { secrets } from '$lib/server/secrets';
+import { env } from '$env/dynamic/private';
+
+const API_SERVICE_ADDR = 'http://' + (env.API_SERVICE_ADDR || 'api:4000');
 
 export const load: PageServerLoad = async ({ locals, url }) => {
 	console.log('LOAD / (page)');
@@ -12,7 +14,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 		redirect(301, '/login');
 	}
 	console.log(`GET ${url}`);
-	const fetchUrl = new URL(`${secrets.API_SERVER}/posts`);
+	const fetchUrl = new URL(`${API_SERVICE_ADDR}/posts`);
 	url.searchParams.forEach((value: string, key: string) => {
 		fetchUrl.searchParams.append(key, value);
 	});
@@ -44,7 +46,7 @@ export const actions = {
 			// redirect(301, '/login');
 		}
 		try {
-			const response = await fetch(`${secrets.API_SERVER}/posts`, {
+			const response = await fetch(`${API_SERVICE_ADDR}/posts`, {
 				method: 'POST',
 				body: JSON.stringify({
 					username: locals.user.username
@@ -70,7 +72,7 @@ export const actions = {
 		}
 		const form = await request.formData();
 		try {
-			const response = await fetch(`${secrets.API_SERVER}/posts/${form.get('_id')}`, {
+			const response = await fetch(`${API_SERVICE_ADDR}/posts/${form.get('_id')}`, {
 				method: 'PATCH',
 				headers: {
 					authorization: `bearer ${locals.user.access_token}`,
@@ -96,7 +98,7 @@ export const actions = {
 		}
 		const form = await request.formData();
 		try {
-			const response = await fetch(`${secrets.API_SERVER}/posts/${form.get('_id')}`, {
+			const response = await fetch(`${API_SERVICE_ADDR}/posts/${form.get('_id')}`, {
 				method: form.get('saved') === 'on' ? 'PUT' : 'DELETE',
 				headers: {
 					authorization: `bearer ${locals.user.access_token}`,
