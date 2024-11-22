@@ -1,30 +1,34 @@
-import fs from 'node:fs/promises';
+import fs from 'node:fs';
 
-let MONGO_INITDB_ROOT_USERNAME: string;
-let MONGO_INITDB_ROOT_PASSWORD: string;
-
-export async function getMongoUsername(): Promise<string> {
-    if (MONGO_INITDB_ROOT_USERNAME) return MONGO_INITDB_ROOT_USERNAME;
-    if (process.env.NODE_ENV === 'production') {
-        MONGO_INITDB_ROOT_USERNAME = await fs.readFile(
-            process.env.MONGO_INITDB_ROOT_USERNAME_FILE!,
-            'utf-8',
-        );
-    } else {
-        MONGO_INITDB_ROOT_USERNAME = process.env.MONGO_INITDB_ROOT_USERNAME!;
+function loadSecret(secretName: string): string {
+    let secret = process.env[secretName] || '';
+    const fileKey = secretName + '_FILE';
+    // throw an exception if file does not exist
+    if (process.env[fileKey]) {
+        secret = fs.readFileSync(process.env[fileKey], 'utf8');
     }
-    return MONGO_INITDB_ROOT_USERNAME;
+    // throw an exception if secret is still empty
+    if (!secret) {
+        throw new Error(`${secretName} is unset or empty`);
+    }
+    return secret;
 }
 
-export async function getMongoPassword() {
-    if (MONGO_INITDB_ROOT_PASSWORD) return MONGO_INITDB_ROOT_PASSWORD;
-    if (process.env.NODE_ENV === 'production') {
-        MONGO_INITDB_ROOT_PASSWORD = await fs.readFile(
-            process.env.MONGO_INITDB_ROOT_PASSWORD_FILE!,
-            'utf-8',
-        );
-    } else {
-        MONGO_INITDB_ROOT_PASSWORD = process.env.MONGO_INITDB_ROOT_PASSWORD!;
+// exit if the secret is unset or empty
+function loadSecretRequired(secretName: string): string {
+    try {
+        const secret = loadSecret(secretName);
+        return secret;
+    } catch (e) {
+        console.log(e);
+        process.exit(1);
     }
-    return MONGO_INITDB_ROOT_PASSWORD;
+}
+
+export function getMongoUsername(): string {
+    return loadSecretRequired('MONGO_INITDB_ROOT_USERNAME');
+}
+
+export function getMongoPassword(): string {
+    return loadSecretRequired('MONGO_INITDB_ROOT_PASSWORD');
 }

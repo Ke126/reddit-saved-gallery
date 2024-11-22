@@ -21,7 +21,7 @@ export class MongoDbService implements IMongoDbService {
         this.logger = logger;
     }
     async connect() {
-        const connectionString = `mongodb://${await getMongoUsername()}:${await getMongoPassword()}@mongo:27017`;
+        const connectionString = `mongodb://${getMongoUsername()}:${getMongoPassword()}@mongo:27017`;
         const client = new MongoClient(connectionString);
         await client.connect();
         const db = client.db(process.env.DB_NAME || 'reddit');
