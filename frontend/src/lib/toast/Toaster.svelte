@@ -1,6 +1,6 @@
 <script>
 	import { flip } from 'svelte/animate';
-	import { deleteToast, toasts } from './store';
+	import { toasts } from './store';
 	import { scale } from 'svelte/transition';
 	import Check from '$lib/components/Check.svelte';
 	import Cross from '$lib/components/Cross.svelte';

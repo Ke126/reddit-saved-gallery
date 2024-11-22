@@ -21,12 +21,6 @@
 <PostList posts={data.posts.posts}></PostList>
 <Pagination totalCount={data.posts.total_count} curPage={data.posts.page}></Pagination>
 
-<style>
-	:root {
-		scroll-behavior: auto;
-	}
-</style>
-
 <svelte:head>
 	<link
 		href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -44,3 +38,9 @@
 		crossorigin="anonymous"
 	></script>
 </svelte:head>
+
+<style>
+	:root {
+		scroll-behavior: auto;
+	}
+</style>

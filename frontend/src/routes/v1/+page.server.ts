@@ -1,8 +1,7 @@
 import type { GetPostsResponseBody } from '$lib/types/response';
 import { formatter } from '$lib/server/formatter';
-import type { PageServerLoad, Actions } from './$types';
-import { redirect, fail } from '@sveltejs/kit';
-import { revokeTokens } from '$lib/server/auth';
+import type { PageServerLoad } from './$types';
+import { redirect } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 
 const API_SERVICE_ADDR = 'http://' + (env.API_SERVICE_ADDR || 'api:4000');
