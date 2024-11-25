@@ -95,6 +95,11 @@ jobs:
           path: ./artifacts
           pattern: images-*
           merge-multiple: true
+      - name: Print artifacts
+        run: |
+          ls -l
+          cd ./artifacts
+          ls -l
       - name: Decompress and load Docker images from artifacts
         run: |
           for artifact in ./artifacts/*; do
