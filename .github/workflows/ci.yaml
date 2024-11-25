@@ -59,7 +59,7 @@ jobs:
         env:
           PLATFORM: ${{ matrix.platform }}
           TAG: ${{ env.TARGET_ARCH }}
-        run: docker compose build
+        run: docker compose -f compose.prod.yaml build
       - name: Save names of all built Docker images to an environment variable
         run: |
           TEMP_VAR=$(docker images --format "{{.Repository}}:{{.Tag}}" |
