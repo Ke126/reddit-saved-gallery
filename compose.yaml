@@ -2,7 +2,7 @@ name: reddit-saved-gallery
 
 services:
   cert-manager:
-    image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/cert-manager
+    image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/cert-manager:${TAG:-latest}
     container_name: cert-manager
     build: 
       context: ./cert-manager
@@ -11,7 +11,7 @@ services:
       cache_to:
         - type=gha,scope=${COMPOSE_PROJECT_NAME}/cert-manager
       platforms:
-        - "linux/arm64/v8"
+        - ${PLATFORM}
     environment:
       DOMAIN: ${DOMAIN}
     ports:
@@ -23,7 +23,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro # socket
 
   nginx:
-    image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/nginx
+    image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/nginx:${TAG:-latest}
     container_name: nginx
     build: 
       context: ./nginx
@@ -32,7 +32,7 @@ services:
       cache_to:
         - type=gha,scope=${COMPOSE_PROJECT_NAME}/nginx
       platforms:
-        - "linux/arm64/v8"
+        - ${PLATFORM}
     networks:
       - app-net
     environment:
@@ -49,7 +49,7 @@ services:
       - ./client.cert:/etc/nginx/certs/client.cert:ro # client cert
 
   frontend:
-    image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/frontend
+    image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/frontend:${TAG:-latest}
     container_name: frontend
     build: 
       context: ./frontend
@@ -58,7 +58,7 @@ services:
       cache_to:
         - type=gha,scope=${COMPOSE_PROJECT_NAME}/frontend
       platforms:
-        - "linux/arm64/v8"
+        - ${PLATFORM}
     networks:
       - app-net
     environment:
@@ -74,7 +74,7 @@ services:
       - aes_iv
 
   api:
-    image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/api
+    image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/api:${TAG:-latest}
     container_name: api
     build: 
       context: ./cmd/api
@@ -83,12 +83,12 @@ services:
       cache_to:
         - type=gha,scope=${COMPOSE_PROJECT_NAME}/api
       platforms:
-        - "linux/arm64/v8"
+        - ${PLATFORM}
     networks:
       - app-net
 
   query:
-    image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/query
+    image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/query:${TAG:-latest}
     container_name: query
     build: 
       context: ./query # use the original Node.js service
@@ -97,7 +97,7 @@ services:
       cache_to:
         - type=gha,scope=${COMPOSE_PROJECT_NAME}/query
       platforms:
-        - "linux/arm64/v8"
+        - ${PLATFORM}
     networks:
       - app-net
     environment:
@@ -110,7 +110,7 @@ services:
       - mongo
 
   reddit:
-    image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/reddit
+    image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/reddit:${TAG:-latest}
     container_name: reddit
     build: 
       context: ./cmd/reddit
@@ -119,7 +119,7 @@ services:
       cache_to:
         - type=gha,scope=${COMPOSE_PROJECT_NAME}/reddit
       platforms:
-        - "linux/arm64/v8"
+        - ${PLATFORM}
     networks:
       - app-net
 
