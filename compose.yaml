@@ -1,125 +1,36 @@
-name: reddit-saved-gallery
-
 services:
-  cert-manager:
-    image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/cert-manager:${TAG:-latest}
-    container_name: cert-manager
-    build: 
-      context: ./cert-manager
-      cache_from:
-        - type=gha,scope=${COMPOSE_PROJECT_NAME}/cert-manager
-      cache_to:
-        - type=gha,scope=${COMPOSE_PROJECT_NAME}/cert-manager
-      platforms:
-        - ${PLATFORM}
-    environment:
-      DOMAIN: ${DOMAIN}
-    ports:
-      - 80:80
-    networks:
-      - app-net
-    volumes:
-      - ./letsencrypt:/etc/letsencrypt:rw # certs
-      - /var/run/docker.sock:/var/run/docker.sock:ro # socket
-
-  nginx:
-    image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/nginx:${TAG:-latest}
-    container_name: nginx
-    build: 
-      context: ./nginx
-      cache_from:
-        - type=gha,scope=${COMPOSE_PROJECT_NAME}/nginx
-      cache_to:
-        - type=gha,scope=${COMPOSE_PROJECT_NAME}/nginx
-      platforms:
-        - ${PLATFORM}
-    networks:
-      - app-net
-    environment:
-      DOMAIN: ${DOMAIN}
-    ports:
-      - 443:443
-    depends_on:
-      cert-manager:
-        condition: service_healthy
-      frontend:
-        condition: service_started
-    volumes:
-      - ./letsencrypt:/etc/nginx/certs/letsencrypt:ro # server cert and key
-      - ./client.cert:/etc/nginx/certs/client.cert:ro # client cert
-
   frontend:
-    image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/frontend:${TAG:-latest}
+    image: ghcr.io/ke126/reddit-saved-gallery/frontend
     container_name: frontend
-    build: 
-      context: ./frontend
-      cache_from:
-        - type=gha,scope=${COMPOSE_PROJECT_NAME}/frontend
-      cache_to:
-        - type=gha,scope=${COMPOSE_PROJECT_NAME}/frontend
-      platforms:
-        - ${PLATFORM}
     networks:
       - app-net
     environment:
-      OAUTH_CLIENT_ID_FILE: /run/secrets/client_id
-      OAUTH_CLIENT_SECRET_FILE: /run/secrets/client_secret
-      AES_KEY_FILE: /run/secrets/aes_key
-      AES_IV_FILE: /run/secrets/aes_iv
-      ORIGIN: https://${DOMAIN}
-    secrets:
-      - client_id
-      - client_secret
-      - aes_key
-      - aes_iv
+      OAUTH_CLIENT_ID: ${OAUTH_CLIENT_ID:?}
+      OAUTH_CLIENT_SECRET: ${OAUTH_CLIENT_SECRET:?}
+      ORIGIN: http://localhost:3000
+    ports:
+      - 3000:3000
 
   api:
-    image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/api:${TAG:-latest}
+    image: ghcr.io/ke126/reddit-saved-gallery/api
     container_name: api
-    build: 
-      context: ./cmd/api
-      cache_from:
-        - type=gha,scope=${COMPOSE_PROJECT_NAME}/api
-      cache_to:
-        - type=gha,scope=${COMPOSE_PROJECT_NAME}/api
-      platforms:
-        - ${PLATFORM}
     networks:
       - app-net
 
   query:
-    image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/query:${TAG:-latest}
+    image: ghcr.io/ke126/reddit-saved-gallery/query
     container_name: query
-    build: 
-      context: ./query # use the original Node.js service
-      cache_from:
-        - type=gha,scope=${COMPOSE_PROJECT_NAME}/query
-      cache_to:
-        - type=gha,scope=${COMPOSE_PROJECT_NAME}/query
-      platforms:
-        - ${PLATFORM}
     networks:
       - app-net
     environment:
-      MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/mongo_username
-      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo_password
-    secrets:
-      - mongo_username
-      - mongo_password
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME:?}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD:?}
     depends_on:
       - mongo
 
   reddit:
-    image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/reddit:${TAG:-latest}
+    image: ghcr.io/ke126/reddit-saved-gallery/reddit
     container_name: reddit
-    build: 
-      context: ./cmd/reddit
-      cache_from:
-        - type=gha,scope=${COMPOSE_PROJECT_NAME}/reddit
-      cache_to:
-        - type=gha,scope=${COMPOSE_PROJECT_NAME}/reddit
-      platforms:
-        - ${PLATFORM}
     networks:
       - app-net
 
@@ -127,30 +38,13 @@ services:
     image: mongo
     container_name: mongo
     environment:
-      MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/mongo_username
-      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo_password
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME:?}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD:?}
     networks:
       - app-net
-    secrets:
-      - mongo_username
-      - mongo_password
     volumes:
       - ./mongo:/data/db:rw
 
 networks:
   app-net:
-    name: ${COMPOSE_PROJECT_NAME}
-
-secrets:
-  client_id:
-    environment: OAUTH_CLIENT_ID
-  client_secret:
-    environment: OAUTH_CLIENT_SECRET
-  mongo_username: 
-    environment: MONGO_INITDB_ROOT_USERNAME
-  mongo_password:
-    environment: MONGO_INITDB_ROOT_PASSWORD
-  aes_key:
-    environment: AES_KEY
-  aes_iv:
-    environment: AES_IV
+    name: reddit-saved-gallery
