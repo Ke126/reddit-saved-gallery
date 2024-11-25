@@ -1,0 +1,50 @@
+services:
+  frontend:
+    image: ghcr.io/ke126/reddit-saved-gallery/frontend
+    container_name: frontend
+    networks:
+      - app-net
+    environment:
+      OAUTH_CLIENT_ID: ${OAUTH_CLIENT_ID:?}
+      OAUTH_CLIENT_SECRET: ${OAUTH_CLIENT_SECRET:?}
+      ORIGIN: http://localhost:3000
+    ports:
+      - 3000:3000
+
+  api:
+    image: ghcr.io/ke126/reddit-saved-gallery/api
+    container_name: api
+    networks:
+      - app-net
+
+  query:
+    image: ghcr.io/ke126/reddit-saved-gallery/query
+    container_name: query
+    networks:
+      - app-net
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME:?}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD:?}
+    depends_on:
+      - mongo
+
+  reddit:
+    image: ghcr.io/ke126/reddit-saved-gallery/reddit
+    container_name: reddit
+    networks:
+      - app-net
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME:?}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD:?}
+    networks:
+      - app-net
+    volumes:
+      - ./mongo:/data/db:rw
+
+networks:
+  app-net:
+    name: reddit-saved-gallery
