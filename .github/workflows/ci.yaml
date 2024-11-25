@@ -9,7 +9,7 @@ env:
   REPO_NAME: reddit-saved-gallery
 
 jobs:
-  test-and-build:
+  run-tests:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository code
@@ -18,15 +18,47 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version-file: './go.mod'
+      - name: Run tests
+        run: make test
+      - name: Run lint
+        run: make lint
+
+  build-docker-images:
+    needs: run-tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform: [linux/amd64, linux/arm64]
+    steps:
+        # e.g. TARGET_OS=linux, TARGET_ARCH=amd64
+      - name: Set up environment variables
+        run: |
+          PLATFORM=${{ matrix.platform }}
+          TARGET_OS=${PLATFORM%%/*}
+          TARGET_ARCH=${PLATFORM##*/}
+          echo "TARGET_OS=$TARGET_OS" >> $GITHUB_ENV
+          echo "TARGET_ARCH=$TARGET_ARCH" >> $GITHUB_ENV
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: './go.mod'
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Expose GitHub runtime
         uses: crazy-max/ghaction-github-runtime@v3
-      - name: Run tests
-        run: make test
       - name: Build Go binaries
+        env:
+          GOOS: ${{ env.TARGET_OS }}
+          GOARCH: ${{ env.TARGET_ARCH }}
         run: make build
       - name: Build Docker images
+        env:
+          PLATFORM: ${{ matrix.platform }}
+          TAG: ${{ env.TARGET_ARCH }}
         run: docker compose build
       - name: Save names of all built Docker images to an environment variable
         run: |
@@ -38,36 +70,54 @@ jobs:
         run: |
           echo "$DOCKER_IMAGES"
           docker save $DOCKER_IMAGES |
-          gzip > images.tar.gz
+          gzip > ./images.tar.gz
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: images.tar.gz
+          name: images-${{ env.TARGET_OS }}-${{ env.TARGET_ARCH }}.tar.gz
           path: ./images.tar.gz
           retention-days: 1
   
   deliver-to-ghcr:
     # only run on push to main
     if: github.ref == 'refs/heads/main'
+    needs: build-docker-images
     runs-on: ubuntu-latest
-    needs: test-and-build
     permissions:
       contents: read
       packages: write
     steps:
-      - name: Checkout repository code
-        uses: actions/checkout@v4
-      - name: Download artifact
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: images.tar.gz
-      - name: Decompress and load Docker images from artifact
-        run: docker load -i images.tar.gz
+          path: ./artifacts
+          pattern: images-*
+          merge-multiple: true
+      - name: Decompress and load Docker images from artifacts
+        run: |
+          for artifact in ./artifacts/*; do
+            docker load -i $artifact
+          done
+      - name: Save all unique image names to an environment variable
+        run: |
+          TEMP_VAR=$(docker images --format "{{.Repository}}" |
+            grep -E "$REPO_NAME" |
+            sort |
+            uniq |
+            tr '\n' ' ')
+          echo "DOCKER_IMAGES=$TEMP_VAR" >> "$GITHUB_ENV"
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Push Docker images to ghcr
-        run: docker compose push
+      - name: Push Docker images and manifests to ghcr
+        run: |
+          for name in $DOCKER_IMAGES; do
+            docker push ${name}:amd64
+            docker push ${name}:arm64
+            docker buildx imagetools create -t ${name}:latest ${name}:amd64 ${name}:arm64
+          done
