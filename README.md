@@ -81,7 +81,8 @@ docker compose down
 
 ## Deploying to production
 
-> NOTE: These instructions are only applicable for full deployment of Reddit Saved Gallery to a production server. For running the application locally, see [Getting started](#getting-started).
+> [!NOTE]
+> These instructions are only applicable for full deployment of Reddit Saved Gallery to a production server. For running the application locally, see [Getting started](#getting-started).
 
 This repository already comes configured with various GitHub Actions workflows to automate testing, building, and deploying Reddit Saved Gallery to a production server. Only a few things need to be configured to automate this process and remotely run the application on the production server.
 
