@@ -34,7 +34,7 @@
 				{toast.message}
 				<button
 					type="button"
-					on:click={() => deleteToast(toast)}
+					onclick={() => deleteToast(toast)}
 					class="btn-close ms-1"
 					aria-label="Close"
 				></button>
