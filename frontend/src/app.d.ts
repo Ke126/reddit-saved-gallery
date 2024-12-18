@@ -1,4 +1,4 @@
-// See https://kit.svelte.dev/docs/types#app
+// See https://svelte.dev/docs/kit/types#app.d.ts
 
 import type { Subreddit, RedditCard } from '$lib/types/reddit';
 import type { UserCookie } from '$lib/types/user';
