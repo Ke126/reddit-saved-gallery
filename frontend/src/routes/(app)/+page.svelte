@@ -3,7 +3,7 @@
 	import PostList from '$lib/components/PostList.svelte';
 	import Pagination from '$lib/components/Pagination.svelte';
 	import Toaster from '$lib/toast/Toaster.svelte';
-	export let data;
+	let { data } = $props();
 </script>
 
 <Toaster />

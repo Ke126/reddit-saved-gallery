@@ -1,6 +1,6 @@
 <script>
 	import '../../app.css';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import Reddit from '$lib/svg/Reddit.svelte';
 	import MagnifyingGlass from '$lib/svg/MagnifyingGlass.svelte';
 	import Photo from '$lib/svg/Photo.svelte';
@@ -49,8 +49,8 @@
 	/>
 	<meta property="og:title" content="Login - Reddit Saved Gallery" />
 	<meta property="og:type" content="website" />
-	<meta property="og:url" content={$page.url.origin + '/login'} />
-	<meta property="og:image" content={$page.url.origin + '/favicon.png'} />
+	<meta property="og:url" content={page.url.origin + '/login'} />
+	<meta property="og:image" content={page.url.origin + '/favicon.png'} />
 	<meta
 		property="og:description"
 		content="Log in to Reddit Saved Gallery to view, filter, and manage your Reddit account's saved posts."

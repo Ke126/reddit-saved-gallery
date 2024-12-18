@@ -2,7 +2,7 @@
 	import PostList from '$lib/bs-components/PostList.svelte';
 	import Pagination from '$lib/bs-components/Pagination.svelte';
 	import Toaster from '$lib/toast/BSToaster.svelte';
-	export let data;
+	let { data } = $props();
 
 	const PAGE_SIZE = 100;
 </script>
