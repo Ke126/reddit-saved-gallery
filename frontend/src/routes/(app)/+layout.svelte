@@ -21,5 +21,5 @@
 	/>
 </svelte:head>
 
-<NavBar subreddits={data.subreddits.map((elem) => ({ checked: true, ...elem }))} user={data.user} />
+<NavBar subreddits={data.subreddits} user={data.user} />
 {@render children()}
