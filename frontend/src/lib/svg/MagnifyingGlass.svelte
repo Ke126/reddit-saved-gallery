@@ -1,12 +1,12 @@
 <script lang="ts">
-	let className: string;
+	import type Props from "./type";
 
-	export { className as class };
+	let { class: _class }: Props = $props();
 </script>
 
 <!-- Adapted from https://heroicons.com/ -->
 <svg
-	class={className}
+	class={_class}
 	xmlns="http://www.w3.org/2000/svg"
 	fill="none"
 	viewBox="0 0 24 24"
