@@ -36,7 +36,7 @@
 	const right = ' rounded-r-md';
 </script>
 
-<div class="bg-slate-900 flex flex-col py-4 items-center">
+<div class="flex flex-col items-center bg-slate-900 py-4">
 	<p class="text-sm text-slate-200">
 		{#if count !== 0}
 			Showing
@@ -52,7 +52,7 @@
 	</p>
 	<!-- Display pagination only if count !== 0 -->
 	{#if count !== 0}
-		<nav class="-space-x-px flex my-1">
+		<nav class="my-1 flex -space-x-px">
 			<!-- Display left arrow and page 1 if not on page 1 -->
 			{#if curPage > 1}
 				<a
@@ -121,12 +121,12 @@
 					inputmode="numeric"
 					pattern="[1-9][0-9]*"
 					bind:value={inputNum}
-					class="text-sm px-1 w-10 rounded placeholder:text-slate-400 bg-slate-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600"
+					class="w-10 rounded bg-slate-200 px-1 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600"
 					placeholder={curPage.toString()}
 				/>
 				<button
 					type="submit"
-					class="rounded px-1 text-sm hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200 transition-colors bg-orange-600 text-white"
+					class="rounded bg-orange-600 px-1 text-sm text-white transition-colors hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200"
 					>Jump</button
 				>
 			</form>

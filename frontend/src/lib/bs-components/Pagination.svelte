@@ -24,10 +24,8 @@
 				>
 			</li>
 			<li class="page-item">
-				<a
-					class="page-link"
-					data-sveltekit-preload-data="tap"
-					href={makeURL(page.url, curPage - 1)}><i class="bi bi-chevron-left"></i></a
+				<a class="page-link" data-sveltekit-preload-data="tap" href={makeURL(page.url, curPage - 1)}
+					><i class="bi bi-chevron-left"></i></a
 				>
 			</li>
 		{/if}
@@ -48,10 +46,8 @@
 		{/each}
 		{#if curPage < numPages}
 			<li class="page-item">
-				<a
-					class="page-link"
-					data-sveltekit-preload-data="tap"
-					href={makeURL(page.url, curPage + 1)}><i class="bi bi-chevron-right"></i></a
+				<a class="page-link" data-sveltekit-preload-data="tap" href={makeURL(page.url, curPage + 1)}
+					><i class="bi bi-chevron-right"></i></a
 				>
 			</li>
 			<li class="page-item">

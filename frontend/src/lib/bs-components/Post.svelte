@@ -12,14 +12,14 @@
 
 	const BASE_URL = 'https://www.reddit.com';
 	let saved = $state(true);
-	let pinned = $state(post.pinned)
+	let pinned = $state(post.pinned);
 </script>
 
 <div class="col">
 	<div class="card">
 		<div class="card-header">
 			<div class="row justify-content-between">
-				<div class="col-auto small">
+				<div class="small col-auto">
 					<div>
 						<a
 							href="{BASE_URL}/r/{post.subreddit}"
@@ -48,7 +48,7 @@
 						{/if}
 					</div>
 				</div>
-				<div class="col-auto d-flex align-items-center">
+				<div class="d-flex align-items-center col-auto">
 					<form
 						method="post"
 						action="/?/pin"
@@ -73,7 +73,7 @@
 						<input type="hidden" name="_id" value={post._id} />
 						<input hidden type="checkbox" name="pinned" checked={pinned} />
 						<button
-							class="py-0 px-1 btn btn-lg btn-outline-secondary border-0"
+							class="btn btn-lg btn-outline-secondary border-0 px-1 py-0"
 							type="submit"
 							title={pinned ? 'Unpin' : 'Pin'}
 							onclick={() => (pinned = !pinned)}
@@ -109,7 +109,7 @@
 						<input type="hidden" name="_id" value={post._id} />
 						<input hidden type="checkbox" name="saved" checked={saved} />
 						<button
-							class="py-0 px-1 btn btn-lg btn-outline-secondary border-0"
+							class="btn btn-lg btn-outline-secondary border-0 px-1 py-0"
 							type="submit"
 							title={saved ? 'Unsave' : 'Save'}
 							onclick={() => ((saved = !saved), (pinned = false))}
@@ -145,14 +145,14 @@
 			</p>
 		</div>
 		<div class="card-footer">
-			<span class="badge fw-normal p-2 border border-secondary-subtle rounded-pill">
+			<span class="badge fw-normal border-secondary-subtle rounded-pill border p-2">
 				<i class="bi bi-arrow-up"></i>
 				{post.score} <i class="bi bi-arrow-down"></i>
 			</span>
 
 			<a href="{BASE_URL}{post.permalink}" target="_blank">
 				<span
-					class="btn btn-outline-secondary badge fw-normal p-2 border border-secondary-subtle rounded-pill"
+					class="btn btn-outline-secondary badge fw-normal border-secondary-subtle rounded-pill border p-2"
 				>
 					<i class="bi bi-chat-left"></i>
 					{post.num_comments}

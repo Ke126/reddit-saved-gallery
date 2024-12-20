@@ -7,7 +7,7 @@
 </script>
 
 <div
-	class="toast-container position-fixed top-0 start-50 translate-middle-x p-3 d-flex flex-column justify-content-center align-items-center"
+	class="toast-container position-fixed start-50 translate-middle-x d-flex flex-column justify-content-center align-items-center top-0 p-3"
 >
 	{#each $toasts as toast (toast.id)}
 		<div

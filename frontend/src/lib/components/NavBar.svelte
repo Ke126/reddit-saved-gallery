@@ -25,12 +25,12 @@
 	});
 	// $effect handles populating the filters and search bar
 	// if the user is navigating the app by changing the url directly
-	// 
+	//
 	// this is basically afterNavigate, however the reload after
 	// pulling posts from Reddit seems to trigger the above $effect
 	// AFTER afterNavigate, which is why $effect is also used here
 	$effect(() => {
-		search = page.url.searchParams.get('q') || '';	
+		search = page.url.searchParams.get('q') || '';
 		setCheckedSubs();
 	});
 
@@ -86,30 +86,30 @@
 <header class="bg-slate-900">
 	<nav>
 		<div
-			class="mx-auto max-w-7xl flex items-center justify-between h-16 sm:border-b sm:border-slate-700 px-4 sm:px-8"
+			class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:border-b sm:border-slate-700 sm:px-8"
 		>
 			<!-- Nav header -->
 			<a
 				href="/"
 				data-sveltekit-preload-data="tap"
-				class="text-lg text-nowrap font-bold tracking-tight text-slate-200 hover:text-orange-600 transition-colors mr-2"
+				class="mr-2 text-nowrap text-lg font-bold tracking-tight text-slate-200 transition-colors hover:text-orange-600"
 			>
 				Reddit Saved Gallery
 			</a>
 
 			<!-- Search bar, search button, and filter button -->
-			<div class="items-center justify-center gap-2 hidden sm:flex grow">
+			<div class="hidden grow items-center justify-center gap-2 sm:flex">
 				<form id="search" onsubmit={submitForm} class="relative max-w-96 grow">
 					<input
 						name="q"
 						bind:value={search}
-						class="peer w-full rounded-lg placeholder:text-slate-400 bg-slate-200 p-2 pl-10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600"
+						class="peer w-full rounded-lg bg-slate-200 p-2 pl-10 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600"
 						type="search"
 						placeholder="Search"
 					/>
 					<!-- svg text color classes are here so tailwind peer selector works properly -->
 					<div
-						class="peer-focus:text-orange-600 text-slate-400 absolute pointer-events-none inset-y-0 left-0 flex items-center pl-3"
+						class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 peer-focus:text-orange-600"
 					>
 						<MagnifyingGlass class="size-6" />
 					</div>
@@ -117,12 +117,12 @@
 				<button
 					form="search"
 					type="submit"
-					class="rounded-lg px-3 py-2 hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200 font-bold transition-colors bg-orange-600 text-white"
+					class="rounded-lg bg-orange-600 px-3 py-2 font-bold text-white transition-colors hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200"
 					>Search</button
 				><button
 					type="button"
 					onclick={() => (showCollapseMenu = !showCollapseMenu)}
-					class="rounded-lg px-3 py-2 hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200 font-bold transition-colors bg-orange-600 text-white"
+					class="rounded-lg bg-orange-600 px-3 py-2 font-bold text-white transition-colors hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200"
 					>Filters</button
 				>
 			</div>
@@ -132,19 +132,19 @@
 		</div>
 
 		<!-- Second row on <sm breakpoint -->
-		<div class="flex sm:hidden mx-auto items-center gap-2 h-16 border-b border-slate-700 px-4">
+		<div class="mx-auto flex h-16 items-center gap-2 border-b border-slate-700 px-4 sm:hidden">
 			<!-- Search bar, search button, and filter button -->
 			<form id="search" onsubmit={submitForm} class="relative grow">
 				<input
 					name="q"
 					bind:value={search}
-					class="w-full peer rounded-lg placeholder:text-slate-400 bg-slate-200 p-2 pl-10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600"
+					class="peer w-full rounded-lg bg-slate-200 p-2 pl-10 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600"
 					type="search"
 					placeholder="Search"
 				/>
 				<!-- svg text color classes are here so tailwind peer selector works properly -->
 				<div
-					class="peer-focus:text-orange-600 text-slate-400 absolute pointer-events-none inset-y-0 left-0 flex items-center pl-3"
+					class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 peer-focus:text-orange-600"
 				>
 					<MagnifyingGlass class="size-6" />
 				</div>
@@ -152,12 +152,12 @@
 			<button
 				form="search"
 				type="submit"
-				class="rounded-lg px-3 py-2 hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200 font-bold transition-colors bg-orange-600 text-white"
+				class="rounded-lg bg-orange-600 px-3 py-2 font-bold text-white transition-colors hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200"
 				>Search</button
 			><button
 				type="button"
 				onclick={() => (showCollapseMenu = !showCollapseMenu)}
-				class="rounded-lg px-3 py-2 hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200 font-bold transition-colors bg-orange-600 text-white"
+				class="rounded-lg bg-orange-600 px-3 py-2 font-bold text-white transition-colors hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200"
 				>Filters</button
 			>
 		</div>
@@ -165,38 +165,38 @@
 
 	<!-- Filter menu -->
 	{#if showCollapseMenu}
-		<div in:slide out:slide class="mx-auto max-w-7xl py-4 px-4 border-b border-slate-700 sm:px-8">
+		<div in:slide out:slide class="mx-auto max-w-7xl border-b border-slate-700 px-4 py-4 sm:px-8">
 			<div class="flex gap-2">
 				<button
 					onclick={() => checkAll(true)}
 					type="submit"
-					class="rounded-lg px-3 py-2 hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200 font-bold transition-colors bg-orange-600 text-white"
+					class="rounded-lg bg-orange-600 px-3 py-2 font-bold text-white transition-colors hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200"
 					>Check all</button
 				>
 				<button
 					onclick={() => checkAll(false)}
 					type="submit"
-					class="rounded-lg px-3 py-2 hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200 font-bold transition-colors bg-orange-600 text-white"
+					class="rounded-lg bg-orange-600 px-3 py-2 font-bold text-white transition-colors hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200"
 					>Uncheck all</button
 				>
 			</div>
-			<p class="text-slate-200 font-semibold text-lg">
+			<p class="text-lg font-semibold text-slate-200">
 				Subreddits ({subreddits.filter((subreddit) => subreddit.checked).length})
 			</p>
 			<div class="flex flex-wrap gap-2">
 				{#each subreddits as subreddit (subreddit.subreddit)}
 					<label
-						class="flex ps-2 items-center border rounded-md border-slate-700 has-[:checked]:border-orange-600 cursor-pointer"
+						class="flex cursor-pointer items-center rounded-md border border-slate-700 ps-2 has-[:checked]:border-orange-600"
 					>
 						<input
 							id={subreddit.subreddit}
 							type="checkbox"
 							bind:checked={subreddit.checked}
-							class="peer rounded ring-orange-600 focus:ring-2 accent-orange-600 ring-offset-1 ring-offset-slate-900 cursor-pointer"
+							class="peer cursor-pointer rounded accent-orange-600 ring-orange-600 ring-offset-1 ring-offset-slate-900 focus:ring-2"
 						/>
 						<label
 							for={subreddit.subreddit}
-							class="w-full py-2 pr-2 ms-2 text-sm font-medium text-slate-400 peer-checked:text-orange-600 cursor-pointer"
+							class="ms-2 w-full cursor-pointer py-2 pr-2 text-sm font-medium text-slate-400 peer-checked:text-orange-600"
 							>r/{subreddit.subreddit} ({subreddit.count})</label
 						>
 					</label>

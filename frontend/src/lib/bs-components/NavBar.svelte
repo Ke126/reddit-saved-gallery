@@ -26,12 +26,12 @@
 	});
 	// $effect handles populating the filters and search bar
 	// if the user is navigating the app by changing the url directly
-	// 
+	//
 	// this is basically afterNavigate, however the reload after
 	// pulling posts from Reddit seems to trigger the above $effect
 	// AFTER afterNavigate, which is why $effect is also used here
 	$effect(() => {
-		search = page.url.searchParams.get('q') || '';	
+		search = page.url.searchParams.get('q') || '';
 		setCheckedSubs();
 	});
 
@@ -98,7 +98,7 @@
 		>
 			<span class="navbar-toggler-icon"></span>
 		</button>
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<div class="navbar-collapse collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav me-auto">
 				<li class="nav-item me-2">
 					<form onsubmit={submitForm}>
@@ -194,7 +194,7 @@
 	</div>
 </nav>
 
-<div class="collapse border-bottom" id="filterPanel">
+<div class="border-bottom collapse" id="filterPanel">
 	<div class="container py-2">
 		<form>
 			<div class="mb-2">
@@ -211,14 +211,14 @@
 					<div class="col-auto">
 						{#if subreddit.checked}
 							<button
-								class="badge p-2 btn btn-success"
+								class="badge btn btn-success p-2"
 								onclick={() => (subreddit.checked = !subreddit.checked)}
 							>
 								r/{subreddit.subreddit} ({subreddit.count})
 							</button>
 						{:else}
 							<button
-								class="badge p-2 btn btn-outline-secondary"
+								class="badge btn btn-outline-secondary p-2"
 								onclick={() => (subreddit.checked = !subreddit.checked)}
 							>
 								r/{subreddit.subreddit} ({subreddit.count})

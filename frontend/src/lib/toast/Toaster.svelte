@@ -8,14 +8,14 @@
 </script>
 
 <div
-	class="fixed inset-x-0 top-0 p-0 flex flex-col items-center justify-center pointer-events-none z-50"
+	class="pointer-events-none fixed inset-x-0 top-0 z-50 flex flex-col items-center justify-center p-0"
 >
 	{#each $toasts as toast (toast.id)}
 		<article
 			animate:flip={{ duration: 300 }}
 			in:scale={{ duration: 300 }}
 			out:scale={{ duration: 300 }}
-			class="flex items-center justify-center gap-2 rounded-md bg-slate-800 border border-slate-700 mt-4 p-2"
+			class="mt-4 flex items-center justify-center gap-2 rounded-md border border-slate-700 bg-slate-800 p-2"
 			role="alert"
 		>
 			{#if toast.state === 'fulfilled'}
@@ -25,7 +25,7 @@
 			{:else}
 				<Spinner class="size-5 text-slate-200" />
 			{/if}
-			<p class="text-slate-200 text-sm">
+			<p class="text-sm text-slate-200">
 				{toast.message}
 			</p>
 			<!-- X button -->

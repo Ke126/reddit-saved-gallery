@@ -9,9 +9,9 @@
 	let { posts }: Props = $props();
 </script>
 
-<div class="bg-slate-900 flex justify-center px-4">
+<div class="flex justify-center bg-slate-900 px-4">
 	<div
-		class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 grid-flow-row"
+		class="grid grid-flow-row grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
 	>
 		{#each posts as post (post._id)}
 			<div animate:flip={{ duration: 200 }}>

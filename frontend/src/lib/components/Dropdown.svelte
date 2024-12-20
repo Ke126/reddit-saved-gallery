@@ -25,20 +25,25 @@
 	const closeDropdown: MouseEventHandler<Window> = (event) => {
 		const target = event.target;
 		// only close dropdown if click was not on dropdown button or dropdown menu
-		if (target instanceof Node && showDropdown && !dropdownButton.contains(target) && !dropdownMenu.contains(target)) {
+		if (
+			target instanceof Node &&
+			showDropdown &&
+			!dropdownButton.contains(target) &&
+			!dropdownMenu.contains(target)
+		) {
 			showDropdown = false;
 		}
-	}
+	};
 </script>
 
 <svelte:window onclick={closeDropdown} />
 
-<div class="relative inline-block h-10 ml-2">
+<div class="relative ml-2 inline-block h-10">
 	<!-- Dropdown button -->
 	<button
 		bind:this={dropdownButton}
 		type="button"
-		class="size-10 rounded-full hover:ring-orange-600 focus:ring-orange-600 hover:ring-2 focus:ring-2 hover:ring-offset-2 focus:ring-offset-2 hover:ring-offset-slate-900 focus:ring-offset-slate-900"
+		class="size-10 rounded-full hover:ring-2 hover:ring-orange-600 hover:ring-offset-2 hover:ring-offset-slate-900 focus:ring-2 focus:ring-orange-600 focus:ring-offset-2 focus:ring-offset-slate-900"
 		onclick={() => (showDropdown = !showDropdown)}
 	>
 		<img src={pfp} alt="Profile icon" class="rounded-full" />
@@ -48,13 +53,13 @@
 	{#if showDropdown}
 		<div
 			bind:this={dropdownMenu}
-			class="absolute origin-top-right right-0 w-48 py-1 bg-slate-800 rounded border border-slate-700 z-50"
+			class="absolute right-0 z-50 w-48 origin-top-right rounded border border-slate-700 bg-slate-800 py-1"
 		>
-			<p class="p-2 text-slate-200 text-sm w-full flex items-center gap-1">
+			<p class="flex w-full items-center gap-1 p-2 text-sm text-slate-200">
 				<User class="size-5 text-slate-200" />
 				u/{username}
 			</p>
-			<div class="border-t border-slate-700 my-1"></div>
+			<div class="my-1 border-t border-slate-700"></div>
 			<form
 				method="post"
 				use:enhance={() => {
@@ -79,14 +84,14 @@
 				action="?/pull"
 			>
 				{#if isLoading}
-					<p class="text-slate-400 text-sm p-2 w-full flex items-center gap-1">
+					<p class="flex w-full items-center gap-1 p-2 text-sm text-slate-400">
 						<Spinner class="size-5 text-slate-400" />
 						Loading...
 					</p>
 				{:else}
 					<button
 						type="submit"
-						class="text-slate-200 text-sm hover:bg-slate-700 p-2 w-full flex items-center gap-1"
+						class="flex w-full items-center gap-1 p-2 text-sm text-slate-200 hover:bg-slate-700"
 					>
 						<Cloud class="size-5 text-slate-200" />
 						Pull posts from Reddit
@@ -105,7 +110,7 @@
 			>
 				<button
 					type="submit"
-					class="text-slate-200 text-sm hover:bg-slate-700 p-2 w-full flex items-center gap-1"
+					class="flex w-full items-center gap-1 p-2 text-sm text-slate-200 hover:bg-slate-700"
 				>
 					<Logout class="size-5 text-slate-200" />
 					Log out

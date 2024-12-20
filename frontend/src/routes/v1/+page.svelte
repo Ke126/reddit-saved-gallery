@@ -8,7 +8,7 @@
 </script>
 
 <Toaster />
-<h2 class="text-center mt-2 mb-0">
+<h2 class="mb-0 mt-2 text-center">
 	{#if data.posts.count !== 0}
 		Showing {(data.posts.page - 1) * PAGE_SIZE + 1} - {Math.min(
 			data.posts.page * PAGE_SIZE,

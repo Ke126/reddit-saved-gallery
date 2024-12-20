@@ -1,9 +1,9 @@
 // See https://svelte.dev/docs/kit/types#app.d.ts
+// for information about these interfaces
 
 import type { Subreddit, RedditCard } from '$lib/types/reddit';
 import type { UserCookie } from '$lib/types/user';
 
-// for information about these interfaces
 declare global {
 	namespace App {
 		// interface Error {}

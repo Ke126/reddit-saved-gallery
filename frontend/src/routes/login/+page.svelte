@@ -59,43 +59,43 @@
 
 <header class="bg-slate-900">
 	<nav class="absolute w-full">
-		<div class="mx-auto max-w-7xl flex items-center h-16 border-b border-slate-700 px-4 sm:px-8">
+		<div class="mx-auto flex h-16 max-w-7xl items-center border-b border-slate-700 px-4 sm:px-8">
 			<a
 				href="/login"
-				class="text-lg font-bold tracking-tight text-slate-200 mr-4 hover:text-orange-600 transition-colors"
+				class="mr-4 text-lg font-bold tracking-tight text-slate-200 transition-colors hover:text-orange-600"
 			>
 				Reddit Saved Gallery
 			</a>
 			<a
 				href="#features"
-				class="mr-auto rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
+				class="mr-auto rounded-md px-3 py-2 text-sm font-medium text-gray-300 transition-colors hover:bg-gray-700 hover:text-white"
 				>Features</a
 			>
 			<button
 				form="login"
 				type="submit"
-				class="rounded-lg px-3 py-2 hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200 font-bold transition-colors bg-orange-600 text-white"
+				class="rounded-lg bg-orange-600 px-3 py-2 font-bold text-white transition-colors hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200"
 				>Log in</button
 			>
 		</div>
 	</nav>
 </header>
 
-<div class="bg-slate-900 h-screen flex items-center justify-center">
-	<div class="text-center px-8">
-		<h1 class="text-6xl font-extrabold tracking-tight mb-4 text-slate-200">Reddit Saved Gallery</h1>
-		<p class="text-2xl text-slate-400 mb-10">View, filter, and manage your Reddit saved posts!</p>
+<div class="flex h-screen items-center justify-center bg-slate-900">
+	<div class="px-8 text-center">
+		<h1 class="mb-4 text-6xl font-extrabold tracking-tight text-slate-200">Reddit Saved Gallery</h1>
+		<p class="mb-10 text-2xl text-slate-400">View, filter, and manage your Reddit saved posts!</p>
 		<form id="login" method="post">
 			<button
 				type="submit"
-				class="mx-auto flex items-center gap-1 h-16 rounded-lg px-6 text-xl hover:ring-2 hover:ring-inset hover:ring-slate-200 hover:bg-orange-700 font-bold transition-colors bg-orange-600 text-white"
+				class="mx-auto flex h-16 items-center gap-1 rounded-lg bg-orange-600 px-6 text-xl font-bold text-white transition-colors hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200"
 				>Log in with Reddit<Reddit class="size-8 text-white" />
 			</button>
 		</form>
 	</div>
 </div>
 
-<div class="bg-white py-12 min-h-screen">
+<div class="min-h-screen bg-white py-12">
 	<div class="mx-auto max-w-7xl px-6 lg:px-8">
 		<div class="mx-auto max-w-2xl lg:text-center">
 			<h2 class="text-base font-semibold leading-7 text-orange-600">Reddit Saved Gallery</h2>
