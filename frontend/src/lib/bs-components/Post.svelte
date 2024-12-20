@@ -4,10 +4,15 @@
 	import { timeSince, dateString } from '$lib/utils/date';
 	import { toast } from '$lib/toast/toast';
 	import { promiseWithResolvers } from '$lib/utils/promise';
-	export let post: RedditCard;
+	interface Props {
+		post: RedditCard;
+	}
+
+	let { post }: Props = $props();
 
 	const BASE_URL = 'https://www.reddit.com';
-	let saved = true;
+	let saved = $state(true);
+	let pinned = $state(post.pinned)
 </script>
 
 <div class="col">
@@ -45,14 +50,14 @@
 				</div>
 				<div class="col-auto d-flex align-items-center">
 					<form
-						method="POST"
+						method="post"
 						action="/?/pin"
 						use:enhance={() => {
 							const { promise, resolve, reject } = promiseWithResolvers();
 							toast.promise(promise, {
 								pending: 'Loading...',
-								fulfilled: post.pinned ? 'Pinned!' : 'Unpinned!',
-								rejected: `Failed to ${post.pinned ? 'pin' : 'unpin'} post ${post._id}. Please try again later.`
+								fulfilled: pinned ? 'Pinned!' : 'Unpinned!',
+								rejected: `Failed to ${pinned ? 'pin' : 'unpin'} post ${post._id}. Please try again later.`
 							});
 							return async ({ result, update }) => {
 								await update({ reset: true, invalidateAll: false });
@@ -60,20 +65,20 @@
 									resolve();
 								} else {
 									reject();
-									post.pinned = !post.pinned;
+									pinned = !pinned;
 								}
 							};
 						}}
 					>
 						<input type="hidden" name="_id" value={post._id} />
-						<input hidden type="checkbox" name="pinned" bind:checked={post.pinned} />
+						<input hidden type="checkbox" name="pinned" checked={pinned} />
 						<button
 							class="py-0 px-1 btn btn-lg btn-outline-secondary border-0"
 							type="submit"
-							title={post.pinned ? 'Unpin' : 'Pin'}
-							on:click={() => (post.pinned = !post.pinned)}
+							title={pinned ? 'Unpin' : 'Pin'}
+							onclick={() => (pinned = !pinned)}
 						>
-							{#if post.pinned}
+							{#if pinned}
 								<i class="bi bi-pin-angle-fill" style="color: lime"></i>
 							{:else}
 								<i class="bi bi-pin-angle"></i>
@@ -81,7 +86,7 @@
 						</button>
 					</form>
 					<form
-						method="POST"
+						method="post"
 						action="/?/save"
 						use:enhance={() => {
 							const { promise, resolve, reject } = promiseWithResolvers();
@@ -102,12 +107,12 @@
 						}}
 					>
 						<input type="hidden" name="_id" value={post._id} />
-						<input hidden type="checkbox" name="saved" bind:checked={saved} />
+						<input hidden type="checkbox" name="saved" checked={saved} />
 						<button
 							class="py-0 px-1 btn btn-lg btn-outline-secondary border-0"
 							type="submit"
 							title={saved ? 'Unsave' : 'Save'}
-							on:click={() => ((saved = !saved), (post.pinned = false))}
+							onclick={() => ((saved = !saved), (pinned = false))}
 						>
 							{#if saved}
 								<i class="bi bi-bookmark-fill" style="color: white"></i>

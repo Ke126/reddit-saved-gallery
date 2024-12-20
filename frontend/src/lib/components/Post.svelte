@@ -11,10 +11,15 @@
 	import ArrowDown from '$lib/svg/ArrowDown.svelte';
 	import ArrowUp from '$lib/svg/ArrowUp.svelte';
 	import Message from '$lib/svg/Message.svelte';
-	export let post: RedditCard;
+	interface Props {
+		post: RedditCard;
+	}
+
+	let { post }: Props = $props();
 
 	const BASE_URL = 'https://www.reddit.com';
-	let saved = true;
+	let saved = $state(true);
+	let pinned = $state(post.pinned);
 </script>
 
 <!-- Card -->
@@ -61,8 +66,8 @@
 				const { promise, resolve, reject } = promiseWithResolvers();
 				toast.promise(promise, {
 					pending: 'Loading...',
-					fulfilled: post.pinned ? 'Pinned!' : 'Unpinned!',
-					rejected: `Failed to ${post.pinned ? 'pin' : 'unpin'} post ${post._id}. Please try again later.`
+					fulfilled: pinned ? 'Pinned!' : 'Unpinned!',
+					rejected: `Failed to ${pinned ? 'pin' : 'unpin'} post ${post._id}. Please try again later.`
 				});
 				return async ({ result, update }) => {
 					await update({ reset: true, invalidateAll: false });
@@ -70,20 +75,20 @@
 						resolve();
 					} else {
 						reject();
-						post.pinned = !post.pinned;
+						pinned = !pinned;
 					}
 				};
 			}}
 		>
 			<input type="hidden" name="_id" value={post._id} />
-			<input hidden type="checkbox" name="pinned" bind:checked={post.pinned} />
+			<input hidden type="checkbox" name="pinned" checked={pinned} />
 			<button
 				class="group rounded-full p-2 hover:bg-green-600/25 transition-colors"
 				type="submit"
-				title={post.pinned ? 'Unpin' : 'Pin'}
-				on:click={() => (post.pinned = !post.pinned)}
+				title={pinned ? 'Unpin' : 'Pin'}
+				onclick={() => (pinned = !pinned)}
 			>
-				{#if post.pinned}
+				{#if pinned}
 					<PinFill class="text-green-600 size-6" />
 				{:else}
 					<Pin class="text-slate-400 group-hover:text-green-600 size-6 transition-colors" />
@@ -112,12 +117,12 @@
 			}}
 		>
 			<input type="hidden" name="_id" value={post._id} />
-			<input hidden type="checkbox" name="saved" bind:checked={saved} />
+			<input hidden type="checkbox" name="saved" checked={saved} />
 			<button
 				class="group rounded-full p-2 hover:bg-white/25 transition-colors"
 				type="submit"
 				title={saved ? 'Unsave' : 'Save'}
-				on:click={() => ((saved = !saved), (post.pinned = false))}
+				onclick={() => ((saved = !saved), (pinned = false))}
 			>
 				{#if saved}
 					<BookmarkFill class="text-white size-6" />

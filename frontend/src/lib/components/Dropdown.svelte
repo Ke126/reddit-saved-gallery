@@ -6,25 +6,32 @@
 	import User from '$lib/svg/User.svelte';
 	import { toast } from '$lib/toast/toast';
 	import { promiseWithResolvers } from '$lib/utils/promise';
+	import type { MouseEventHandler } from 'svelte/elements';
 
-	export let username = '';
-	export let pfp = '';
+	interface Props {
+		username: string;
+		pfp: string;
+	}
 
-	let dropdownButton: HTMLElement;
-	let dropdownMenu: HTMLElement;
-	let showDropdown = false;
-	let isLoading = false;
+	let { username, pfp }: Props = $props();
 
-	function closeDropdown(event: Event) {
-		const target = event.target as Node;
+	let dropdownButton: HTMLButtonElement;
+	// svelte-ignore non_reactive_update
+	let dropdownMenu: HTMLDivElement;
+
+	let showDropdown = $state(false);
+	let isLoading = $state(false);
+
+	const closeDropdown: MouseEventHandler<Window> = (event) => {
+		const target = event.target;
 		// only close dropdown if click was not on dropdown button or dropdown menu
-		if (showDropdown && !dropdownButton.contains(target) && !dropdownMenu.contains(target)) {
+		if (target instanceof Node && showDropdown && !dropdownButton.contains(target) && !dropdownMenu.contains(target)) {
 			showDropdown = false;
 		}
 	}
 </script>
 
-<svelte:window on:click={closeDropdown} />
+<svelte:window onclick={closeDropdown} />
 
 <div class="relative inline-block h-10 ml-2">
 	<!-- Dropdown button -->
@@ -32,7 +39,7 @@
 		bind:this={dropdownButton}
 		type="button"
 		class="size-10 rounded-full hover:ring-orange-600 focus:ring-orange-600 hover:ring-2 focus:ring-2 hover:ring-offset-2 focus:ring-offset-2 hover:ring-offset-slate-900 focus:ring-offset-slate-900"
-		on:click={() => (showDropdown = !showDropdown)}
+		onclick={() => (showDropdown = !showDropdown)}
 	>
 		<img src={pfp} alt="Profile icon" class="rounded-full" />
 	</button>

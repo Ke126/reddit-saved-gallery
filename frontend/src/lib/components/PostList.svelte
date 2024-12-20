@@ -2,7 +2,11 @@
 	import Post from '$lib/components/Post.svelte';
 	import { flip } from 'svelte/animate';
 	import type { RedditCard } from '$lib/types/reddit';
-	export let posts: RedditCard[];
+	interface Props {
+		posts: RedditCard[];
+	}
+
+	let { posts }: Props = $props();
 </script>
 
 <div class="bg-slate-900 flex justify-center px-4">
