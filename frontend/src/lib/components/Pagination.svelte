@@ -1,18 +1,22 @@
 <script lang="ts">
 	import { goto, afterNavigate } from '$app/navigation';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import Left from '$lib/svg/Left.svelte';
 	import Right from '$lib/svg/Right.svelte';
 
-	export let count: number;
-	export let curPage: number;
-	export let totalCount: number;
+	interface Props {
+		count: number;
+		curPage: number;
+		totalCount: number;
+	}
 
-	let inputNum: string = '';
+	let { count, curPage, totalCount }: Props = $props();
+
+	let inputNum: string = $state('');
 	afterNavigate(() => {
 		inputNum = '';
 	});
-	$: numPages = Math.ceil(totalCount / 100);
+	let numPages = $derived(Math.ceil(totalCount / 100));
 
 	function makeURL(url: URL, page: number) {
 		const newUrl = new URL(url);
@@ -32,7 +36,7 @@
 	const right = ' rounded-r-md';
 </script>
 
-<div class="bg-slate-900 flex flex-col py-4 items-center">
+<div class="flex flex-col items-center bg-slate-900 py-4">
 	<p class="text-sm text-slate-200">
 		{#if count !== 0}
 			Showing
@@ -48,15 +52,15 @@
 	</p>
 	<!-- Display pagination only if count !== 0 -->
 	{#if count !== 0}
-		<nav class="-space-x-px flex my-1">
+		<nav class="my-1 flex -space-x-px">
 			<!-- Display left arrow and page 1 if not on page 1 -->
 			{#if curPage > 1}
 				<a
 					class={hoverable + left}
 					data-sveltekit-preload-data="tap"
-					href={makeURL($page.url, curPage - 1)}><Left class="size-4" /></a
+					href={makeURL(page.url, curPage - 1)}><Left class="size-4" /></a
 				>
-				<a class={hoverable} data-sveltekit-preload-data="tap" href={makeURL($page.url, 1)}>{1}</a>
+				<a class={hoverable} data-sveltekit-preload-data="tap" href={makeURL(page.url, 1)}>{1}</a>
 			{/if}
 			<!-- Display left ellipsis if greater than page 4 -->
 			{#if curPage > 4}
@@ -68,7 +72,7 @@
 					<a
 						class={hoverable}
 						data-sveltekit-preload-data="tap"
-						href={makeURL($page.url, curPage + diff)}>{curPage + diff}</a
+						href={makeURL(page.url, curPage + diff)}>{curPage + diff}</a
 					>
 				{/if}
 			{/each}
@@ -82,7 +86,7 @@
 					<a
 						class={hoverable}
 						data-sveltekit-preload-data="tap"
-						href={makeURL($page.url, curPage + diff)}>{curPage + diff}</a
+						href={makeURL(page.url, curPage + diff)}>{curPage + diff}</a
 					>
 				{/if}
 			{/each}
@@ -92,22 +96,23 @@
 			{/if}
 			<!-- Display right arrow and page 1 if not on last page -->
 			{#if curPage < numPages}
-				<a class={hoverable} data-sveltekit-preload-data="tap" href={makeURL($page.url, numPages)}
+				<a class={hoverable} data-sveltekit-preload-data="tap" href={makeURL(page.url, numPages)}
 					>{numPages}</a
 				>
 				<a
 					class={hoverable + right}
 					data-sveltekit-preload-data="tap"
-					href={makeURL($page.url, curPage + 1)}><Right class="size-4" /></a
+					href={makeURL(page.url, curPage + 1)}><Right class="size-4" /></a
 				>
 			{/if}
 		</nav>
 		<div class="flex items-center gap-1">
 			<p class="text-sm text-slate-200">Page:</p>
 			<form
-				on:submit|preventDefault={() => {
+				onsubmit={(e) => {
+					e.preventDefault();
 					if (inputNum && inputNum !== '') {
-						goto(makeURL($page.url, Number.parseInt(inputNum)));
+						goto(makeURL(page.url, Number.parseInt(inputNum)));
 					}
 				}}
 			>
@@ -116,12 +121,12 @@
 					inputmode="numeric"
 					pattern="[1-9][0-9]*"
 					bind:value={inputNum}
-					class="text-sm px-1 w-10 rounded placeholder:text-slate-400 bg-slate-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600"
+					class="w-10 rounded bg-slate-200 px-1 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600"
 					placeholder={curPage.toString()}
 				/>
 				<button
 					type="submit"
-					class="rounded px-1 text-sm hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200 transition-colors bg-orange-600 text-white"
+					class="rounded bg-orange-600 px-1 text-sm text-white transition-colors hover:bg-orange-700 hover:ring-2 hover:ring-inset hover:ring-slate-200"
 					>Jump</button
 				>
 			</form>

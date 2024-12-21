@@ -1,6 +1,10 @@
-<script>
-	export let width = 20;
-	export let height = 20;
+<script lang="ts">
+	interface Props {
+		width?: number;
+		height?: number;
+	}
+
+	let { width = 20, height = 20 }: Props = $props();
 </script>
 
 <!-- https://icons8.com/icons -->

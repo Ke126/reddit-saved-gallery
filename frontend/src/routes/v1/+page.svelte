@@ -2,13 +2,13 @@
 	import PostList from '$lib/bs-components/PostList.svelte';
 	import Pagination from '$lib/bs-components/Pagination.svelte';
 	import Toaster from '$lib/toast/BSToaster.svelte';
-	export let data;
+	let { data } = $props();
 
 	const PAGE_SIZE = 100;
 </script>
 
 <Toaster />
-<h2 class="text-center mt-2 mb-0">
+<h2 class="mb-0 mt-2 text-center">
 	{#if data.posts.count !== 0}
 		Showing {(data.posts.page - 1) * PAGE_SIZE + 1} - {Math.min(
 			data.posts.page * PAGE_SIZE,

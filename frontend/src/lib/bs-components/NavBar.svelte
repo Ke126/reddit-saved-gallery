@@ -1,68 +1,87 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { toast } from '$lib/toast/toast';
 	import type { Subreddit } from '$lib/types/reddit';
 	import { promiseWithResolvers } from '$lib/utils/promise';
 	import RedditSvg from '$lib/bs-components/RedditSvg.svelte';
+	import { goto } from '$app/navigation';
+	import type { EventHandler } from 'svelte/elements';
 
-	export let subreddits: Subreddit[];
-	export let user: { username: string; icon_img: string };
-
-	let isLoading = false;
-
-	let queryName = '';
-	let queryValue = '';
-	let filterName = '';
-	let filterValue = '';
-
-	$: fillSearchAndFilters($page.url.searchParams);
-
-	$: {
-		queryName = queryValue.length === 0 ? '' : 'q';
-		// console.log('query update');
+	interface Props {
+		subreddits: Subreddit[];
+		user: { username: string; icon_img: string };
 	}
 
-	$: {
-		const numChecked = subreddits.filter((subreddit) => subreddit.checked).length;
-		const isInSearchBool = numChecked < subreddits.length - numChecked;
-		filterName = isInSearchBool ? 'in' : 'nin';
-		filterValue = subreddits
-			.filter((subreddit) => (isInSearchBool ? subreddit.checked : !subreddit.checked))
-			.map((subreddit) => subreddit.subreddit)
-			.toString();
-		if (numChecked === subreddits.length) filterName = '';
-		// console.log('filters update');
-	}
+	let { subreddits: _subreddits, user }: Props = $props();
 
-	function fillSearchAndFilters(searchParams: URLSearchParams) {
-		queryValue = searchParams.get('q') || '';
-		const include = searchParams.get('in');
-		const exclude = searchParams.get('nin');
+	let subreddits = $state(_subreddits.map((sub) => ({ checked: true, ...sub })));
+	let search = $state('');
+	let isLoading = $state(false);
+
+	// $effect handles updating the array of subreddits
+	// when the user imports new posts
+	$effect(() => {
+		subreddits = _subreddits.map((sub) => ({ checked: true, ...sub }));
+	});
+	// $effect handles populating the filters and search bar
+	// if the user is navigating the app by changing the url directly
+	//
+	// this is basically afterNavigate, however the reload after
+	// pulling posts from Reddit seems to trigger the above $effect
+	// AFTER afterNavigate, which is why $effect is also used here
+	$effect(() => {
+		search = page.url.searchParams.get('q') || '';
+		setCheckedSubs();
+	});
+
+	function setCheckedSubs() {
+		const include = page.url.searchParams.get('in');
+		const exclude = page.url.searchParams.get('nin');
 		if (include !== null) {
 			const subs = include.split(',').map((elem) => elem.toLowerCase());
-			subreddits = subreddits.map((subreddit) => {
+			subreddits.forEach((subreddit) => {
 				subreddit.checked = subs.includes(subreddit.subreddit.toLowerCase());
-				return subreddit;
 			});
 		} else if (exclude !== null) {
 			const subs = exclude.split(',').map((elem) => elem.toLowerCase());
-			subreddits = subreddits.map((subreddit) => {
+			subreddits.forEach((subreddit) => {
 				subreddit.checked = !subs.includes(subreddit.subreddit.toLowerCase());
-				return subreddit;
 			});
 		} else {
-			setChecks(true);
+			checkAll(true);
 		}
-		// console.log('fill form update');
 	}
 
-	function setChecks(value: boolean) {
-		subreddits = subreddits.map((subreddit) => {
+	function checkAll(value: boolean) {
+		subreddits.forEach((subreddit) => {
 			subreddit.checked = value;
-			return subreddit;
 		});
 	}
+
+	const submitForm: EventHandler<SubmitEvent, HTMLFormElement> = (e) => {
+		e.preventDefault();
+		// const formData = new FormData(e.currentTarget);
+		// console.log(Object.fromEntries(formData.entries()));
+		const url = new URL(page.url.origin + page.url.pathname);
+		if (search) {
+			url.searchParams.append('q', search);
+		}
+		const numChecked = subreddits.filter((subreddit) => subreddit.checked).length;
+		const isInSearchBool = numChecked < subreddits.length - numChecked;
+		if (numChecked === subreddits.length) {
+			goto(url);
+			return;
+		}
+		url.searchParams.append(
+			isInSearchBool ? 'in' : 'nin',
+			subreddits
+				.filter((subreddit) => (isInSearchBool ? subreddit.checked : !subreddit.checked))
+				.map((subreddit) => subreddit.subreddit)
+				.toString()
+		);
+		goto(url);
+	};
 </script>
 
 <nav class="navbar navbar-expand-lg border-bottom">
@@ -79,20 +98,19 @@
 		>
 			<span class="navbar-toggler-icon"></span>
 		</button>
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<div class="navbar-collapse collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav me-auto">
 				<li class="nav-item me-2">
-					<form>
+					<form onsubmit={submitForm}>
 						<div class="input-group">
 							<input
-								bind:value={queryValue}
+								name="q"
+								bind:value={search}
 								type="search"
 								class="form-control border-light"
-								name={queryName}
 								placeholder="Search"
 							/>
-							<input type="hidden" name={filterName} value={filterValue} />
-							<button class="btn btn-outline-success" type="submit"
+							<button class="btn btn-outline-success" type="submit" aria-label="Search"
 								><i class="bi bi-search"></i></button
 							>
 						</div>
@@ -130,7 +148,7 @@
 			<ul class="dropdown-menu dropdown-menu-end">
 				<li>
 					<form
-						method="POST"
+						method="post"
 						action="/?/pull"
 						use:enhance={() => {
 							isLoading = true;
@@ -167,7 +185,7 @@
 					</form>
 				</li>
 				<li>
-					<form method="POST" action="/?/logout">
+					<form method="post" action="/?/logout">
 						<button class="dropdown-item text-danger" type="submit">Logout</button>
 					</form>
 				</li>
@@ -176,14 +194,14 @@
 	</div>
 </nav>
 
-<div class="collapse border-bottom" id="filterPanel">
+<div class="border-bottom collapse" id="filterPanel">
 	<div class="container py-2">
 		<form>
 			<div class="mb-2">
-				<button on:click={() => setChecks(true)} class="btn btn-outline-primary" type="button"
+				<button onclick={() => checkAll(true)} class="btn btn-outline-primary" type="button"
 					>Check all
 				</button>
-				<button on:click={() => setChecks(false)} class="btn btn-outline-danger" type="button"
+				<button onclick={() => checkAll(false)} class="btn btn-outline-danger" type="button"
 					>Uncheck all
 				</button>
 			</div>
@@ -193,15 +211,15 @@
 					<div class="col-auto">
 						{#if subreddit.checked}
 							<button
-								class="badge p-2 btn btn-success"
-								on:click={() => (subreddit.checked = !subreddit.checked)}
+								class="badge btn btn-success p-2"
+								onclick={() => (subreddit.checked = !subreddit.checked)}
 							>
 								r/{subreddit.subreddit} ({subreddit.count})
 							</button>
 						{:else}
 							<button
-								class="badge p-2 btn btn-outline-secondary"
-								on:click={() => (subreddit.checked = !subreddit.checked)}
+								class="badge btn btn-outline-secondary p-2"
+								onclick={() => (subreddit.checked = !subreddit.checked)}
 							>
 								r/{subreddit.subreddit} ({subreddit.count})
 							</button>

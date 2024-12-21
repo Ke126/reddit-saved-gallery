@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import NavBar from '$lib/bs-components/NavBar.svelte';
 
-	export let data;
+	let { data, children } = $props();
 </script>
 
 <svelte:head>
@@ -13,13 +13,13 @@
 	/>
 	<meta property="og:title" content="Reddit Saved Gallery" />
 	<meta property="og:type" content="website" />
-	<meta property="og:url" content={$page.url.origin} />
-	<meta property="og:image" content={$page.url.origin + '/favicon.png'} />
+	<meta property="og:url" content={page.url.origin} />
+	<meta property="og:image" content={page.url.origin + '/favicon.png'} />
 	<meta
 		property="og:description"
 		content="View, filter, and manage your Reddit account's saved posts on Reddit Saved Gallery."
 	/>
 </svelte:head>
 
-<NavBar subreddits={data.subreddits.map((elem) => ({ checked: true, ...elem }))} user={data.user} />
-<slot />
+<NavBar subreddits={data.subreddits} user={data.user} />
+{@render children()}

@@ -4,17 +4,22 @@
 	import { timeSince, dateString } from '$lib/utils/date';
 	import { toast } from '$lib/toast/toast';
 	import { promiseWithResolvers } from '$lib/utils/promise';
-	export let post: RedditCard;
+	interface Props {
+		post: RedditCard;
+	}
+
+	let { post }: Props = $props();
 
 	const BASE_URL = 'https://www.reddit.com';
-	let saved = true;
+	let saved = $state(true);
+	let pinned = $state(post.pinned);
 </script>
 
 <div class="col">
 	<div class="card">
 		<div class="card-header">
 			<div class="row justify-content-between">
-				<div class="col-auto small">
+				<div class="small col-auto">
 					<div>
 						<a
 							href="{BASE_URL}/r/{post.subreddit}"
@@ -43,16 +48,16 @@
 						{/if}
 					</div>
 				</div>
-				<div class="col-auto d-flex align-items-center">
+				<div class="d-flex align-items-center col-auto">
 					<form
-						method="POST"
+						method="post"
 						action="/?/pin"
 						use:enhance={() => {
 							const { promise, resolve, reject } = promiseWithResolvers();
 							toast.promise(promise, {
 								pending: 'Loading...',
-								fulfilled: post.pinned ? 'Pinned!' : 'Unpinned!',
-								rejected: `Failed to ${post.pinned ? 'pin' : 'unpin'} post ${post._id}. Please try again later.`
+								fulfilled: pinned ? 'Pinned!' : 'Unpinned!',
+								rejected: `Failed to ${pinned ? 'pin' : 'unpin'} post ${post._id}. Please try again later.`
 							});
 							return async ({ result, update }) => {
 								await update({ reset: true, invalidateAll: false });
@@ -60,20 +65,20 @@
 									resolve();
 								} else {
 									reject();
-									post.pinned = !post.pinned;
+									pinned = !pinned;
 								}
 							};
 						}}
 					>
 						<input type="hidden" name="_id" value={post._id} />
-						<input hidden type="checkbox" name="pinned" bind:checked={post.pinned} />
+						<input hidden type="checkbox" name="pinned" checked={pinned} />
 						<button
-							class="py-0 px-1 btn btn-lg btn-outline-secondary border-0"
+							class="btn btn-lg btn-outline-secondary border-0 px-1 py-0"
 							type="submit"
-							title={post.pinned ? 'Unpin' : 'Pin'}
-							on:click={() => (post.pinned = !post.pinned)}
+							title={pinned ? 'Unpin' : 'Pin'}
+							onclick={() => (pinned = !pinned)}
 						>
-							{#if post.pinned}
+							{#if pinned}
 								<i class="bi bi-pin-angle-fill" style="color: lime"></i>
 							{:else}
 								<i class="bi bi-pin-angle"></i>
@@ -81,7 +86,7 @@
 						</button>
 					</form>
 					<form
-						method="POST"
+						method="post"
 						action="/?/save"
 						use:enhance={() => {
 							const { promise, resolve, reject } = promiseWithResolvers();
@@ -102,12 +107,12 @@
 						}}
 					>
 						<input type="hidden" name="_id" value={post._id} />
-						<input hidden type="checkbox" name="saved" bind:checked={saved} />
+						<input hidden type="checkbox" name="saved" checked={saved} />
 						<button
-							class="py-0 px-1 btn btn-lg btn-outline-secondary border-0"
+							class="btn btn-lg btn-outline-secondary border-0 px-1 py-0"
 							type="submit"
 							title={saved ? 'Unsave' : 'Save'}
-							on:click={() => ((saved = !saved), (post.pinned = false))}
+							onclick={() => ((saved = !saved), (pinned = false))}
 						>
 							{#if saved}
 								<i class="bi bi-bookmark-fill" style="color: white"></i>
@@ -140,14 +145,14 @@
 			</p>
 		</div>
 		<div class="card-footer">
-			<span class="badge fw-normal p-2 border border-secondary-subtle rounded-pill">
+			<span class="badge fw-normal border-secondary-subtle rounded-pill border p-2">
 				<i class="bi bi-arrow-up"></i>
 				{post.score} <i class="bi bi-arrow-down"></i>
 			</span>
 
 			<a href="{BASE_URL}{post.permalink}" target="_blank">
 				<span
-					class="btn btn-outline-secondary badge fw-normal p-2 border border-secondary-subtle rounded-pill"
+					class="btn btn-outline-secondary badge fw-normal border-secondary-subtle rounded-pill border p-2"
 				>
 					<i class="bi bi-chat-left"></i>
 					{post.num_comments}

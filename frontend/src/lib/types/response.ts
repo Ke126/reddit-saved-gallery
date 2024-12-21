@@ -1,4 +1,4 @@
-import type { RedditThing, SubredditIn } from '$lib/types/reddit';
+import type { RedditThing, Subreddit } from '$lib/types/reddit';
 
 export interface GetPostsResponseBody {
 	count: number;
@@ -8,7 +8,7 @@ export interface GetPostsResponseBody {
 }
 
 export interface GetSubredditsResponseBody {
-	subreddits: SubredditIn[];
+	subreddits: Subreddit[];
 }
 
 export interface AccessTokenResponse {

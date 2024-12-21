@@ -104,13 +104,7 @@ export interface RedditCard {
 	created: number;
 }
 
-export interface SubredditIn {
+export interface Subreddit {
 	subreddit: string;
 	count: number;
-}
-
-export interface Subreddit extends SubredditIn {
-	subreddit: string;
-	count: number;
-	checked: boolean;
 }
