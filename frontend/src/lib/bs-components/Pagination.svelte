@@ -35,7 +35,8 @@
 				>
 			</li>
 		{/if}
-		{#each { length: numPages }, pageNum}
+		<!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
+		{#each { length: numPages } as _, pageNum}
 			{#if pageNum + 1 === curPage}
 				<li class="page-item active">
 					<span class="page-link">{curPage}</span>
