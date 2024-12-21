@@ -1,7 +1,16 @@
 import { getUserInfo, refreshAccessToken } from '$lib/server/auth';
-import { encrypt, decrypt } from '$lib/server/crypto';
+import { encrypt, decrypt, generateAesKey } from '$lib/server/crypto';
+import { loadAllSecrets } from '$lib/server/secrets';
 import type { UserCookie } from '$lib/types/user';
-import type { Handle } from '@sveltejs/kit';
+import type { Handle, ServerInit } from '@sveltejs/kit';
+
+export const init: ServerInit = async () => {
+	console.log('INIT');
+	// load all secrets from env
+	await loadAllSecrets();
+	// generate new/existing aes key
+	await generateAesKey();
+};
 
 export const handle: Handle = async ({ event, resolve }) => {
 	console.log('HANDLE');
