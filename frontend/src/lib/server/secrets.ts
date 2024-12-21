@@ -1,20 +1,13 @@
 import { env } from '$env/dynamic/private';
-import { building } from '$app/environment';
-import fs from 'node:fs';
+import fs from 'node:fs/promises';
 
 // throw an exception if the secret is unset or empty
-function loadSecret(secretName: string): string {
-	// During the build process, these secret environment variables are all unset,
-	// so this check prevents the build from failing from the exceptions thrown below.
-	if (building) {
-		return '';
-	}
-
+async function loadSecret(secretName: string): Promise<string> {
 	let secret = env[secretName] || '';
 	const fileKey = secretName + '_FILE';
 	// throw an exception if file does not exist
 	if (env[fileKey]) {
-		secret = fs.readFileSync(env[fileKey], 'utf8');
+		secret = await fs.readFile(env[fileKey], 'utf8');
 	}
 	// throw an exception if secret is still empty
 	if (!secret) {
@@ -23,32 +16,29 @@ function loadSecret(secretName: string): string {
 	return secret;
 }
 
-// exit if the secret is unset or empty
-function loadSecretRequired(secretName: string): string {
-	try {
-		const secret = loadSecret(secretName);
-		return secret;
-	} catch (e) {
-		console.log(e);
-		process.exit(1);
-	}
-}
-
 // use the fallback value if the secret is unset or empty
-function loadSecretOptional(secretName: string, fallback: string): string {
+async function loadSecretOptional(secretName: string, fallback: string): Promise<string> {
 	try {
-		const secret = loadSecret(secretName);
-		return secret;
+		return await loadSecret(secretName);
 	} catch {
 		return fallback;
 	}
 }
 
-export const secrets = {
-	// process should exist if not present
-	OAUTH_CLIENT_ID: loadSecretRequired('OAUTH_CLIENT_ID'),
-	OAUTH_CLIENT_SECRET: loadSecretRequired('OAUTH_CLIENT_SECRET'),
-	// can generate new key/iv at startup if none is present
-	AES_KEY: loadSecretOptional('AES_KEY', ''),
-	AES_IV: loadSecretOptional('AES_IV', '')
-};
+interface Secrets {
+	OAUTH_CLIENT_ID?: string;
+	OAUTH_CLIENT_SECRET?: string;
+	AES_KEY_STRING?: string;
+}
+
+export const secrets: Secrets = {};
+
+export async function loadAllSecrets() {
+	// oauth credentials are required and do not have a fallback
+	// if these values do not exist, an exception is thrown
+	secrets.OAUTH_CLIENT_ID = await loadSecret('OAUTH_CLIENT_ID');
+	secrets.OAUTH_CLIENT_SECRET = await loadSecret('OAUTH_CLIENT_SECRET');
+
+	// aes key is optional and can be generated if needed
+	secrets.AES_KEY_STRING = await loadSecretOptional('AES_KEY', '');
+}
