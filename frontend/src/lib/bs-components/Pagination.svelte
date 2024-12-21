@@ -15,17 +15,23 @@
 	}
 </script>
 
-<nav aria-label="...">
+<nav>
 	<ul class="pagination justify-content-center">
 		{#if curPage > 1}
 			<li class="page-item">
-				<a class="page-link" data-sveltekit-preload-data="tap" href={makeURL(page.url, 1)}
-					><i class="bi bi-chevron-double-left"></i></a
+				<a
+					class="page-link"
+					data-sveltekit-preload-data="tap"
+					href={makeURL(page.url, 1)}
+					aria-label="First page"><i class="bi bi-chevron-double-left"></i></a
 				>
 			</li>
 			<li class="page-item">
-				<a class="page-link" data-sveltekit-preload-data="tap" href={makeURL(page.url, curPage - 1)}
-					><i class="bi bi-chevron-left"></i></a
+				<a
+					class="page-link"
+					data-sveltekit-preload-data="tap"
+					href={makeURL(page.url, curPage - 1)}
+					aria-label="Previous page"><i class="bi bi-chevron-left"></i></a
 				>
 			</li>
 		{/if}
@@ -46,13 +52,19 @@
 		{/each}
 		{#if curPage < numPages}
 			<li class="page-item">
-				<a class="page-link" data-sveltekit-preload-data="tap" href={makeURL(page.url, curPage + 1)}
-					><i class="bi bi-chevron-right"></i></a
+				<a
+					class="page-link"
+					data-sveltekit-preload-data="tap"
+					href={makeURL(page.url, curPage + 1)}
+					aria-label="Next page"><i class="bi bi-chevron-right"></i></a
 				>
 			</li>
 			<li class="page-item">
-				<a class="page-link" data-sveltekit-preload-data="tap" href={makeURL(page.url, numPages)}
-					><i class="bi bi-chevron-double-right"></i></a
+				<a
+					class="page-link"
+					data-sveltekit-preload-data="tap"
+					href={makeURL(page.url, numPages)}
+					aria-label="Last page"><i class="bi bi-chevron-double-right"></i></a
 				>
 			</li>
 		{/if}

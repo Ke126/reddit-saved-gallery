@@ -110,7 +110,7 @@
 								class="form-control border-light"
 								placeholder="Search"
 							/>
-							<button class="btn btn-outline-success" type="submit"
+							<button class="btn btn-outline-success" type="submit" aria-label="Search"
 								><i class="bi bi-search"></i></button
 							>
 						</div>
