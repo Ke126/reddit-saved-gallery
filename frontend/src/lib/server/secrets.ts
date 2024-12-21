@@ -1,14 +1,12 @@
 import { env } from '$env/dynamic/private';
+import { building } from '$app/environment';
 import fs from 'node:fs';
 
 // throw an exception if the secret is unset or empty
 function loadSecret(secretName: string): string {
 	// During the build process, these secret environment variables are all unset,
-	// because they cannot exist during build and should only exist at runtime.
-	// This causes the build to fail from the exceptions thrown below.
-	// To fix, set an environment variable during the build process,
-	// so that these checks resulting in thrown exceptions are skipped during building.
-	if (env.NODE_ENV === 'build') {
+	// so this check prevents the build from failing from the exceptions thrown below.
+	if (building) {
 		return '';
 	}
 
