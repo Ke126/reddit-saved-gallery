@@ -3,7 +3,7 @@
 	import type { Subreddit } from '$lib/types/reddit';
 	import MagnifyingGlass from '$lib/svg/MagnifyingGlass.svelte';
 	import { slide } from 'svelte/transition';
-	import Dropdown from './Dropdown.svelte';
+	import Dropdown from '$lib/components/Dropdown.svelte';
 	import { goto } from '$app/navigation';
 	import type { EventHandler } from 'svelte/elements';
 
