@@ -65,13 +65,11 @@ services:
       OAUTH_CLIENT_ID_FILE: /run/secrets/client_id
       OAUTH_CLIENT_SECRET_FILE: /run/secrets/client_secret
       AES_KEY_FILE: /run/secrets/aes_key
-      AES_IV_FILE: /run/secrets/aes_iv
       ORIGIN: https://${DOMAIN}
     secrets:
       - client_id
       - client_secret
       - aes_key
-      - aes_iv
 
   api:
     image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/api:${TAG:-latest}
@@ -152,5 +150,3 @@ secrets:
     environment: MONGO_INITDB_ROOT_PASSWORD
   aes_key:
     environment: AES_KEY
-  aes_iv:
-    environment: AES_IV
