@@ -2,6 +2,7 @@
 **/dist
 **/.env
 **/temp
+compose.dev.yaml
 
 # binaries
 cmd/api/api
