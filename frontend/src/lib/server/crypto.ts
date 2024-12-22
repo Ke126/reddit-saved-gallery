@@ -1,31 +1,59 @@
 import { secrets } from './secrets';
-import crypto, { type CipherKey } from 'node:crypto';
+import { webcrypto } from 'node:crypto';
 
-const key: CipherKey = secrets.AES_KEY
-	? new Uint8Array(Buffer.from(secrets.AES_KEY, 'base64'))
-	: crypto.generateKeySync('aes', { length: 256 });
+const KEY_SIZE = 256;
+const IV_SIZE = 96;
+let key: CryptoKey;
 
-const iv: Uint8Array = secrets.AES_IV
-	? new Uint8Array(Buffer.from(secrets.AES_IV, 'base64'))
-	: new Uint8Array(crypto.randomBytes(16));
-
-export function encrypt(input: string): string {
-	const cipher = crypto.createCipheriv('aes-256-gcm', key, iv);
-
-	let encrypted = cipher.update(input, 'utf8', 'base64');
-	encrypted += cipher.final('base64');
-
-	const authTag = cipher.getAuthTag().toString('base64');
-	return `${encrypted}.${authTag}`;
+export async function generateAesKey() {
+	// key string is empty, generate a new key
+	if (!secrets.AES_KEY_STRING) {
+		console.log('Generating new key');
+		key = await webcrypto.subtle.generateKey(
+			{
+				name: 'AES-GCM',
+				length: KEY_SIZE
+			},
+			false,
+			['encrypt', 'decrypt']
+		);
+		return;
+	}
+	// key string is not empty, attempt to parse
+	console.log('Attempting to use existing key');
+	const rawKey = Buffer.from(secrets.AES_KEY_STRING, 'base64');
+	key = await webcrypto.subtle.importKey('raw', rawKey, 'AES-GCM', false, ['encrypt', 'decrypt']);
 }
 
-export function decrypt(input: string): string {
-	const [encrypted, authTag] = input.split('.');
+function generateIv() {
+	return webcrypto.getRandomValues(new Uint8Array(IV_SIZE / 8));
+}
 
-	const decipher = crypto.createDecipheriv('aes-256-gcm', key, iv);
-	decipher.setAuthTag(new Uint8Array(Buffer.from(authTag, 'base64')));
+export async function encrypt(plaintext: string): Promise<string> {
+	const iv = generateIv();
+	const ciphertext = await webcrypto.subtle.encrypt(
+		{
+			name: 'AES-GCM',
+			iv: iv
+		},
+		key,
+		new TextEncoder().encode(plaintext)
+	);
+	// prepend the iv to the ciphertext
+	return Buffer.from(iv).toString('base64') + Buffer.from(ciphertext).toString('base64');
+}
 
-	let decrypted = decipher.update(encrypted, 'base64', 'utf8');
-	decrypted += decipher.final('utf8');
-	return decrypted;
+export async function decrypt(payload: string): Promise<string> {
+	// extract the iv and the ciphertext from the payload
+	const iv = Buffer.from(payload.slice(0, 16), 'base64');
+	const ciphertext = Buffer.from(payload.slice(16), 'base64');
+	const plaintext = await webcrypto.subtle.decrypt(
+		{
+			name: 'AES-GCM',
+			iv: iv
+		},
+		key,
+		ciphertext
+	);
+	return new TextDecoder().decode(plaintext);
 }

@@ -2,6 +2,8 @@
 **/dist
 **/.env
 **/temp
+compose.dev.yaml
+mongo
 
 # binaries
 cmd/api/api
