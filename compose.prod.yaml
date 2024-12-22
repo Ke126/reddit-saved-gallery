@@ -4,7 +4,7 @@ services:
   cert-manager:
     image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/cert-manager:${TAG:-latest}
     container_name: cert-manager
-    build: 
+    build:
       context: ./cert-manager
       cache_from:
         - type=gha,scope=${COMPOSE_PROJECT_NAME}/cert-manager
@@ -25,7 +25,7 @@ services:
   nginx:
     image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/nginx:${TAG:-latest}
     container_name: nginx
-    build: 
+    build:
       context: ./nginx
       cache_from:
         - type=gha,scope=${COMPOSE_PROJECT_NAME}/nginx
@@ -51,7 +51,7 @@ services:
   frontend:
     image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/frontend:${TAG:-latest}
     container_name: frontend
-    build: 
+    build:
       context: ./frontend
       cache_from:
         - type=gha,scope=${COMPOSE_PROJECT_NAME}/frontend
@@ -74,7 +74,7 @@ services:
   api:
     image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/api:${TAG:-latest}
     container_name: api
-    build: 
+    build:
       context: ./cmd/api
       cache_from:
         - type=gha,scope=${COMPOSE_PROJECT_NAME}/api
@@ -88,7 +88,7 @@ services:
   query:
     image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/query:${TAG:-latest}
     container_name: query
-    build: 
+    build:
       context: ./query # use the original Node.js service
       cache_from:
         - type=gha,scope=${COMPOSE_PROJECT_NAME}/query
@@ -110,7 +110,7 @@ services:
   reddit:
     image: ghcr.io/ke126/${COMPOSE_PROJECT_NAME}/reddit:${TAG:-latest}
     container_name: reddit
-    build: 
+    build:
       context: ./cmd/reddit
       cache_from:
         - type=gha,scope=${COMPOSE_PROJECT_NAME}/reddit
@@ -144,7 +144,7 @@ secrets:
     environment: OAUTH_CLIENT_ID
   client_secret:
     environment: OAUTH_CLIENT_SECRET
-  mongo_username: 
+  mongo_username:
     environment: MONGO_INITDB_ROOT_USERNAME
   mongo_password:
     environment: MONGO_INITDB_ROOT_PASSWORD
